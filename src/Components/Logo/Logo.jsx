@@ -1,11 +1,11 @@
 import React from 'react';
 import logoImg  from '../../assets/logo.png'
 
-const Logo = () => {
+const Logo = ({textClassName = ''}) => {
     return (
         <div className='flex items-end'>
             <img src={logoImg} alt="" />
-            <p className='font-extrabold text-3xl -ml-4 text-[#303030]'>ShipEx</p>
+            <p className={`font-extrabold text-3xl -ml-4 ${textClassName}`}>ShipEx</p>
         </div>
     );
 };

@@ -17,7 +17,7 @@ const Navbar = () => {
     </>
 
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto pt-7 '>
+        <div className='max-w-11/12 lg:max-w-10/12 mx-auto pt-7 '>
             <div className="navbar bg-white shadow-sm rounded-2xl py-4 md:px-4">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -30,7 +30,7 @@ const Navbar = () => {
                             {alllinks}
                         </ul>
                     </div>
-                    <Link to={'/'} className='hidden md:block relative bottom-1' ><Logo></Logo></Link>
+                    <Link to={'/'} className='hidden md:block relative bottom-1' ><Logo textClassName='text-black'></Logo></Link>
                     <Link to={'/'} className=' md:hidden relative -left-2' ><img src={Smalllogo}></img></Link>
                 </div>
                 <div className="navbar-center hidden xl:flex">

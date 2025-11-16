@@ -47,6 +47,13 @@
   border-bottom: 1px solid #9AC43F;
 }
 
+.footerLink a:hover{
+  font-weight: 700;
+  color: #9AC43F;
+}
+
+
+
 /*---------------------Theme Customization------------------------*/
 @plugin "daisyui/theme" {
   name: "light";
