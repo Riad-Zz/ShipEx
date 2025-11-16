@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+/* ----------------Primary Font--------------------------  */
+.urbanist-font {
+  font-family: "Urbanist", sans-serif;
+  font-optical-sizing: auto;
+}
+
+/*-------------------Base Button-----------------------*/
+.btn-base {
+  border-radius: 12px;
+  font-weight: 700;
+  color: #606060;
+  font-size: 16px;
+  cursor: pointer;
+}
+/*-------------------------Navbar Active-------------------------*/
+.midLinks a.active {
+  background: #caeb66;
+  padding: 11px 19px;
+  border-radius: 50px;
+  font-weight: 700;
+}
+
+/*------------------To fix Overwrite of active when hovered--------------------*/
+.midLinks a.active:hover {
+  color: inherit;        
+  border-bottom: none;   
+}
+
+
+/*-----------------hamburger ACtive----------------------*/
+.hamburger .active{
+  font-weight: 700;
+  color: #9AC43F;
+  border-bottom: 1px solid #9AC43F;
+}
+
+/*-------------------NavLinks Hover-----------------------------*/
+.midLinks a:hover {
+  font-weight: 700;
+  color: #9AC43F;
+  /* text-decoration: underline;  */
+  border-bottom: 1px solid #9AC43F;
+}
+
+/*---------------------Theme Customization------------------------*/
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #caeb66;
+  --color-secondary: #03373d;
+  --color-third: #acc857;
+  --color-base-content: #606060;
+}
