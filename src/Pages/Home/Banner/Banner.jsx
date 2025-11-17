@@ -11,9 +11,10 @@ import { MdArrowOutward } from "react-icons/md";
 
 const Banner = () => {
 
-    const title1 = <p>We Make Sure Your <span className='text-primary'>Parcel Arrives</span> On Time - No Fuss.</p>
-    const title2 = <p className='max-w-lg'>Delivery in<span className='text-primary'> 30 Minutes</span> at your doorstep</p>
-    const title3 = <p className='max-w-lg'>Fastest <span className='text-primary'>Delivery</span> & Easy <span className='text-primary'>Pickup</span></p>
+    const title1 = <>We Make Sure Your <span className='text-primary'>Parcel Arrives</span> On Time - No Fuss.</>;
+    const title2 = <>Get your essentials delivered in <span className='text-primary'>30 Minutes</span> at your doorstep</>;
+    const title3 = <>Experience lightning-fast <span className='text-primary'>Delivery</span> & hassle-free <span className='text-primary'>Pickup</span></>;
+
 
 
     const allBanners = [
@@ -41,7 +42,7 @@ const Banner = () => {
                     <SwiperSlide key={index}>
 
                         <div className="flex flex-col-reverse xl:flex-row items-center justify-center xl:justify-between gap-6 sm:gap-8 md:gap-10 bg-white p-6 sm:p-8 md:p-12 xl:p-20 rounded-4xl">
-                            
+
                             {/*-----------------LEFT TEXT SECTION-------------------------*/}
                             <div className="text-center xl:text-left px-2 md:px-0 max-w-xl">
 
