@@ -18,11 +18,11 @@ const Footer = () => {
     </>
 
     return (
-        <div className='max-w-11/12 lg:max-w-10/12 mx-auto'>
-            <footer className="footer footer-horizontal footer-center bg-[#0B0B0B] text-[#DADADA] p-7 md:p-10 rounded-4xl">
+        <div className=''>
+            <footer className="footer footer-horizontal footer-center bg-[#0B0B0B] text-[#DADADA] p-7 md:p-10 ">
                 <aside>
                     <Logo className=''></Logo>
-                    <p className="md:max-w-2xl mt-3">
+                    <p className="md:max-w-3xl mt-3">
                         Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to   business shipments — we deliver on time, every time.
                     </p>
                     <hr className='block w-full border border-dashed border-[#03464D] mt-4' />
