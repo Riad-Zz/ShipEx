@@ -1,6 +1,6 @@
 import React from 'react';
 import image1 from '../../../assets/Others/live-tracking.png'
-import image2 from '../../../assets/Others/DeliveryMan1.png'
+import image2 from '../../../assets/Others/callCenter.png'
 import image3 from '../../../assets/Others/safe-delivery.png'
 
 const MoreUs = () => {
@@ -17,7 +17,7 @@ const MoreUs = () => {
             description: "Stay updated in real-time with our live parcel tracking feature.From pick-up to delivery, monitor your shipment's journey and get instant status updates for complete peace of mind."
         },
         {
-            icon: image3,
+            icon: image2,
             title: '24/7 Call Center Support',
             description: "Our dedicated support team is available around the clock to assist you with any questions, updates, or delivery concerns—anytime you need us."
         }
@@ -34,7 +34,7 @@ const MoreUs = () => {
 
                     {/* LEFT IMAGE */}
                     <div>
-                        <img src={item.icon} alt="" />
+                        <img src={item.icon} className='h-50 w-50' alt="" />
                     </div>
 
                     {/* VERTICAL DASHED LINE */}
