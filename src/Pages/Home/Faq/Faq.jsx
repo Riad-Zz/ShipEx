@@ -46,9 +46,10 @@ const Faq = () => {
                 <input type="radio" name="my-accordion-2" />
                 <div className="collapse-title font-bold text-[#03373D]">How do I become a ShipEx rider?</div>
                 <div className="collapse-content text-sm">
-                    Go to the “Become a Rider” page, submit your personal and vehicle information, complete the verification steps, and undergo a brief onboarding session. Once approved, you can start accepting deliveries and earning through the ShipEx rider platform.
+                    Visit the “Become a Rider” page, fill in your personal and vehicle details, complete the verification process, and attend a short onboarding session. Once approved, you’ll be ready to start accepting deliveries and earning with ShipEx.
                 </div>
             </div>
+
 
             <div className="flex gap-px justify-center my-8">
                 <button className="btn-base py-2.5 sm:py-3 px-5 sm:px-6 bg-primary text-black! border-none">See More FAQ's</button>
