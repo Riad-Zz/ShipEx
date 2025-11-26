@@ -92,9 +92,9 @@ const Reviews = () => {
                 {allReviews.map((rev, index) => (
                     <SwiperSlide
                         key={index}
-                        className="max-w-xs md:max-w-sm px-1"
+                        className="max-w-xs md:max-w-sm px-1 "
                     >
-                        <div className='p-8 mb-10 rounded-xl shadow-lg bg-[#ffffffb3]'>
+                        <div className='p-8  mb-10 rounded-xl shadow-lg bg-[#ffffffb3]'>
                             <img src={quoteMark} alt="" />
                             <p className='text-sm '>{rev.review}</p>
                             <hr className=' border-dashed my-3 border-[#03464D]' />
