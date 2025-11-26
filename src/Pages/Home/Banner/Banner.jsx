@@ -47,14 +47,14 @@ const Banner = () => {
                             <div className="text-center xl:text-left px-2 md:px-0 max-w-xl">
 
                                 {/*-------------------Title------------------------------*/}
-                                <p className="font-extrabold text-2xl sm:text-3xl md:text-4xl xl:text-6xl text-secondary">{banner.title}</p>
+                                <p className="font-extrabold text-2xl mb-2 md:mb-0 sm:text-3xl md:text-4xl xl:text-6xl text-secondary">{banner.title}</p>
                                 {/*-------------------------Description--------------------*/}
-                                <p className="text-[#606060] my-3 sm:my-4 md:my-6">{banner.description}</p>
+                                <p className="text-[#606060] hidden md:block my-3 sm:my-4 md:my-6">{banner.description}</p>
 
                                 {/*-------------------------BUTTONS----------------------------*/}
-                                <div className="flex flex-wrap gap-3 sm:gap-4 justify-center xl:justify-start">
+                                <div className="flex my-3 flex-wrap gap-3 sm:gap-4 justify-center xl:justify-start">
                                     {/*--------------------------Track Parcel + Arrow-----------------------*/}
-                                    <div className="flex gap-px">
+                                    <div className="flex justify-center gap-px">
                                         <button className="btn-base py-2.5 sm:py-3 px-5 sm:px-6 bg-primary text-black! border-none">Track Your Parcel</button>
                                         <button className="bg-black rounded-full p-2 sm:p-3"><MdArrowOutward className="text-2xl sm:text-3xl text-primary font-bold" /></button>
                                     </div>
