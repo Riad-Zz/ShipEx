@@ -1,6 +1,9 @@
 import React from 'react';
+
 import headingImage from '../../../assets/Others/customer-top.png'
 import quoteMark from '../../../assets/Others/reviewQuote.png'
+
+
 import reviwerImage1 from '../../../assets/Others/test.jpeg'
 import reviwerImage2 from '../../../assets/Others/Reviewer (1).jpeg'
 import reviwerImage3 from '../../../assets/Others/Reviewer (2).jpeg'
@@ -92,7 +95,7 @@ const Reviews = () => {
                 {allReviews.map((rev, index) => (
                     <SwiperSlide
                         key={index}
-                        className="max-w-xs md:max-w-sm px-1 "
+                        className="max-w-xs md:max-w-sm px-1"
                     >
                         <div className='p-8  mb-10 rounded-xl shadow-lg bg-[#ffffffb3]'>
                             <img src={quoteMark} alt="" />

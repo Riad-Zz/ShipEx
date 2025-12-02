@@ -11,7 +11,7 @@ const Navbar = () => {
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/'}>Home</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/services'}>Services</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/coverage'}>Coverage</NavLink></li>
-        <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/about'}>About Us</NavLink></li>
+        <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/aboutus'}>About Us</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/pricing'}>Pricing</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/rider'}>Be a Rider</NavLink></li>
     </>
