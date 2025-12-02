@@ -13,15 +13,15 @@ const Login = () => {
                 setEye(!eye);
             }
     return (
-        <div className='flex min-h-screen lg:min-h-auto items-center justify-center p-1 relative'>
+        <div className='flex mt-12 items-center justify-center p-2'>
             {/* <div className='absolute top-0'>
                 <Logo></Logo>
             </div> */}
-            <form className='w-full max-w-md py-10 px-5 p-2 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
-                <p className='text-black text-center text-3xl md:text-4xl lg:text-left font-bold'>
+            <form className='w-full max-w-md py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
+                <p className='text-black text-center text-3xl md:text-4xl xl:text-left font-bold'>
                     Welcome Back
                 </p>
-                <p className='text-black mb-5 text-center  lg:text-left'>Login with ShipEx</p>
+                <p className='text-black mb-5 text-center  xl:text-left'>Login with ShipEx</p>
 
 
                 {/* Email  */}

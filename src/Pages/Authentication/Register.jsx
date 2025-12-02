@@ -14,15 +14,15 @@ const Register = () => {
             setEye(!eye);
         }
     return (
-        <div className='flex min-h-screen lg:min-h-auto items-center justify-center p-1 relative'>
+        <div className='flex mt-7 md:mt-16 lg:mt-0 items-center justify-center p-2 '>
             {/* <div className='absolute top-0'>
                 <Logo></Logo>
             </div> */}
-            <form className='w-full max-w-md py-10 px-5 p-2 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
-                <p className='text-black text-center text-3xl md:text-4xl lg:text-left font-bold'>
+            <form className='w-full lg:mt-20 xl:mt-0 max-w-md py-10 px-5 p-2 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
+                <p className='text-black text-center text-3xl md:text-4xl xl:text-left font-bold'>
                     Create an Account
                 </p>
-                <p className='text-black mb-5 text-center  lg:text-left'>Register with ShipEx</p>
+                <p className='text-black mb-5 text-center  xl:text-left'>Register with ShipEx</p>
                 <div className='my-4 flex flex-col items-center gap-2'>
                     <img src={imageUpload} alt="" className='cursor-pointer'/>
                     <p className='text-[#403F3F] font-bold'>Upload Your Avatar</p>
