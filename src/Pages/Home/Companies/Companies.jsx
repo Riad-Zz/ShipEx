@@ -10,7 +10,7 @@ import companyLogo7 from '../../../assets/brands/amazon_vector.png'
 
 const Companies = () => {
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto'>
             <p className='text-center font-extrabold text-3xl text-secondary mb-10'>We've helped thousands of sales teams</p>
             <Marquee 
                 loop={0}

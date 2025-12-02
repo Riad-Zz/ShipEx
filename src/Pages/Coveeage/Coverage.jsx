@@ -31,7 +31,7 @@ const Coverage = () => {
     }
 
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto my-8'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto my-8'>
             <div className='p-7 md:p-20 bg-white rounded-4xl'>
                 {/* Title */}
                 <p className='font-extrabold text-5xl text-secondary'>We are available in 64 districts</p>

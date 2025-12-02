@@ -29,7 +29,7 @@ const Works = () => {
 
 
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto my-10'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto my-10'>
             <p className='text-secondary font-extrabold text-3xl text-center'>How it Works</p>
             <p className='font-medium text-base-content text-center mt-1 mb-2'>Everything you need to know about how our service works.</p>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 my-5 gap-6'>

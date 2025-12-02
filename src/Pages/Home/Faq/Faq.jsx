@@ -3,7 +3,7 @@ import { MdArrowOutward } from "react-icons/md";
 
 const Faq = () => {
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto mb-20'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto mb-20'>
 
             <p className='text-secondary font-extrabold text-center text-4xl'>Frequently Asked Question (FAQ)</p>
             <p className='text-center max-w-4xl mx-auto mt-2 mb-10 text-[#606060]'>

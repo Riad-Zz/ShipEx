@@ -24,7 +24,7 @@ const MoreUs = () => {
     ];
 
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto my-20'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto my-20'>
 
             <div className='border-b-2 border-dashed mb-10'></div>
 

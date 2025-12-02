@@ -24,7 +24,7 @@ const Banner = () => {
     ];
 
     return (
-        <div className='max-w-11/12 lg:max-w-10/12 mx-auto'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto'>
             <Swiper
                 slidesPerView={1}
                 spaceBetween={30}

@@ -5,7 +5,7 @@ import overlay from '../../../assets/Others/be-a-merchant-bg.png'
 
 const Customer = () => {
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto bg-[#03373D] rounded-4xl 
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto bg-[#03373D] rounded-4xl 
                         p-5 py-8 md:py-15 md:px-7 lg:p-20 
                         flex flex-col-reverse md:flex-row 
                         justify-between items-center 

@@ -17,7 +17,7 @@ const Navbar = () => {
     </>
 
     return (
-        <div className='max-w-11/12 lg:max-w-10/12 mx-auto pt-7 '>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto pt-7 '>
             <div className="navbar bg-white shadow-sm rounded-2xl py-4 md:px-4">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -40,7 +40,7 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end gap-px md:gap-2 relative">
                     {/* Sign In Button  */}
-                    <Link>
+                    <Link to={'/login'}>
                     <button className='btn-base border border-[#DADADA] py-3 px-4 md:px-6 hover:bg-primary transition-all hover:text-black!'>Sign In</button>
                     </Link>
                     {/* be a Rider Button  */}

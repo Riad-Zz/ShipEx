@@ -59,7 +59,7 @@ const Services = () => {
     ]
 
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto bg-[#03373D] my-20 xl:p-18 md:p-7 px-3 py-18 rounded-4xl'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto bg-[#03373D] my-20 xl:p-18 md:p-7 px-3 py-18 rounded-4xl'>
             <p className='text-white text-center font-extrabold text-4xl'>Our Services </p>
             <p className='text-center text-[#DADADA] my-3 max-w-2xl mx-auto'>Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.</p>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 my-10 '>

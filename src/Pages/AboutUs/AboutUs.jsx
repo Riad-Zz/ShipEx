@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const AboutUs = () => {
     const [activeTab, setActiveTab] = useState("story");
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto'>
             <div className='p-8 lg:p-20 bg-white rounded-4xl my-7'>
                 <p className='text-4xl text-secondary font-bold'>About Us</p>
                 <p className='mt-4  max-w-xl '>Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.</p>

@@ -66,7 +66,7 @@ const Reviews = () => {
 
 
     return (
-        <div className='max-w-11/12 md:max-w-10/12 mx-auto mb-20'>
+        <div className='max-w-11/12 xl:max-w-7xl mx-auto mb-20'>
             <div className='flex justify-center mb-3'>
                 <img src={headingImage} alt="" className='object-cover' />
             </div>

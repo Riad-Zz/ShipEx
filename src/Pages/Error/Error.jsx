@@ -9,7 +9,7 @@ const ErrorPage = () => {
 
     return (
         <div >
-            <div className='max-w-10/12 mx-auto'>
+            <div className='max-w-7xl mx-auto'>
                 <div className='min-h-screen space-y-4 flex flex-col justify-center items-center '>
                     <img src={photo} alt="" className='max-h-100' />
                     <p className={` text-2xl  font-semibold text-center`}>Seems like something went wrong</p>
