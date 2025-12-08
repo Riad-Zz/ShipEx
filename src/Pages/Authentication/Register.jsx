@@ -2,29 +2,36 @@ import React, { useState } from 'react';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from 'react-router';
-import Logo from '../../Components/Logo/Logo';
 import imageUpload from '../../assets/image-upload-icon.png'
+import { useForm } from 'react-hook-form';
 
 
 const Register = () => {
     const [eye, setEye] = useState(false);
     const [currentEmail, setCurrentEmail] = useState("");
-        const handleEyeClick = (e) => {
-            e.preventDefault();
-            setEye(!eye);
-        }
+
+    const {register,handleSubmit,watch,formState: { errors }} = useForm()
+
+    const handleEyeClick = (e) => {
+        e.preventDefault();
+        setEye(!eye);
+    }
+
+    // Handle Register 
+    const handleRegister = (data) =>{
+        console.log(data) ;
+    }
+
     return (
-        <div className='flex mt-7 md:mt-16 lg:mt-0 items-center justify-center p-2 '>
-            {/* <div className='absolute top-0'>
-                <Logo></Logo>
-            </div> */}
-            <form className='w-full lg:mt-20 xl:mt-0 max-w-md py-10 px-5 p-2 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
-                <p className='text-black text-center text-3xl md:text-4xl xl:text-left font-bold'>
+        <div className='flex mt-12 items-center justify-center p-2 '>
+            
+            <form onSubmit={handleSubmit(handleRegister)} className='w-full lg:mt-20 xl:mt-0 max-w-md py-10 px-5 p-2 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
+                <p className='text-black text-center text-3xl md:text-4xl 2xl:text-left font-bold'>
                     Create an Account
                 </p>
-                <p className='text-black mb-5 text-center  xl:text-left'>Register with ShipEx</p>
+                <p className='text-black mb-5 text-center 2xl:text-left'>Register with ShipEx</p>
                 <div className='my-4 flex flex-col items-center gap-2'>
-                    <img src={imageUpload} alt="" className='cursor-pointer'/>
+                    <img src={imageUpload} alt="" className='cursor-pointer' />
                     <p className='text-[#403F3F] font-bold'>Upload Your Avatar</p>
                 </div>
 
@@ -35,6 +42,7 @@ const Register = () => {
                     className="input mb-3 w-full bg-white border-[#94A3B8] py-4 px-4 rounded-lg outline-none"
                     placeholder="Name"
                     name='name'
+                    {...register('name')}
                     onChange={(e) => setCurrentEmail(e.target.value)}
                     value={currentEmail}
                 />
@@ -47,6 +55,7 @@ const Register = () => {
                     className="input mb-3 w-full bg-white border-[#94A3B8] py-4 px-4 rounded-lg outline-none"
                     placeholder="Email"
                     name='email'
+                    {...register('email')}
                     onChange={(e) => setCurrentEmail(e.target.value)}
                     value={currentEmail}
                 />

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from 'react-router';
-import Logo from '../../Components/Logo/Logo';
-import imageUpload from '../../assets/image-upload-icon.png'
+
 
 const Login = () => {
     const [eye, setEye] = useState(false);
@@ -18,10 +17,10 @@ const Login = () => {
                 <Logo></Logo>
             </div> */}
             <form className='w-full max-w-md py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
-                <p className='text-black text-center text-3xl md:text-4xl xl:text-left font-bold'>
+                <p className='text-black text-center text-3xl md:text-4xl 2xl:text-left font-bold'>
                     Welcome Back
                 </p>
-                <p className='text-black mb-5 text-center  xl:text-left'>Login with ShipEx</p>
+                <p className='text-black mb-5 text-center  2xl:text-left'>Login with ShipEx</p>
 
 
                 {/* Email  */}
