@@ -1,22 +1,24 @@
-import React, { useRef, useState } from 'react';
+import React, { use, useRef, useState } from 'react';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from 'react-router';
 import imageUpload from '../../assets/image-upload-icon.png'
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
 
 
 const Register = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
     const [eye, setEye] = useState(false);
     const [preview, setPreview] = useState(imageUpload)
+    const { user, setUser, googleLogin } = use(AuthContext);
     const imageInputRef = useRef(null);  //HIU 01
 
 
 
     //----------Hidden Image upload field Activate Control (HIU) -------------
-    
+
     //HIU ------> 02  
     const handleUploadAvater = () => {
         imageInputRef.current.click();
@@ -35,7 +37,7 @@ const Register = () => {
         setEye(!eye);
     }
 
-    
+
 
     //------------------------- Handle Register --------------------------- 
     const handleRegister = (data, e) => {
@@ -60,6 +62,19 @@ const Register = () => {
                 const finalImageURL = res.data.data.url;
                 console.log(finalImageURL);
             })
+    }
+
+
+    //-----------------Handle Google Login --------------------------------
+    const handleGoogleLogin = () => {
+        googleLogin().then((result) => {
+            const currentUser = result.user
+            setUser(currentUser);
+        })
+            .catch((error) => {
+                const errorMessage = error.message; 
+                console.log(errorMessage) ;
+            });
     }
 
     return (
@@ -175,7 +190,7 @@ const Register = () => {
 
                 <p className='text-center font-semibold text-gray-500 mb-4'>OR</p>
 
-                <button className="btn font-bold bg-[#E9ECF1] text-black border border-[#e5e5e5] w-full flex items-center justify-center gap-2 py-3 rounded-lg hover:bg-gray-200 transition">
+                <button onClick={handleGoogleLogin} type="button" className="btn font-bold bg-[#E9ECF1] text-black border border-[#e5e5e5] w-full flex items-center justify-center gap-2 py-3 rounded-lg hover:bg-gray-200 transition">
                     <svg aria-label="Google logo" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path>
                         <path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path>
