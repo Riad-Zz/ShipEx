@@ -12,7 +12,7 @@ const Register = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
     const [eye, setEye] = useState(false);
     const [preview, setPreview] = useState(imageUpload)
-    const { user, setUser, googleLogin } = use(AuthContext);
+    const { user, setUser, googleLogin, EmailRegister, updateUser } = use(AuthContext);
     const imageInputRef = useRef(null);  //HIU 01
 
 
@@ -39,8 +39,8 @@ const Register = () => {
 
 
 
-    //------------------------- Handle Register --------------------------- 
-    const handleRegister = (data, e) => {
+    //------------------------- Handle Email  Register --------------------------- 
+    const handleRegister = async (data, e) => {
         console.log(data);
 
         //Step 1 of Uploading a image to ImageBB
@@ -57,10 +57,25 @@ const Register = () => {
         const profileImageApiURL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`
 
         //Step 4 of Uploading a image to ImageBB
-        axios.post(profileImageApiURL, formData)
-            .then(res => {
-                const finalImageURL = res.data.data.url;
-                console.log(finalImageURL);
+        const res = await axios.post(profileImageApiURL, formData);
+        const finalImageURL = res.data.data.url;
+        console.log(finalImageURL);
+
+
+        EmailRegister(data.email, data.password)
+            .then(async (result) => {
+                const currentUser = result.user
+                setUser(currentUser);
+                if (currentUser) {
+                    await updateUser({ displayName: data.name, photoURL: finalImageURL })
+                        .then(() => {
+                            setUser({ ...currentUser,displayName: data.name, photoURL: finalImageURL })
+                        })
+                        .catch(error => {
+                            const errorMessage = error.message;
+                            console.log(errorMessage);
+                        })
+                }
             })
     }
 
@@ -72,8 +87,8 @@ const Register = () => {
             setUser(currentUser);
         })
             .catch((error) => {
-                const errorMessage = error.message; 
-                console.log(errorMessage) ;
+                const errorMessage = error.message;
+                console.log(errorMessage);
             });
     }
 

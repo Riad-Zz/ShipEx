@@ -100,7 +100,7 @@ const Navbar = () => {
                                                 </svg>
                                             </div>
                                             <p className="text-gray-600 text-sm">Personal</p>
-                                            <p className="text-gray-400 text-xs mt-1 truncate" title={user.email}>
+                                            <p className="text-gray-400 text-xs mt-1 truncate">
                                                 {user.email}
                                             </p>
                                         </div>
