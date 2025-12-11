@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import app from '../../Firebase/Firebase.config';
 
 
@@ -12,12 +12,12 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Register / Login With Google 
+    //---------------------Register / Login With Google---------------------- 
     const googleLogin = ()=>{
         return signInWithPopup(auth,googleProvider) ;
     } 
 
-    //Observer 
+    //------------------------Observer------------------------------ 
     useEffect(()=>{
         const tracking = onAuthStateChanged(auth,(currentUser)=>{
             setUser(currentUser) ;
@@ -28,12 +28,18 @@ const AuthProvider = ({ children }) => {
         }
     },[])
 
+    //----------------------------LogOut------------------------------
+    const logOut = ()=>{
+        return signOut(auth) 
+    }
+
     const AuthData = {
         user,
         setUser,
         loading,
         setLoading ,
         googleLogin ,
+        logOut
     }
 
 

@@ -8,7 +8,7 @@ import { AuthContext } from '../../../Providers/AuthProvider/AuthProvider';
 
 const Navbar = () => {
 
-    const { user } = use(AuthContext);
+    const { user, logOut } = use(AuthContext);
 
 
 
@@ -20,6 +20,15 @@ const Navbar = () => {
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/pricing'}>Pricing</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/rider'}>Be a Rider</NavLink></li>
     </>
+
+
+    const handleLogOut = () => {
+        logOut().then(() => {
+            // Sign-out successful.
+        }).catch((error) => {
+            // An error happened.
+        });
+    }
 
     return (
         <div className='max-w-11/12 xl:max-w-7xl mx-auto pt-7 '>
@@ -49,9 +58,9 @@ const Navbar = () => {
                         user ?
                             <div className="dropdown dropdown-end">
                                 {/* Trigger Button */}
-                                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                                    <div className="w-10 rounded-full">
-                                        <img src={user.photoURL} alt="User Avatar" />
+                                <label tabIndex={0} className="">
+                                    <div className="cursor-pointer">
+                                        <img src={user.photoURL} alt="User Avatar" className='w-11 h-11 rounded-full' />
                                     </div>
                                 </label>
 
@@ -67,7 +76,7 @@ const Navbar = () => {
                                     </div>
 
                                     {/* Profile Card */}
-                                    <div className="flex items-start gap-3 p-3 bg-[#F5F5F5] rounded-xl mb-2">
+                                    <div className="flex items-center gap-3 p-3 bg-[#F5F5F5] rounded-xl mb-2">
                                         {/* Avatar */}
                                         <div className="w-12 h-12 rounded-full overflow-hidden">
                                             <img src={user.photoURL} alt="profile" className="object-cover w-full h-full" />
@@ -107,7 +116,7 @@ const Navbar = () => {
                                         {/* Logout Button */}
                                         <li>
                                             <button
-                                                
+                                            onClick={handleLogOut}
                                                 className="w-full bg-primary py-2 text-black  flex justify-center font-bold"
                                             >
                                                 Log out
