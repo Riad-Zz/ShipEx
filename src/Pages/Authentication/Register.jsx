@@ -1,7 +1,7 @@
 import React, { use, useRef, useState } from 'react';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import imageUpload from '../../assets/image-upload-icon.png'
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
@@ -13,6 +13,8 @@ const Register = () => {
     const [eye, setEye] = useState(false);
     const [preview, setPreview] = useState(imageUpload)
     const { user, setUser, googleLogin, EmailRegister, updateUser } = use(AuthContext);
+    const location = useLocation() ;
+    const navigate = useNavigate() ;
     const imageInputRef = useRef(null);  //HIU 01
 
 
@@ -66,6 +68,7 @@ const Register = () => {
             .then(async (result) => {
                 const currentUser = result.user
                 setUser(currentUser);
+                navigate(location.state || '/');
                 if (currentUser) {
                     await updateUser({ displayName: data.name, photoURL: finalImageURL })
                         .then(() => {
@@ -85,6 +88,7 @@ const Register = () => {
         googleLogin().then((result) => {
             const currentUser = result.user
             setUser(currentUser);
+            navigate(location.state || '/');
         })
             .catch((error) => {
                 const errorMessage = error.message;

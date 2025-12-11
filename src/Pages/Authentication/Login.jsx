@@ -1,22 +1,47 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
 
 
 const Login = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [eye, setEye] = useState(false);
-        const [currentEmail, setCurrentEmail] = useState("");
-            const handleEyeClick = (e) => {
-                e.preventDefault();
-                setEye(!eye);
-            }
+    // const [currentEmail, setCurrentEmail] = useState("");
+    const { emailLogin, user, setUser } = use(AuthContext)
+    const { register, handleSubmit, watch, formState: { errors } } = useForm()
+
+    const handleEyeClick = (e) => {
+        e.preventDefault();
+        setEye(!eye);
+    }
+
+
+    const handleEmailLogin = (data, e) => {
+        console.log(data);
+        e.target.reset();
+
+        emailLogin(data.email, data.password).then((result) => {
+            const currentUser = result.user;
+            setUser(currentUser);
+            // toast.success(`Welcome ${currentUser.displayName}`, { theme: 'colored' })
+            navigate(location.state || '/');
+        })
+            .catch(error => {
+                const errorMessage = error.message;
+                // toast.error(errorMessage, { theme: 'colored' });
+            })
+    }
+
     return (
         <div className='flex mt-12 items-center justify-center p-2'>
             {/* <div className='absolute top-0'>
                 <Logo></Logo>
             </div> */}
-            <form className='w-full max-w-md py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
+            <form onSubmit={handleSubmit(handleEmailLogin)} className='w-full max-w-md py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
                 <p className='text-black text-center text-3xl md:text-4xl 2xl:text-left font-bold'>
                     Welcome Back
                 </p>
@@ -31,9 +56,9 @@ const Login = () => {
                     className="input mb-3 w-full bg-white border-[#94A3B8] py-4 px-4 rounded-lg outline-none"
                     placeholder="Email"
                     name='email'
-                    onChange={(e) => setCurrentEmail(e.target.value)}
-                    value={currentEmail}
+                    {...register('email', { required: true })}
                 />
+                {errors.email && <p className='text-red-600 text-sm mb-2'>Please Enter your Email</p>}
                 {/* Password  */}
                 <label className="label font-bold text-[#403F3F] text-[16px] mb-2 ">Password</label>
                 <div className='relative'>
@@ -42,11 +67,22 @@ const Login = () => {
                         className="input mb-3 w-full bg-white border-[#94A3B8] pr-10 py-4 px-4 rounded-lg outline-none"
                         placeholder="Password"
                         name='password'
+                        {...register('password', {
+                            required: "Password is required",
+                            minLength: {
+                                value: 6,
+                                message: "Password must be at least 6 characters"
+                            }
+                        })}
                     />
                     {
                         eye ? <FaEyeSlash onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800'></FaEyeSlash> : <FaEye onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800'></FaEye>
                     }
+
                 </div>
+                {errors.password && (
+                    <p className="text-red-600 mb-2 text-sm">{errors.password.message}</p>
+                )}
                 <div className='mt-3 flex items-center md:flex-row gap-3 justify-between'>
                     <div className='flex items-center gap-2'>
                         <input type="checkbox" className="checkbox " />
@@ -61,7 +97,7 @@ const Login = () => {
 
                 <p className='text-center font-semibold text-gray-500 mb-4'>OR</p>
 
-                <button className="btn font-bold bg-[#E9ECF1] text-black border border-[#e5e5e5] w-full flex items-center justify-center gap-2 py-3 rounded-lg hover:bg-gray-200 transition">
+                <button type='button' className="btn font-bold bg-[#E9ECF1] text-black border border-[#e5e5e5] w-full flex items-center justify-center gap-2 py-3 rounded-lg hover:bg-gray-200 transition">
                     <svg aria-label="Google logo" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path>
                         <path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path>
