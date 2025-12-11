@@ -8,7 +8,7 @@ const AuthLayout = () => {
     return (
         <div className='relative min-h-90vh'>
             <div className=' md:relative'>
-                <Link to={'/'} className='flex justify-center lg:absolute'><Logo textClassName='text-gray-700'></Logo></Link>
+                <Link to={'/'} className='flex justify-center lg:absolute left-1'><Logo textClassName='text-gray-700'></Logo></Link>
             </div>
             <div className='flex justify-between items-center'>
                 <div className='bg-white flex-1'>

@@ -1,39 +1,106 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from 'react-router';
 import imageUpload from '../../assets/image-upload-icon.png'
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 
 const Register = () => {
+    const { register, handleSubmit, watch, formState: { errors } } = useForm()
     const [eye, setEye] = useState(false);
-    const [currentEmail, setCurrentEmail] = useState("");
+    const [preview, setPreview] = useState(imageUpload)
+    const imageInputRef = useRef(null);  //HIU 01
 
-    const {register,handleSubmit,watch,formState: { errors }} = useForm()
+
+
+    //----------Hidden Image upload field Activate Control (HIU) -------------
+    
+    //HIU ------> 02  
+    const handleUploadAvater = () => {
+        imageInputRef.current.click();
+    }
+    //HIU ------> 03
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        }
+        // console.log(file);
+    }
 
     const handleEyeClick = (e) => {
         e.preventDefault();
         setEye(!eye);
     }
 
-    // Handle Register 
-    const handleRegister = (data) =>{
-        console.log(data) ;
+    
+
+    //------------------------- Handle Register --------------------------- 
+    const handleRegister = (data, e) => {
+        console.log(data);
+
+        //Step 1 of Uploading a image to ImageBB
+        const profileImage = data.avatar[0];
+
+        e.target.reset();
+        setPreview(imageUpload)
+
+        //Step 2 of Uploading a image to ImageBB
+        const formData = new FormData();
+        formData.append('image', profileImage)
+
+        //Step 3 of Uploading a image to ImageBB
+        const profileImageApiURL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`
+
+        //Step 4 of Uploading a image to ImageBB
+        axios.post(profileImageApiURL, formData)
+            .then(res => {
+                const finalImageURL = res.data.data.url;
+                console.log(finalImageURL);
+            })
     }
 
     return (
         <div className='flex mt-12 items-center justify-center p-2 '>
-            
+
             <form onSubmit={handleSubmit(handleRegister)} className='w-full lg:mt-20 xl:mt-0 max-w-md py-10 px-5 p-2 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
                 <p className='text-black text-center text-3xl md:text-4xl 2xl:text-left font-bold'>
                     Create an Account
                 </p>
                 <p className='text-black mb-5 text-center 2xl:text-left'>Register with ShipEx</p>
                 <div className='my-4 flex flex-col items-center gap-2'>
-                    <img src={imageUpload} alt="" className='cursor-pointer' />
+                    <img src={preview} alt=""
+                        className='cursor-pointer h-13 w-13 rounded-full object-cover'
+                        // HIU ------> 04 
+                        onClick={handleUploadAvater}
+                    />
                     <p className='text-[#403F3F] font-bold'>Upload Your Avatar</p>
                 </div>
+
+                {/*------------------ Hidden Input field to Upload image ---------------- */}
+                {/* HIU ------> 05  */}
+                <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    {...register("avatar", {
+                        required: "Avatar is required"
+                    })}
+                    ref={(e) => {
+                        register("avatar").ref(e);
+                        imageInputRef.current = e;
+                    }}
+                    onChange={(e) => {
+                        register("avatar").onChange(e);
+                        handleFileChange(e);
+                    }}
+                />
+
+                {errors.avatar && (
+                    <p className="text-red-600 text-sm mb-2 text-center ">{errors.avatar.message}</p>
+                )}
 
                 {/* Name  */}
                 <label className="label font-bold text-[#403F3F] text-[16px] mb-2">Name</label>
@@ -42,10 +109,9 @@ const Register = () => {
                     className="input mb-3 w-full bg-white border-[#94A3B8] py-4 px-4 rounded-lg outline-none"
                     placeholder="Name"
                     name='name'
-                    {...register('name')}
-                    onChange={(e) => setCurrentEmail(e.target.value)}
-                    value={currentEmail}
+                    {...register('name', { required: true })}
                 />
+                {errors.name && <p className='text-red-600 mb-2 text-sm'>Name is Mendatory</p>}
 
                 {/* Email  */}
 
@@ -55,10 +121,10 @@ const Register = () => {
                     className="input mb-3 w-full bg-white border-[#94A3B8] py-4 px-4 rounded-lg outline-none"
                     placeholder="Email"
                     name='email'
-                    {...register('email')}
-                    onChange={(e) => setCurrentEmail(e.target.value)}
-                    value={currentEmail}
+                    {...register('email', { required: true })}
                 />
+                {errors.email && <p className='text-red-600 text-sm mb-2'>Please Enter your Email</p>}
+
                 {/* Password  */}
                 <label className="label font-bold text-[#403F3F] text-[16px] mb-2 ">Password</label>
                 <div className='relative'>
@@ -67,11 +133,34 @@ const Register = () => {
                         className="input mb-3 w-full bg-white border-[#94A3B8] pr-10 py-4 px-4 rounded-lg outline-none"
                         placeholder="Password"
                         name='password'
+                        //---------------------Password Validate-------------------------------- 
+                        {...register("password", {
+                            required: "Password is required",
+                            minLength: {
+                                value: 6,
+                                message: "Password must be at least 6 characters"
+                            },
+                            validate: {
+                                hasUppercase: value =>
+                                    /[A-Z]/.test(value) || "At least one uppercase letter required",
+
+                                hasLowercase: value =>
+                                    /[a-z]/.test(value) || "At least one lowercase letter required",
+
+                                hasNumber: value =>
+                                    /\d/.test(value) || "At least one number required",
+                            }
+                        })}
+
                     />
                     {
                         eye ? <FaEyeSlash onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800'></FaEyeSlash> : <FaEye onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800'></FaEye>
                     }
                 </div>
+                {errors.password && (
+                    <p className="text-red-600 mb-2 text-sm">{errors.password.message}</p>
+                )}
+
                 <div className='mt-3 flex items-center md:flex-row gap-3 justify-between'>
                     <div className='flex items-center gap-2'>
                         <input type="checkbox" className="checkbox " />
