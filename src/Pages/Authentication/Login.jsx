@@ -65,9 +65,9 @@ const Login = () => {
             {   //--------------Forget Password Page ---------------------
                 forget ?
 
-                    <div>
-                        <p className='font-bold text-5xl text-black'>Forgot Password</p>
-                        <p className='text-black py-4'>Enter your email address and we’ll send you a reset link.</p>
+                    <div className='py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
+                        <p className='font-bold text-2xl lg:text-4xl text-black text-center lg:text-left'>Forgot Password</p>
+                        <p className='text-black py-4 text-center lg:text-left'>Enter your email address and we’ll send you a reset link.</p>
                         <label className="label font-bold text-[#403F3F] text-[16px] mb-2">Email</label>
                         <input
                             type="text"
