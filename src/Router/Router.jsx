@@ -8,6 +8,7 @@ import Loader from "../Pages/Shared/Loader/Loader";
 import Register from "../Pages/Authentication/Register";
 import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/Authentication/Login";
+import BeRider from "../Pages/BeRider/BeRider";
 
 export const router = createBrowserRouter([
     {
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
             {index : true , Component : Home} ,
             {path : '/aboutus' , Component : AboutUs} ,
             {path : '/coverage' , Component : Coverage , loader : ()=>fetch('/locations.json').then(res => res.json())} ,
+            {path:'/berider' , Component : BeRider} ,
         ]
     },
     {
@@ -27,7 +29,7 @@ export const router = createBrowserRouter([
         errorElement : <ErrorPage></ErrorPage> ,
         children : [
             {path : '/register' , Component : Register} ,
-            {path : '/login' , Component : Login}
+            {path : '/login' , Component : Login} ,
         ]
     } ,
     {
