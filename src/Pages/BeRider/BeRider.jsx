@@ -3,11 +3,7 @@ import { useForm } from 'react-hook-form';
 import riderModel from '../../assets/Others/agent-pending.png';
 
 const BeRider = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-    } = useForm();
+    const {register,handleSubmit,formState: { errors }} = useForm();
 
     const handleRiderRegistration = (data,e) => {
         console.log(data);

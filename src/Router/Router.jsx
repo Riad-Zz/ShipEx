@@ -9,31 +9,40 @@ import Register from "../Pages/Authentication/Register";
 import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/Authentication/Login";
 import BeRider from "../Pages/BeRider/BeRider";
+import PrivateRoutes from "../Providers/PrivateRoutes/PrivateRoutes";
+import SendParcel from "../Pages/SendParcel/SendParcel";
 
 export const router = createBrowserRouter([
     {
-        path : '/' ,
-        Component : Root ,
-        HydrateFallback : Loader ,
-        errorElement : <ErrorPage></ErrorPage> ,
-        children : [
-            {index : true , Component : Home} ,
-            {path : '/aboutus' , Component : AboutUs} ,
-            {path : '/coverage' , Component : Coverage , loader : ()=>fetch('/locations.json').then(res => res.json())} ,
-            {path:'/berider' , Component : BeRider} ,
+        path: '/',
+        Component: Root,
+        HydrateFallback: Loader,
+        errorElement: <ErrorPage></ErrorPage>,
+        children: [
+            { index: true, Component: Home },
+            { path: '/aboutus', Component: AboutUs },
+            { path: '/coverage', Component: Coverage, loader: () => fetch('/locations.json').then(res => res.json()) },
+            {
+                path: '/berider',
+                element: <PrivateRoutes><BeRider></BeRider> </PrivateRoutes> , 
+            },
+            {
+                path : '/sendparcel' ,
+                Component : SendParcel 
+            }
         ]
     },
     {
-        path : '/' ,
-        Component : AuthLayout ,
-        errorElement : <ErrorPage></ErrorPage> ,
-        children : [
-            {path : '/register' , Component : Register} ,
-            {path : '/login' , Component : Login} ,
+        path: '/',
+        Component: AuthLayout,
+        errorElement: <ErrorPage></ErrorPage>,
+        children: [
+            { path: '/register', Component: Register },
+            { path: '/login', Component: Login },
         ]
-    } ,
+    },
     {
-        path : '*' ,
-        Component : ErrorPage
+        path: '*',
+        Component: ErrorPage
     }
 ])

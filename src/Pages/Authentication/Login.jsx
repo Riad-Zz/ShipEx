@@ -12,7 +12,7 @@ const Login = () => {
     const [eye, setEye] = useState(false);
     const [forget, setforget] = useState(false);
     // const [currentEmail, setCurrentEmail] = useState("");
-    const { emailLogin, user, setUser, googleLogin } = use(AuthContext)
+    const { emailLogin, user, setUser, googleLogin, PasswordReset } = use(AuthContext)
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
     const handleEyeClick = (e) => {
@@ -53,14 +53,23 @@ const Login = () => {
 
     // ------------------Handle Forget Password -------------------
     const handleForgetPassword = () => {
-        setforget(!forget);
+        setforget(!forget); 
+    }
+
+    const paswordResetEmail = ()=> {
+        PasswordReset().then(() => {
+
+        })
+            .catch((error) => {
+                // const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorMessage);
+            });
     }
 
     return (
         <div className='flex mt-12 items-center justify-center p-2'>
-            {/* <div className='absolute top-0'>
-                <Logo></Logo>
-            </div> */}
+
 
             {   //--------------Forget Password Page ---------------------
                 forget ?
@@ -75,7 +84,7 @@ const Login = () => {
                             placeholder="Email"
                             name='name'
                         />
-                        <button type="submit" className="btn mt-2 mb-3 bg-primary transition font-bold border-none text-black w-full py-3 rounded-lg">
+                        <button onClick={paswordResetEmail} type="submit" className="btn mt-2 mb-3 bg-primary transition font-bold border-none text-black w-full py-3 rounded-lg">
                             Send
                         </button>
                         <p className='text-[#706F6F] mt-1'>
@@ -85,7 +94,8 @@ const Login = () => {
                             </span>
                         </p>
 
-                    </div> :
+                    </div> 
+                     :
 
                     <form onSubmit={handleSubmit(handleEmailLogin)} className='w-full max-w-md py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
                         <p className='text-black text-center text-3xl md:text-4xl 2xl:text-left font-bold'>

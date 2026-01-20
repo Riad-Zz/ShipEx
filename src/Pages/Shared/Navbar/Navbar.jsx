@@ -18,6 +18,7 @@ const Navbar = () => {
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/coverage'}>Coverage</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/aboutus'}>About Us</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/pricing'}>Pricing</NavLink></li>
+        <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/sendparcel'}>Send a Parcel</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/berider'}>Be a Rider</NavLink></li>
     </>
 
