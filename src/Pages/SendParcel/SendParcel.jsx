@@ -28,17 +28,17 @@ const SendParcel = () => {
                         <input type="radio" {...register('parceltype')} value='Non-Document' className="radio checked:bg-[#0AB010] checked:text-white checked:border-[#0AB010]" />Non-Document</label>
                 </div>
 
-                {/* <button type='submit' className='btn'>Submit</button> */}
-                <div className='flex gap-5 mt-3'>
+                
+                <div className='flex flex-col md:flex-row gap-1 md:gap-5 mt-3'>
                     <div className='flex-1'>
                         <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Parcel Name</label>
                         <input
                             type="text"
                             placeholder="Parcel Name"
-                            className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
+                            className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                             {...register('parcelname', { required: true })}
                         />
-                        {errors.name && (
+                        {errors.parcelname && (
                             <p className="text-red-600 text-sm mt-1">Please enter your Parcel Name</p>
                         )}
                     </div>
@@ -47,16 +47,18 @@ const SendParcel = () => {
                         <input
                             type="text"
                             placeholder="Parcel Weight (KG)"
-                            className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
-                            {...register('parcelname', { required: true })}
+                            className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
+                            {...register('parcelweight', { required: true })}
                         />
-                        {errors.name && (
-                            <p className="text-red-600 text-sm mt-1">Please enter your Parcel Name</p>
+                        {errors.parcelweight && (
+                            <p className="text-red-600 text-sm mt-1">Please enter your Parcel Weight</p>
                         )}
                     </div>
                 </div>
 
                 <hr className='border-t border-[#0000001a] my-10' />
+                {/* <button type='submit' className='btn'>Submit</button> */}
+                
             </form>
 
         </div>

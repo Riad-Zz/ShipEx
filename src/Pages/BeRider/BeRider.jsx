@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import riderModel from '../../assets/Others/agent-pending.png';
 
 const BeRider = () => {
-    const {register,handleSubmit,formState: { errors }} = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [ageError,setAgeError] = useState(false) ;
+    const regions = [
+        'Dhaka',
+        'Chattogram',
+        'Rajshahi',
+        'Rangpur',
+        'Khulna',
+        'Barishal',
+        'Sylhet',
+        'Mymensingh'
+    ];
 
-    const handleRiderRegistration = (data,e) => {
-        console.log(data);
-        e.target.reset() ; 
+    const handleRiderRegistration = (data, e) => {
+        console.log(data); 
+        if(data.age != 'undefined' && data.age < 18) setAgeError(true) ;
+        e.target.reset();
     };
 
     return (
@@ -35,7 +47,7 @@ const BeRider = () => {
                                 <input
                                     type="text"
                                     placeholder="Your Name"
-                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
+                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('name', { required: true })}
                                 />
                                 {errors.name && (
@@ -48,23 +60,26 @@ const BeRider = () => {
                                 <input
                                     type="number"
                                     placeholder="Your Age"
-                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
+                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('age', { required: true })}
                                 />
                                 {errors.age && (
                                     <p className="text-red-600 text-sm mt-1">Please enter your age</p>
                                 )}
+                                {
+                                    ageError ? <p className="text-red-600 text-sm mt-1">You should be 18 or above</p> : ""
+                                }
                             </div>
                         </div>
 
                         {/* INFO 02 */}
                         <div className="mt-2 flex flex-col md:flex-row gap-3">
                             <div className="w-full md:w-1/2">
-                                <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Your Email</label>
+                                <label className="label font-bold text-[14px] mb-1 text-[#0F172A] ">Your Email</label>
                                 <input
                                     type="email"
                                     placeholder="Your Email"
-                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
+                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('email', { required: true })}
                                 />
                                 {errors.email && (
@@ -74,26 +89,30 @@ const BeRider = () => {
 
                             <div className="w-full md:w-1/2">
                                 <label className="label font-bold text-[14px] text-[#0F172A] mb-1">Your Region</label>
-                                <input
-                                    type="text"
-                                    placeholder="Your Region"
-                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
-                                    {...register('region', { required: true })}
-                                />
+                                
+                                <select className="select border border-[#94A3B8] outline-none" {...register('region', { required: true })}>
+                                    
+                                    <option disabled={true}>Select your Region</option>
+                                    
+                                    {
+                                        regions.map((reg,index)=><option key={index}>{reg}</option> )
+                                    }
+                                </select>
                                 {errors.region && (
                                     <p className="text-red-600 text-sm mt-1">Please enter your region</p>
                                 )}
+                                
                             </div>
                         </div>
 
                         {/* INFO 03 */}
                         <div className="mt-2 flex flex-col md:flex-row gap-3">
                             <div className="w-full md:w-1/2">
-                                <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">NID No</label>
+                                <label className="label font-bold text-[14px] mb-1 text-[#0F172A] outline-none">NID No</label>
                                 <input
                                     type="text"
                                     placeholder="NID"
-                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
+                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('nid', { required: true })}
                                 />
                                 {errors.nid && (
@@ -106,7 +125,7 @@ const BeRider = () => {
                                 <input
                                     type="text"
                                     placeholder="Contact"
-                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
+                                    className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('contact', { required: true })}
                                 />
                                 {errors.contact && (
@@ -120,12 +139,17 @@ const BeRider = () => {
                             <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">
                                 Which warehouse do you want to work?
                             </label>
-                            <input
+                            {/* <input
                                 type="text"
                                 placeholder="Select a warehouse"
-                                className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8]"
-                                {...register('warehouse', { required: true })}
-                            />
+                                className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
+                                
+                            /> */}
+                            <select className='select w-full' {...register('warehouse', { required: true })}>
+                                <option disabled = {true}>Select Wirehouse</option> 
+                                <option >Dhaka</option> 
+                            </select> 
+                            
                             {errors.warehouse && (
                                 <p className="text-red-600 text-sm mt-1">Please select a warehouse</p>
                             )}
