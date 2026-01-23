@@ -27,32 +27,51 @@
 
 /*------------------To fix Overwrite of active when hovered--------------------*/
 .midLinks a.active:hover {
-  color: inherit;        
-  border-bottom: none;   
+  color: inherit;
+  border-bottom: none;
 }
 
-
 /*-----------------hamburger ACtive----------------------*/
-.hamburger .active{
+.hamburger .active {
   font-weight: 700;
-  color: #9AC43F;
-  border-bottom: 1px solid #9AC43F;
+  color: #9ac43f;
+  border-bottom: 1px solid #9ac43f;
 }
 
 /*-------------------NavLinks Hover-----------------------------*/
 .midLinks a:hover {
   font-weight: 700;
-  color: #9AC43F;
+  color: #9ac43f;
   /* text-decoration: underline;  */
-  border-bottom: 1px solid #9AC43F;
+  border-bottom: 1px solid #9ac43f;
 }
 
-.footerLink a:hover{
+.footerLink a:hover {
   font-weight: 700;
-  color: #9AC43F;
+  color: #9ac43f;
 }
 
+.swal-confirm-btn {
+  background-color: #16a34a; /* green */
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600; 
+  margin-right: 10px; 
+  cursor: pointer;
+}
 
+.swal-confirm-btn:hover {
+  background-color: #15803d;
+}
+
+.swal-cancel-btn {
+  background-color: #e5e7eb;
+  color: #0f172a;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
 /*---------------------Theme Customization------------------------*/
 @plugin "daisyui/theme" {

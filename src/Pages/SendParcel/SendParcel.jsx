@@ -2,6 +2,7 @@ import { all } from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
+import Swal from 'sweetalert2';
 
 const SendParcel = () => {
     const allLocation = useLoaderData();
@@ -13,9 +14,79 @@ const SendParcel = () => {
     const { register, watch, handleSubmit, formState: { errors } } = useForm();
 
     // Handle parecel form 
-    const handleParcelForm = (data , e) => {
-        console.log(data); 
-        e.target.reset() ;
+    const handleParcelForm = (data, e) => {
+        //Sweet Aleart for sent parcel order ""  
+
+        let chargeAmount ; // tk (static for now) 
+        console.log(data);
+
+        //IF document 
+
+        if (data.parceltype == 'Document' && data.SenderDistrict == data.receiverDistrict){
+            chargeAmount = 60 
+        }else chargeAmount = 80 ;
+
+        if(data.parceltype == 'Non-Document' ){
+            if(data.parcelweight <=3){
+                data.SenderDistrict == data.receiverDistrict ? chargeAmount = 110 : chargeAmount = 150 ;
+            }else{
+                data.SenderDistrict == data.receiverDistrict ? chargeAmount =110+(data.parcelweight - 3) * 40 : chargeAmount =(150+(data.parcelweight - 3) * 40 ) + 40 ; 
+            }
+        }
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "swal-confirm-btn",
+                    cancelButton: "swal-cancel-btn"
+                },
+                buttonsStyling: false
+            });
+
+        swalWithBootstrapButtons.fire({
+            title: "Confirm Parcel Booking?",
+            html: `
+        <p style="color:#0f172a; margin-bottom:6px;">
+            You are about to place this parcel.
+        </p>
+        <p style="color:#16a34a; font-weight:600;">
+            You will be charged <span style="font-size:18px;">৳${chargeAmount}</span>
+        </p>
+    `,
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Confirm Parcel",
+            cancelButtonText: "No, Go Back",
+            reverseButtons: false
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                // 👉 DO YOUR REAL ACTION HERE
+                // console.log("Parcel confirmed", data);
+
+                swalWithBootstrapButtons.fire({
+                    title: "Parcel Confirmed 🎉",
+                    html: `
+                <p style="color:#15803d;">
+                    Your parcel has been successfully booked.
+                </p>
+                <p style="color:#0f172a;">
+                    Amount Paid: <strong>৳${chargeAmount}</strong>
+                </p>
+            `,
+                    icon: "success",
+                    confirmButtonText: "Got it!"
+                });
+
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                swalWithBootstrapButtons.fire({
+                    title: "Booking Cancelled",
+                    text: "No worries! You can review your parcel details again.",
+                    icon: "error",
+                    confirmButtonText: "Got it!"
+                });
+            }
+        });
+
     }
 
     // Get Distrcit by Region 
@@ -55,7 +126,7 @@ const SendParcel = () => {
                     {/* Parcel Type  */}
 
                     <label className='mr-10 flex items-center gap-2'>
-                        <input type="radio" {...register('parceltype')} value='Document' className="radio checked:bg-[#0AB010] checked:text-white checked:border-[#0AB010]" /> Document</label>
+                        <input defaultChecked type="radio" {...register('parceltype')} value='Document' className="radio checked:bg-[#0AB010]  checked:text-white checked:border-[#0AB010]" /> Document</label>
 
                     <label className='mr-10 flex items-center gap-2'>
                         <input type="radio" {...register('parceltype')} value='Non-Document' className="radio checked:bg-[#0AB010] checked:text-white checked:border-[#0AB010]" />Non-Document</label>
@@ -95,7 +166,7 @@ const SendParcel = () => {
                 {/*================= Parent div of sender and receiver ==================== */}
                 <div className='flex flex-col md:flex-row justify-between gap-5'>
 
-                    {/* ================= Receiver Info ================= */}
+                    {/* ================= Sender Info ================= */}
                     <div className='flex-1'>
                         <p className='text-secondary font-extrabold text-lg mb-2'>Sender Details</p>
 
@@ -163,7 +234,7 @@ const SendParcel = () => {
                                 <select className='select border border-[#94A3B8] outline-none' {...register('SenderRegion', { required: true })} >
                                     <option disabled={true}>Select your Region</option>
                                     {
-                                        allRegion.map((reg, index) => <option key={index}>{reg}</option>)
+                                        allRegion.map((reg, index) => <option key={index} value={reg}>{reg}</option>)
                                     }
                                 </select>
                                 {errors.SenderRegion && (
@@ -176,7 +247,7 @@ const SendParcel = () => {
                                 <select className='select border border-[#94A3B8] outline-none' {...register('SenderDistrict', { required: true })} >
                                     <option disabled={true}>Select your District</option>
                                     {
-                                        districtByRegion(senderRegion).map((reg, index) => <option key={index}>{reg}</option>)
+                                        districtByRegion(senderRegion).map((reg, index) => <option key={index} value={reg}>{reg}</option>)
                                     }
                                 </select>
                                 {errors.SenderDistrict && (
@@ -193,7 +264,7 @@ const SendParcel = () => {
                             <select className='select w-full border border-[#94A3B8] outline-none' {...register('senderWirehouse', { required: true })}>
                                 <option disabled={true}>Select Wirehouse</option>
                                 {
-                                    wireHouseByDistrict(senderDistrict).map((reg, index) => <option key={index}>{reg}</option>)
+                                    wireHouseByDistrict(senderDistrict).map((reg, index) => <option key={index} value={reg}>{reg}</option>)
                                 }
                             </select>
 
@@ -291,7 +362,7 @@ const SendParcel = () => {
                                 >
                                     <option disabled={true}>Select your Region</option>
                                     {allRegion.map((reg, index) => (
-                                        <option key={index}>{reg}</option>
+                                        <option key={index} value={reg}>{reg}</option>
                                     ))}
                                 </select>
                                 {errors.receiverRegion && (
@@ -309,7 +380,7 @@ const SendParcel = () => {
                                 >
                                     <option disabled={true}>Select your District</option>
                                     {districtByRegion(receiverRegion).map((reg, index) => (
-                                        <option key={index}>{reg}</option>
+                                        <option key={index} value={reg}>{reg}</option>
                                     ))}
                                 </select>
                                 {errors.receiverDistrict && (
@@ -329,7 +400,7 @@ const SendParcel = () => {
                             >
                                 <option disabled={true}>Select Wirehouse</option>
                                 {wireHouseByDistrict(receiverDistrict).map((reg, index) => (
-                                    <option key={index}>{reg}</option>
+                                    <option key={index} value={reg}>{reg}</option>
                                 ))}
                             </select>
 

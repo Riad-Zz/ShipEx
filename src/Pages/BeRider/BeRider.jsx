@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import riderModel from '../../assets/Others/agent-pending.png';
 import { useLoaderData } from 'react-router';
 
 const BeRider = () => {
-    const { register, watch, handleSubmit, formState: { errors } } = useForm();
+    const { register,control ,watch ,handleSubmit, formState: { errors } } = useForm();
     const [ageError, setAgeError] = useState(false);
 
     const allLocation = useLoaderData();
@@ -35,8 +35,8 @@ const BeRider = () => {
         return wireHosue;
     };
 
-    const selectedRegion = watch('region');
-    const selectedDistrict = watch('district');
+    const selectedRegion = useWatch({control, name:'region'});
+    const selectedDistrict = useWatch({control,name:'district'});
 
     return (
         <div className="max-w-[95%] xl:max-w-7xl mx-auto bg-white mt-8 p-8 py-14 lg:p-20 rounded-2xl mb-20">
@@ -112,10 +112,10 @@ const BeRider = () => {
 
                                 <select className="select border border-[#94A3B8] outline-none" {...register('region', { required: true })}>
 
-                                    <option disabled={true}>Select your Region</option>
+                                    <option disabled={true} value={'Select Your Region'}>Select Your Region</option>
 
                                     {
-                                        allRegion.map((reg, index) => <option key={index}>{reg}</option>)
+                                        allRegion.map((reg, index) => <option key={index} value={reg}>{reg}</option>)
                                     }
                                 </select>
                                 {errors.region && (
@@ -162,7 +162,7 @@ const BeRider = () => {
                                 <select className='select border border-[#94A3B8] outline-none' {...register('district', { required: true })} >
                                     <option disabled={true}>Select your District</option>
                                     {
-                                        districtByRegion(selectedRegion).map((reg, index) => <option key={index}>{reg}</option>)
+                                        districtByRegion(selectedRegion).map((reg, index) => <option key={index} value={reg}>{reg}</option>)
                                     }
                                 </select>
                                 {errors.district && (
@@ -175,7 +175,7 @@ const BeRider = () => {
                                 <select className='select border border-[#94A3B8] outline-none' {...register('wirehouse', { required: true })} >
                                     <option disabled={true}>Select your Wirehouse</option>
                                     {
-                                        wirehouseByDistrict(selectedDistrict).map((reg, index) => <option key={index}>{reg}</option>)
+                                        wirehouseByDistrict(selectedDistrict).map((reg, index) => <option key={index} value={reg}>{reg}</option>)
                                     }
                                 </select>
                                 {errors.wirehouse && (
