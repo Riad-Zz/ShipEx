@@ -1,26 +1,42 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import riderModel from '../../assets/Others/agent-pending.png';
+import { useLoaderData } from 'react-router';
 
 const BeRider = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [ageError,setAgeError] = useState(false) ;
-    const regions = [
-        'Dhaka',
-        'Chattogram',
-        'Rajshahi',
-        'Rangpur',
-        'Khulna',
-        'Barishal',
-        'Sylhet',
-        'Mymensingh'
-    ];
+    const { register, watch, handleSubmit, formState: { errors } } = useForm();
+    const [ageError, setAgeError] = useState(false);
 
+    const allLocation = useLoaderData();
+    // console.log(allRegion) ; 
+    const allRegionDup = allLocation.map(reg => reg.region);
+    const allRegion = [...new Set(allRegionDup)];
+    // console.log(allRegion);
+
+    // Handle Rider Registration 
     const handleRiderRegistration = (data, e) => {
-        console.log(data); 
-        if(data.age != 'undefined' && data.age < 18) setAgeError(true) ;
+        console.log(data);
+        // if (data.age != 'undefined' && data.age < 18) errors.age = true;
         e.target.reset();
     };
+
+    // Get District based on Currently Selected Region 
+
+    const districtByRegion = (region) => {
+        const allRegionData = allLocation.filter(loc => loc.region === region);
+        const district = allRegionData.map(reg => reg.district);
+        return district;
+    };
+
+    // Get Wirehoue based on Currently Selected District 
+    const wirehouseByDistrict = (district) => {
+        const allDistrictData = allLocation.filter(loc => loc.district === district);
+        const wireHosue = allDistrictData.flatMap(dis => dis.covered_area);
+        return wireHosue;
+    };
+
+    const selectedRegion = watch('region');
+    const selectedDistrict = watch('district');
 
     return (
         <div className="max-w-[95%] xl:max-w-7xl mx-auto bg-white mt-8 p-8 py-14 lg:p-20 rounded-2xl mb-20">
@@ -61,14 +77,18 @@ const BeRider = () => {
                                     type="number"
                                     placeholder="Your Age"
                                     className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
-                                    {...register('age', { required: true })}
+                                    {...register('age', {
+                                        required: 'Please enter your age',
+                                        min: {
+                                            value: 18,
+                                            message: 'You should be 18 or above',
+                                        },
+                                    })}
                                 />
                                 {errors.age && (
-                                    <p className="text-red-600 text-sm mt-1">Please enter your age</p>
+                                    <p className="text-red-600 text-sm mt-1">{errors.age.message}</p>
                                 )}
-                                {
-                                    ageError ? <p className="text-red-600 text-sm mt-1">You should be 18 or above</p> : ""
-                                }
+
                             </div>
                         </div>
 
@@ -89,19 +109,19 @@ const BeRider = () => {
 
                             <div className="w-full md:w-1/2">
                                 <label className="label font-bold text-[14px] text-[#0F172A] mb-1">Your Region</label>
-                                
+
                                 <select className="select border border-[#94A3B8] outline-none" {...register('region', { required: true })}>
-                                    
+
                                     <option disabled={true}>Select your Region</option>
-                                    
+
                                     {
-                                        regions.map((reg,index)=><option key={index}>{reg}</option> )
+                                        allRegion.map((reg, index) => <option key={index}>{reg}</option>)
                                     }
                                 </select>
                                 {errors.region && (
                                     <p className="text-red-600 text-sm mt-1">Please enter your region</p>
                                 )}
-                                
+
                             </div>
                         </div>
 
@@ -135,24 +155,33 @@ const BeRider = () => {
                         </div>
 
                         {/* INFO 04 */}
-                        <div className="mt-2">
-                            <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">
-                                Which warehouse do you want to work?
-                            </label>
-                            {/* <input
-                                type="text"
-                                placeholder="Select a warehouse"
-                                className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
-                                
-                            /> */}
-                            <select className='select w-full' {...register('warehouse', { required: true })}>
-                                <option disabled = {true}>Select Wirehouse</option> 
-                                <option >Dhaka</option> 
-                            </select> 
-                            
-                            {errors.warehouse && (
-                                <p className="text-red-600 text-sm mt-1">Please select a warehouse</p>
-                            )}
+                        <div className='flex gap-2 mt-2'>
+
+                            <div className='flex-1'>
+                                <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Your District</label>
+                                <select className='select border border-[#94A3B8] outline-none' {...register('district', { required: true })} >
+                                    <option disabled={true}>Select your District</option>
+                                    {
+                                        districtByRegion(selectedRegion).map((reg, index) => <option key={index}>{reg}</option>)
+                                    }
+                                </select>
+                                {errors.district && (
+                                    <p className="text-red-600 text-sm mt-1">Select your District</p>
+                                )}
+                            </div>
+
+                            <div className='flex-1'>
+                                <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Which wire-house you want to work?</label>
+                                <select className='select border border-[#94A3B8] outline-none' {...register('wirehouse', { required: true })} >
+                                    <option disabled={true}>Select your Wirehouse</option>
+                                    {
+                                        wirehouseByDistrict(selectedDistrict).map((reg, index) => <option key={index}>{reg}</option>)
+                                    }
+                                </select>
+                                {errors.wirehouse && (
+                                    <p className="text-red-600 text-sm mt-1">Select your District</p>
+                                )}
+                            </div>
                         </div>
 
                         {/* SUBMIT */}

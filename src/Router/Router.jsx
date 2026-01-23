@@ -25,6 +25,7 @@ export const router = createBrowserRouter([
             {
                 path: '/berider',
                 element: <PrivateRoutes><BeRider></BeRider> </PrivateRoutes> , 
+                loader : () => fetch('/locations.json') 
             },
             {
                 path : '/sendparcel' ,

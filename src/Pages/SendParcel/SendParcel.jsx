@@ -13,8 +13,9 @@ const SendParcel = () => {
     const { register, watch, handleSubmit, formState: { errors } } = useForm();
 
     // Handle parecel form 
-    const handleParcelForm = (data) => {
-        console.log(data);
+    const handleParcelForm = (data , e) => {
+        console.log(data); 
+        e.target.reset() ;
     }
 
     // Get Distrcit by Region 
@@ -51,6 +52,8 @@ const SendParcel = () => {
 
             <form onSubmit={handleSubmit(handleParcelForm)}>
                 <div className='flex mt-6'>
+                    {/* Parcel Type  */}
+
                     <label className='mr-10 flex items-center gap-2'>
                         <input type="radio" {...register('parceltype')} value='Document' className="radio checked:bg-[#0AB010] checked:text-white checked:border-[#0AB010]" /> Document</label>
 
@@ -58,6 +61,7 @@ const SendParcel = () => {
                         <input type="radio" {...register('parceltype')} value='Non-Document' className="radio checked:bg-[#0AB010] checked:text-white checked:border-[#0AB010]" />Non-Document</label>
                 </div>
 
+                {/* Parcel Name and Weight  */}
 
                 <div className='flex flex-col md:flex-row gap-1 md:gap-5 mt-3'>
                     <div className='flex-1'>
@@ -208,8 +212,6 @@ const SendParcel = () => {
                     {/* ================= Receiver Info ================= */}
                     <div className='flex-1'>
                         <p className='text-secondary font-extrabold text-lg mb-2'>Receiver Details</p>
-
-
 
                         {/* Info box 01 */}
                         <div className='flex gap-2'>
