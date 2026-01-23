@@ -28,7 +28,8 @@ export const router = createBrowserRouter([
             },
             {
                 path : '/sendparcel' ,
-                Component : SendParcel 
+                Component : SendParcel ,
+                loader :()=> fetch('/locations.json')
             }
         ]
     },
