@@ -13,15 +13,12 @@ const SendParcel = () => {
 
     const { register, watch, handleSubmit, formState: { errors } } = useForm();
 
-    // Handle parecel form 
-    const handleParcelForm = (data, e) => {
-        //Sweet Aleart for sent parcel order ""  
-
-        let chargeAmount ; // tk (static for now) 
+    // ====================== Handle parecel form =================================
+    const handleParcelForm = (data, e) => {    
+        let chargeAmount ; 
         console.log(data);
 
-        //IF document 
-
+        // =========== Parcel Pricing Calculation ======================== 
         if (data.parceltype == 'Document' && data.SenderDistrict == data.receiverDistrict){
             chargeAmount = 60 
         }else chargeAmount = 80 ;
@@ -33,6 +30,8 @@ const SendParcel = () => {
                 data.SenderDistrict == data.receiverDistrict ? chargeAmount =110+(data.parcelweight - 3) * 40 : chargeAmount =(150+(data.parcelweight - 3) * 40 ) + 40 ; 
             }
         }
+
+    // ==================== Sweet Aleart for sent parcel order ===================
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: "swal-confirm-btn",
@@ -60,7 +59,6 @@ const SendParcel = () => {
 
             if (result.isConfirmed) {
                 // 👉 DO YOUR REAL ACTION HERE
-                // console.log("Parcel confirmed", data);
 
                 swalWithBootstrapButtons.fire({
                     title: "Parcel Confirmed 🎉",
@@ -89,14 +87,14 @@ const SendParcel = () => {
 
     }
 
-    // Get Distrcit by Region 
+    // ============= Get Distrcit by Region ========================
     const districtByRegion = (region) => {
         const District = allLocation.filter((loc) => loc.region === region);
         const allDistrict = District.map(d => d.district);
         return allDistrict;
     }
 
-    // Get Wire Houses by district 
+    // ===================== Get Wire Houses by district ======================
     const wireHouseByDistrict = (district) => {
         const Cities = allLocation.filter(loc => loc.district === district);
         const allWireHouses = Cities.flatMap(wire => wire.covered_area)
@@ -107,9 +105,7 @@ const SendParcel = () => {
     const senderDistrict = watch('SenderDistrict');
     const receiverRegion = watch('receiverRegion');
     const receiverDistrict = watch('receiverDistrict');
-    // console.log(senderDistrict) ;
-    // const a = wireHouseByDistrict("Dhaka") ; 
-    // console.log(a) ;
+
 
     return (
         <div className='max-w-[95%] xl:max-w-7xl mx-auto bg-white mt-8 p-8 py-14 lg:p-20 rounded-2xl mb-20'>

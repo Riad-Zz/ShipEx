@@ -42,8 +42,7 @@ const BeRider = () => {
         <div className="max-w-[95%] xl:max-w-7xl mx-auto bg-white mt-8 p-8 py-14 lg:p-20 rounded-2xl mb-20">
             <p className="text-5xl text-[#03373D] font-bold">Be a Rider</p>
             <p className="max-w-xl mt-2">
-                Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle.
-                From personal packages to business shipments — we deliver on time, every time.
+                Deliver parcels across the city, earn on your own schedule, and be part of a fast-growing, reliable delivery network trusted by thousands.
             </p>
 
             <hr className="border-t border-[#0000001a] my-10" />

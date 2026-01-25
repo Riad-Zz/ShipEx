@@ -11,6 +11,7 @@ import Login from "../Pages/Authentication/Login";
 import BeRider from "../Pages/BeRider/BeRider";
 import PrivateRoutes from "../Providers/PrivateRoutes/PrivateRoutes";
 import SendParcel from "../Pages/SendParcel/SendParcel";
+import Pricing from "../Pages/Pricing/Pricing";
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,11 @@ export const router = createBrowserRouter([
             {
                 path : '/sendparcel' ,
                 Component : SendParcel ,
+                loader :()=> fetch('/locations.json')
+            } ,
+            {
+                path : '/pricing' ,
+                Component : Pricing ,
                 loader :()=> fetch('/locations.json')
             }
         ]
