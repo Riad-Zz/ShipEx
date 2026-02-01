@@ -1,17 +1,18 @@
 import { all } from 'axios';
-import React from 'react';
+import React, { use } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
 import Swal from 'sweetalert2';
+import useAxios from '../../Hooks/Axios/useAxios';
+import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
 
 const SendParcel = () => {
     const allLocation = useLoaderData();
-    // console.log(allLocation) ;  
     const allRegionDup = allLocation.map(loc => loc.region);
     const allRegion = [...new Set(allRegionDup)];
-    // console.log(allRegion) ; 
-
     const { register, watch, handleSubmit, formState: { errors } } = useForm();
+    const axiosInstance = useAxios() ;
+    const {user} = use(AuthContext) ;
 
     // ====================== Handle parecel form =================================
     const handleParcelForm = (data, e) => {    
@@ -73,6 +74,14 @@ const SendParcel = () => {
                     icon: "success",
                     confirmButtonText: "Got it!"
                 });
+
+                // ------------- Send parcel through post api ------------------
+                axiosInstance.post('/parcel',data) .then(res =>{
+                    console.log(res.data) ;
+                })
+
+                
+                e.target.reset() ;
 
             } else if (result.dismiss === Swal.DismissReason.cancel) {
 
@@ -172,6 +181,7 @@ const SendParcel = () => {
                                 <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Sender Name</label>
                                 <input
                                     type="text"
+                                    defaultValue={user?.displayName} 
                                     placeholder="Sender Name"
                                     className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('senderName', { required: true })}
@@ -184,6 +194,7 @@ const SendParcel = () => {
                                 <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Sender Email</label>
                                 <input
                                     type="email"
+                                    defaultValue={user?.email}
                                     placeholder="Sender Email"
                                     className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('senderEmail', { required: true })}

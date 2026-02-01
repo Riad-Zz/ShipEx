@@ -14,7 +14,7 @@ const Navbar = () => {
 
     const alllinks = <>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/'}>Home</NavLink></li>
-        <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/services'}>Services</NavLink></li>
+        {/* <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/services'}>Services</NavLink></li> */}
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/coverage'}>Coverage</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/aboutus'}>About Us</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/pricing'}>Pricing</NavLink></li>
@@ -133,7 +133,7 @@ const Navbar = () => {
                                     <button className='btn-base border border-[#DADADA] py-3 px-4 md:px-6 hover:bg-primary transition-all hover:text-black!'>Sign In</button>
                                 </Link>
                                 {/* be a Rider Button  */}
-                                <Link>
+                                <Link to={'/berider'}>
                                     <button className='hidden md:block btn-base py-3 text-black! px-6 bg-primary border-none'>Be a Rider</button>
                                 </Link>
                             </div>)

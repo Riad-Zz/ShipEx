@@ -62,8 +62,7 @@ const Pricing = () => {
     const senderRegion = watch('senderRegion');
     const receiverRegion = watch('receiverRegion');
 
-    // console.log(senderRegion);
-    // console.log(receiverRegion);
+
 
     return (
         <div className='max-w-11/12 xl:max-w-7xl mx-auto'>
