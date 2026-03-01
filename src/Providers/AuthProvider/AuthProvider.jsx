@@ -30,7 +30,8 @@ const AuthProvider = ({ children }) => {
     //------------------------Update a User Profile-------------------------
     const updateUser = (updatedInfo) => {
         return updateProfile(auth.currentUser , updatedInfo) ;
-    } 
+    }
+    
 
     //------------------------Observer------------------------------ 
     useEffect(()=>{
@@ -65,12 +66,13 @@ const AuthProvider = ({ children }) => {
         PasswordReset
     }
 
-
     return (
         <div>
             <AuthContext value={AuthData}>{children}</AuthContext>
         </div>
     );
+
+
 };
 
 export default AuthProvider;

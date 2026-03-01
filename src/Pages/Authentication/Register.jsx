@@ -114,6 +114,8 @@ const Register = () => {
                 </div>
 
                 {/*------------------ Hidden Input field to Upload image ---------------- */}
+
+                
                 {/* HIU ------> 05  */}
                 <input
                     type="file"

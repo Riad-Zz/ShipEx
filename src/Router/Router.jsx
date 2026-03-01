@@ -12,6 +12,8 @@ import BeRider from "../Pages/BeRider/BeRider";
 import PrivateRoutes from "../Providers/PrivateRoutes/PrivateRoutes";
 import SendParcel from "../Pages/SendParcel/SendParcel";
 import Pricing from "../Pages/Pricing/Pricing";
+import Dashboard from "../Layouts/Dashboard";
+import Overview from "../Pages/DashboardPages/Overview/Overview";
 
 export const router = createBrowserRouter([
     {
@@ -52,5 +54,13 @@ export const router = createBrowserRouter([
     {
         path: '*',
         Component: ErrorPage
+    },
+    {
+        path : '/' ,
+        element : <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes> ,
+        errorElement : <ErrorPage></ErrorPage>,
+        children : [
+            {path :'/dashboard' , Component:Overview}
+        ]
     }
 ])

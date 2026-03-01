@@ -179,6 +179,7 @@ const Pricing = () => {
                             </div>
 
                             {/* Submit and Reset Button  */}
+                            
                             <div className='flex gap-2'>
                                 {/* Reset */}
                                 <div className='flex-1'>
@@ -200,9 +201,11 @@ const Pricing = () => {
 
                         </div>
                         {/* Cost Div  */}
+
                         <div className='flex-1'>
                             <p className='text-7xl md:text-9xl text-black font-bold'>৳{charge}</p>
                         </div>
+
                     </div>
 
 

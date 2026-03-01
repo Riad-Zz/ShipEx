@@ -59,7 +59,7 @@ const SendParcel = () => {
         }).then((result) => {
 
             if (result.isConfirmed) {
-                // 👉 DO YOUR REAL ACTION HERE
+               
 
                 swalWithBootstrapButtons.fire({
                     title: "Parcel Confirmed 🎉",
