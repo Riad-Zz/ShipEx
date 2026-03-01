@@ -82,3 +82,18 @@
   --color-third: #acc857;
   --color-base-content: #606060;
 }
+
+.dashlink a.active {
+  background: #caeb66;
+  padding: 11px 15px;
+  font-weight: 700;
+}
+
+.dashlink a:hover {
+  font-weight: 700;
+  padding: 11px 15px;
+
+  /* text-decoration: underline;  */
+  /* border-bottom: 1px solid #9ac43f; */
+}
+
