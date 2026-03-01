@@ -141,8 +141,8 @@ const Navbar = () => {
 
 
                     {/* Random Icon  */}
-                    <Link>
-                        <button className='bg-black rounded-full p-2 hidden md:block'><MdArrowOutward className='text-3xl text-primary font-bold'></MdArrowOutward></button>
+                    <Link to={'/dashboard' }>
+                        <button className='bg-black cursor-pointer rounded-full p-2 hidden md:block'><MdArrowOutward className='text-3xl text-primary font-bold'></MdArrowOutward></button>
                     </Link>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import React, { use } from 'react';
-import { NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
 import Logo from '../Components/Logo/Logo';
 import logoo from '../assets/Others/logo.png';
 import { AuthContext } from '../Providers/AuthProvider/AuthProvider';
@@ -11,6 +11,9 @@ import { BsBagDash } from "react-icons/bs";
 import { MdOutlinePayments } from "react-icons/md";
 import { GoPeople } from "react-icons/go";
 import { TbReportAnalytics } from "react-icons/tb";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { GrContact } from "react-icons/gr";
+import { CiLogout } from "react-icons/ci";
 
 const Dashboard = () => {
     const { user } = use(AuthContext)
@@ -18,11 +21,11 @@ const Dashboard = () => {
         <div className="drawer md:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content">
-                {/* Navbar */}
+                {/*------------------- Navbar -------------------------------*/}
                 <nav className="navbar flex justify-between w-full bg-white">
                     <div>
                         <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
-                            {/* Sidebar toggle icon */}
+                            {/*-----------------------Sidebar toggle icon---------------------*/}
                             <GoSidebarCollapse className='text-2xl text-black font-bold'></GoSidebarCollapse>
                         </label>
                     </div>
@@ -45,7 +48,7 @@ const Dashboard = () => {
                     </div>
 
                 </nav>
-                {/* Page content here */}
+                {/*----------------------Page content here-----------------------*/}
                 <div className='bg-[#EAECED] h-screen'>
                     <Outlet></Outlet>
                 </div>
@@ -55,28 +58,28 @@ const Dashboard = () => {
             <div className="drawer-side is-drawer-close:overflow-visible">
                 <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
                 <div className="flex min-h-full flex-col items-start bg-white is-drawer-close:w-14 is-drawer-open:w-64">
-                    {/* Sidebar content here */}
+                    {/*------------------Sidebar content here-----------------------*/}
                     <ul className="menu w-full grow dashlink">
                         {/* ------------ Logo -> when Extended ------------------*/}
-                        <div className='pl-3 p-1 w-full is-drawer-close:hidden'>
+                        <Link to={'/'} className='pl-3 p-1 w-full is-drawer-close:hidden'>
                             <Logo textClassName='text-gray-700'></Logo>
-                        </div>
+                        </Link>
                         {/* ------------ Logo -> when not Extended ------------------*/}
-                        <div className='is-drawer-open:hidden p-1 mb-1'>
+                        <Link to={'/'} className='is-drawer-open:hidden p-1 mb-1'>
                             <img src={logoo} alt="" />
-                        </div>
+                        </Link>
 
                         {/* ------------ List Category ------------------*/}
                         <p className='my-2 pl-2 font-medium is-drawer-close:hidden'>MENU</p>
-                        
-                        {/* List item - 01 */}
+
+                        {/* ================== List item - 01 ========================*/}
                         <li className='mt-2'>
                             <NavLink to={'/dashboard'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Dashboard">
                                 <TbTargetArrow className='is-drawer-open:text-xl'></TbTargetArrow>
                                 <span className="is-drawer-close:hidden text-black">DashBoard</span>
                             </NavLink>
                         </li>
-                        {/* List item - 02 */}
+                        {/* ================== List item - 02 ====================*/}
                         <li className='mt-3'>
                             <NavLink
                                 to="/deliveries"
@@ -86,7 +89,7 @@ const Dashboard = () => {
                                 <span className="is-drawer-close:hidden text-black ">Deliveries</span>
                             </NavLink>
                         </li>
-                        {/* List item - 03 */}
+                        {/* ================= List item - 03 ======================*/}
                         <li className='mt-3'>
                             <NavLink
                                 to="/payment"
@@ -96,7 +99,7 @@ const Dashboard = () => {
                                 <span className="is-drawer-close:hidden text-black block">Payment</span>
                             </NavLink>
                         </li>
-                        {/* List item - 04 */}
+                        {/* =================== List item - 04 =========================*/}
                         <li className='mt-3'>
                             <NavLink
                                 to="/client"
@@ -106,7 +109,7 @@ const Dashboard = () => {
                                 <span className="is-drawer-close:hidden text-black block">Client</span>
                             </NavLink>
                         </li>
-                        {/* List item - 05 */}
+                        {/* ==================== List item - 05 ============================*/}
                         <li className='mt-3'>
                             <NavLink
                                 to="/analytics"
@@ -115,6 +118,38 @@ const Dashboard = () => {
                                 <TbReportAnalytics className='is-drawer-open:text-xl'></TbReportAnalytics>
                                 <span className="is-drawer-close:hidden text-black block">Analytics</span>
                             </NavLink>
+                        </li>
+
+                        {/* ------------ List Category ------------------*/}
+                        <p className='mt-5 mb-2 pl-2 font-medium is-drawer-close:hidden'>GENERAL</p>
+                        {/* ==================== List item - 06 ============================*/}
+                        <li className='mt-3'>
+                            <NavLink
+                                to="/changepassword"
+                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                data-tip="Change Password" >
+                                <RiLockPasswordLine className='is-drawer-open:text-xl'></RiLockPasswordLine>
+                                <span className="is-drawer-close:hidden text-black block">Change Password</span>
+                            </NavLink>
+                        </li>
+                        {/* ==================== List item - 07 ============================*/}
+                        <li className='mt-3'>
+                            <NavLink
+                                to="/help"
+                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                data-tip="Help" >
+                                <GrContact className='is-drawer-open:text-xl'></GrContact>
+                                <span className="is-drawer-close:hidden text-black block">Contact Support</span>
+                            </NavLink>
+                        </li>
+                        {/* ==================== List item - 08 ============================*/}
+                        <li className='mt-3'>
+                            <button
+                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                data-tip="Logout" >
+                                <CiLogout className='is-drawer-open:text-xl' ></CiLogout>
+                                <span className="is-drawer-close:hidden text-black block">Logout</span>
+                            </button>
                         </li>
                     </ul>
                 </div>
