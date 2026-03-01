@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import Logo from '../Components/Logo/Logo';
 import logoo from '../assets/Others/logo.png';
@@ -14,19 +14,30 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { GrContact } from "react-icons/gr";
 import { CiLogout } from "react-icons/ci";
+import { BsLayoutSidebar } from "react-icons/bs";
 
 const Dashboard = () => {
     const { user } = use(AuthContext)
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        if (window.innerWidth >= 768) { 
+            setIsOpen(true);
+        }
+    }, []);
+
     return (
         <div className="drawer md:drawer-open">
-            <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+            <input id="my-drawer-4" type="checkbox" className="drawer-toggle" checked={isOpen}
+                onChange={() => setIsOpen(!isOpen)} />
             <div className="drawer-content">
                 {/*------------------- Navbar -------------------------------*/}
-                <nav className="navbar flex justify-between w-full bg-white">
+                <nav className="navbar  sticky top-0 flex justify-between w-full bg-white">
                     <div>
                         <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
                             {/*-----------------------Sidebar toggle icon---------------------*/}
-                            <GoSidebarCollapse className='text-2xl text-black font-bold'></GoSidebarCollapse>
+                            {/* <GoSidebarCollapse className='text-2xl text-black font-bold'></GoSidebarCollapse> */}
+                            <BsLayoutSidebar className='text-xl text-black font-bold'></BsLayoutSidebar>
                         </label>
                     </div>
 
