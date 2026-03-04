@@ -99,7 +99,6 @@ const Deliveries = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 //  ======== Procced to Payment Confirm ==============
-
                 const paymentInfo = {
                     amount: parcel.amount,
                     parcelname: parcel.parcelname,
@@ -108,7 +107,7 @@ const Deliveries = () => {
                 }
 
                 // console.log(paymentInfo) ; 
-                const res = await axiosInstance.post(`/create-checkout-session`, paymentInfo) 
+                const res = await axiosInstance.post(`/create-checkout-session`, paymentInfo)
                 window.location.href = res.data.url;
 
             } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -190,8 +189,8 @@ const Deliveries = () => {
                                         <td >Pending</td>
                                         <td>{parcel.amount}</td>
                                         <td>{parcel.paymentStatus === "unpaid" ?
-                                            <p className='text-[#F99D25]'>Unpaid</p> :
-                                            <p className='text-[#0AB010]'>Paid</p>
+                                            <p className='text-[#F99D25] font-bold'>Unpaid</p> :
+                                            <p className='text-[#0AB010] font-bold'>Paid</p>
                                         }</td>
                                         <td className='flex justify-center gap-2'>
                                             {parcel.paymentStatus === "unpaid" && <button onClick={() => handlePayment(parcel)} className='btn btn-primary text-black '>Pay</button>}

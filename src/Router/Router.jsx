@@ -16,8 +16,8 @@ import Dashboard from "../Layouts/Dashboard";
 import Overview from "../Pages/DashboardPages/Overview/Overview";
 import Deliveries from "../Pages/DashboardPages/Deliveries/Deliveries";
 import ParcelDetails from "../Pages/DashboardPages/ParcelDetails/ParcelDetails";
-import paymentSuccess from "../Pages/DashboardPages/Payment/paymentSuccess";
-import paymentCancell from "../Pages/DashboardPages/Payment/paymentCancell";
+import PaymentSuccess from "../Pages/DashboardPages/Payment/paymentSuccess";
+import PaymentCancell from "../Pages/DashboardPages/Payment/paymentCancell";
 
 export const router = createBrowserRouter([
     {
@@ -67,8 +67,8 @@ export const router = createBrowserRouter([
             {path :'dashboard' , Component:Overview},
             {path:'deliveries',Component:Deliveries} ,
             {path:'details/:id' , Component : ParcelDetails} ,
-            {path :'paymentsuccess', Component : paymentSuccess},
-            {path:'paymentcancel',Component : paymentCancell} ,
+            {path :'paymentsuccess', Component : PaymentSuccess},
+            {path:'paymentcancel',Component : PaymentCancell} ,
         ]
     }
 ])

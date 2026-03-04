@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import paysucess from '../../../assets/Others/paymentDone.png'
-import { Link } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
+import axios from 'axios';
+import useAxios from '../../../Hooks/Axios/useAxios';
 
 
-const paymentSuccess = () => {
+// Status Update After a Payment is Complete like unpaid -> paid
+const PaymentSuccess = () => {
+    const [searchParams] = useSearchParams();
+    const session_id = searchParams.get("session_id");
+    console.log(session_id) ;
+    const axiosInstance = useAxios() ;
+
+    useEffect(()=>{
+        if(session_id){
+            axiosInstance.patch(`/session-status?session_id=${session_id}`)
+            .then(res => {
+                console.log(res.data) ; 
+            })
+        }
+    },[session_id,axiosInstance])
 
     return (
         <div className='p-2 md:p-8 max-w-full lg:max-w-7xl mx-auto '>
@@ -23,4 +39,4 @@ const paymentSuccess = () => {
     );
 };
 
-export default paymentSuccess;
+export default PaymentSuccess;

@@ -1,8 +1,8 @@
 import React from 'react';
 import payfail from '../../../assets/Others/failed.png'
-import { Link } from 'react-router';
+import { Link} from 'react-router';
 
-const paymentCancell = () => {
+const PaymentCancell = () => {
     return (
         <div className='p-2 md:p-8 max-w-full lg:max-w-7xl mx-auto '>
             <div className='min-w-full lg:max-w-[95%] mx-auto bg-white p-5 py-10 lg:p-20 rounded-2xl'>
@@ -21,4 +21,4 @@ const paymentCancell = () => {
     );
 };
 
-export default paymentCancell;
+export default PaymentCancell;
