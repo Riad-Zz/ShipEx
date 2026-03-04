@@ -6,29 +6,75 @@ import { FaShippingFast } from "react-icons/fa";
 import { TbPaywall } from "react-icons/tb";
 import { GiCash } from "react-icons/gi";
 import { useNavigate } from 'react-router';
+import Swal from 'sweetalert2';
 
 const Deliveries = () => {
 
     const { user } = use(AuthContext);
     const axiosInstance = useAxios();
-    const navigate = useNavigate() ;
+    const navigate = useNavigate();
 
     // ********** Fetch All Parcel Data using TanStack Query and Axios *************** 
-    const { data: allParcel = [] } = useQuery({
+    const { data: allParcel = [] , refetch } = useQuery({
         queryKey: ['parcel', `${user?.email}`],
         queryFn: async () => {
             const result = await axiosInstance.get(`/parcel?email=${user.email}`)
-            console.log(result.data);
+            // console.log(result.data);
             return result.data;
         }
     })
 
 
     // ----------------- Count Total Unpaid Parcels --------------------------
-    let totalUnpaid = 0 , totalPaid = 0 ;
-    allParcel.map((parcel)=>{
-        parcel.paymentStatus ==="unpaid" ? totalUnpaid++ : totalPaid++ ;
-    }) 
+    let totalUnpaid = 0, totalPaid = 0;
+    allParcel.map((parcel) => {
+        parcel.paymentStatus === "unpaid" ? totalUnpaid++ : totalPaid++;
+    })
+
+    // ------------------ Handle Delete Operation  -----------------------
+    const handleDelete = (id) => {
+
+        // ------------- Sweet Aleart custom setup ----------------- 
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "swal-confirm-btn",
+                cancelButton: "swal-cancel-btn"
+            },
+            buttonsStyling: false
+        });
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#606060",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log(id);
+
+
+                // ----------- Calling Api to delete items by using id --------------
+                axiosInstance.delete(`/parcel/${id}`)
+                    .then(result => {
+                        console.log(result.data);
+                        if (result.data.deletedCount) {
+                            refetch() ;
+                            swalWithBootstrapButtons.fire({
+                                title: "Parcel Deleted",
+                                html: `<p>Your parcel has been Deleted.</p>`,
+                                icon: "success",
+                                confirmButtonText: "Got it!"
+                            });
+                        }
+                    })
+
+
+            }
+        });
+    }
 
     return (
         <div className='p-2 md:p-8 max-w-full lg:max-w-7xl mx-auto '>
@@ -75,7 +121,7 @@ const Deliveries = () => {
                 <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
                     <table className="table table-zebra">
                         {/* ------------- Tables head (Columns) --------------------*/}
-                        <thead className='text-center'> 
+                        <thead className='text-center'>
                             <tr className='text-black'>
                                 <th >No.</th>
                                 <th>Parcel ID</th>
@@ -102,8 +148,8 @@ const Deliveries = () => {
                                         }</td>
                                         <td className='flex justify-center gap-2'>
                                             {parcel.paymentStatus === "unpaid" && <button className='btn btn-primary text-black '>Pay</button>}
-                                            <button onClick={()=>navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
-                                            <button className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
+                                            <button onClick={() => navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
+                                            <button onClick={() => handleDelete(parcel._id)} className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
                                         </td>
                                     </tr>
                                 )
