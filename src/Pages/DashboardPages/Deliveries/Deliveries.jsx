@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import { AuthContext } from '../../../Providers/AuthProvider/AuthProvider';
 import useAxios from '../../../Hooks/Axios/useAxios';
 import { FaShippingFast } from "react-icons/fa";
@@ -15,7 +15,7 @@ const Deliveries = () => {
     const navigate = useNavigate();
 
     // ********** Fetch All Parcel Data using TanStack Query and Axios *************** 
-    const { data: allParcel = [] , refetch } = useQuery({
+    const { data: allParcel = [], refetch } = useQuery({
         queryKey: ['parcel', `${user?.email}`],
         queryFn: async () => {
             const result = await axiosInstance.get(`/parcel?email=${user.email}`)
@@ -31,7 +31,7 @@ const Deliveries = () => {
         parcel.paymentStatus === "unpaid" ? totalUnpaid++ : totalPaid++;
     })
 
-    // ------------------ Handle Delete Operation  -----------------------
+    // **********  Handle Delete Operation  ********** 
     const handleDelete = (id) => {
 
         // ------------- Sweet Aleart custom setup ----------------- 
@@ -61,7 +61,7 @@ const Deliveries = () => {
                     .then(result => {
                         console.log(result.data);
                         if (result.data.deletedCount) {
-                            refetch() ;
+                            refetch();
                             swalWithBootstrapButtons.fire({
                                 title: "Parcel Deleted",
                                 html: `<p>Your parcel has been Deleted.</p>`,
@@ -72,6 +72,53 @@ const Deliveries = () => {
                     })
 
 
+            }
+        });
+    }
+
+    // ================ Handle Paymet Operations ====================== 
+    const handlePayment = (parcel) => {
+
+        // ==================== Sweet Alert Custom Controller for Parcel Payment ===================
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "swal-confirm-btn",
+                cancelButton: "swal-cancel-btn"
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: "Confirm Payment",
+            html: `<p style="color:#0f172a; margin-bottom:8px;">You will be charged <span style="color:#16a34a; font-weight:600; font-size:18px;">৳${parcel.amount} taka</span></p> <p style="color:#64748b;">Do you want to proceed?</p>`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Proceed to Payment",
+            cancelButtonText: "Cancel",
+            reverseButtons: false
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                //  ======== Procced to Payment Confirm ==============
+
+                const paymentInfo = {
+                    amount: parcel.amount,
+                    parcelname: parcel.parcelname,
+                    senderEmail: parcel.senderEmail,
+                    id: parcel._id
+                }
+
+                // console.log(paymentInfo) ; 
+                const res = await axiosInstance.post(`/create-checkout-session`, paymentInfo) 
+                window.location.href = res.data.url;
+
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                //  ============ Payment Cancel =================
+                Swal.fire({
+                    title: "Payment Cancelled",
+                    html: `<p style="color:#d33;">Your parcel has been successfully Cancelled.</p><p style="color:#0f172a;">You can review your parcel details and try again.</p>`,
+                    icon: "error",
+                    confirmButtonText: "Got it!"
+                });
             }
         });
     }
@@ -147,7 +194,7 @@ const Deliveries = () => {
                                             <p className='text-[#0AB010]'>Paid</p>
                                         }</td>
                                         <td className='flex justify-center gap-2'>
-                                            {parcel.paymentStatus === "unpaid" && <button className='btn btn-primary text-black '>Pay</button>}
+                                            {parcel.paymentStatus === "unpaid" && <button onClick={() => handlePayment(parcel)} className='btn btn-primary text-black '>Pay</button>}
                                             <button onClick={() => navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
                                             <button onClick={() => handleDelete(parcel._id)} className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
                                         </td>

@@ -16,6 +16,8 @@ import Dashboard from "../Layouts/Dashboard";
 import Overview from "../Pages/DashboardPages/Overview/Overview";
 import Deliveries from "../Pages/DashboardPages/Deliveries/Deliveries";
 import ParcelDetails from "../Pages/DashboardPages/ParcelDetails/ParcelDetails";
+import paymentSuccess from "../Pages/DashboardPages/Payment/paymentSuccess";
+import paymentCancell from "../Pages/DashboardPages/Payment/paymentCancell";
 
 export const router = createBrowserRouter([
     {
@@ -64,7 +66,9 @@ export const router = createBrowserRouter([
         children : [
             {path :'dashboard' , Component:Overview},
             {path:'deliveries',Component:Deliveries} ,
-            {path:'details/:id' , Component : ParcelDetails}
+            {path:'details/:id' , Component : ParcelDetails} ,
+            {path :'paymentsuccess', Component : paymentSuccess},
+            {path:'paymentcancel',Component : paymentCancell} ,
         ]
     }
 ])
