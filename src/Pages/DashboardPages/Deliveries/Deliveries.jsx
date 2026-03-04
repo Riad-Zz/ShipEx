@@ -20,6 +20,13 @@ const Deliveries = () => {
         }
     })
 
+    let totalUnpaid = 0 , totalPaid = 0 ;
+
+    // Count Total Unpaid Parcels
+    allParcel.map((parcel)=>{
+        parcel.paymentStatus ==="unpaid" ? totalUnpaid++ : totalPaid++ ;
+    }) 
+
     return (
         <div className='p-2 md:p-8 '>
             <div className='min-w-full lg:max-w-[95%] mx-auto bg-white p-5 py-10 lg:p-20 rounded-2xl'>
@@ -45,7 +52,7 @@ const Deliveries = () => {
                         </div>
                         <div>
                             <p className='font-bold text-center'>Total Paid </p>
-                            <p className='font-extrabold text-2xl text-black text-center'>20</p>
+                            <p className='font-extrabold text-2xl text-black text-center'>{totalPaid}</p>
                         </div>
                     </div>
 
@@ -56,10 +63,51 @@ const Deliveries = () => {
                         </div>
                         <div>
                             <p className='font-bold text-center'>Total Unpaid</p>
-                            <p className='font-extrabold text-2xl text-black text-center'>30</p>
+                            <p className='font-extrabold text-2xl text-black text-center'>{totalUnpaid}</p>
                         </div>
                     </div>
 
+                </div>
+                {/*------------------- All Deleveries Table to Show Info -----------------------------*/}
+                <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
+                    <table className="table table-zebra">
+                        {/* ------------- Tables head (Columns) --------------------*/}
+                        <thead> 
+                            <tr className='text-black'>
+                                <th >No.</th>
+                                <th>Parcel ID</th>
+                                <th>Parcel Name</th>
+                                <th>Delivery Status</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                //==================== Table Information(Rows) =================== 
+                                allParcel.map((parcel, index) =>
+                                    <tr key={index} className='text-black hover:bg-gray-100'>
+                                        <th>{index + 1}</th>
+                                        <td>#SPX-{(parcel._id.slice(0, 5)).toUpperCase()}</td>
+                                        <td >{parcel.parcelname}</td>
+                                        <td >Pending</td>
+                                        <td>{parcel.amount}</td>
+                                        <td>{parcel.paymentStatus === "unpaid" ?
+                                            <p className='text-[#F99D25]'>Unpaid</p> :
+                                            <p className='text-[#0AB010]'>Paid</p>
+                                        }</td>
+                                        <td className='flex gap-2'>
+                                            {parcel.paymentStatus === "unpaid" && <button className='btn btn-primary text-black'>Pay</button>}
+                                            <button className='btn bg-[#94c6cb38] text-black'>View</button>
+                                            <button className='btn bg-[#e833301a] text-[#E83330]'>Delete</button>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

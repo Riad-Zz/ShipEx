@@ -32,7 +32,7 @@ const Dashboard = () => {
                 onChange={() => setIsOpen(!isOpen)} />
             <div className="drawer-content">
                 {/*------------------- Navbar -------------------------------*/}
-                <nav className="navbar  sticky top-0 flex justify-between w-full bg-white">
+                <nav className="navbar  sticky left-0 top-0 flex justify-between w-full bg-white z-50 bg-transparent">
                     <div>
                         <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
                             {/*-----------------------Sidebar toggle icon---------------------*/}

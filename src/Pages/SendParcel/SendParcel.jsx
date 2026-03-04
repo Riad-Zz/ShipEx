@@ -74,6 +74,8 @@ const SendParcel = () => {
                     icon: "success",
                     confirmButtonText: "Got it!"
                 });
+                data.amount = chargeAmount ;
+                data.paymentStatus = "unpaid" ;
 
                 // ------------- Send parcel through post api ------------------
                 axiosInstance.post('/parcel',data) .then(res =>{
