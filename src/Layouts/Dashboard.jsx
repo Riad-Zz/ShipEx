@@ -60,7 +60,7 @@ const Dashboard = () => {
 
                 </nav>
                 {/*----------------------Page content here-----------------------*/}
-                <div className='bg-[#EAECED] h-screen'>
+                <div className='bg-[#EAECED] min-h-screen'>
                     <Outlet></Outlet>
                 </div>
 

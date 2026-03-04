@@ -14,6 +14,7 @@ import SendParcel from "../Pages/SendParcel/SendParcel";
 import Pricing from "../Pages/Pricing/Pricing";
 import Dashboard from "../Layouts/Dashboard";
 import Overview from "../Pages/DashboardPages/Overview/Overview";
+import Deliveries from "../Pages/DashboardPages/Deliveries/Deliveries";
 
 export const router = createBrowserRouter([
     {
@@ -60,7 +61,8 @@ export const router = createBrowserRouter([
         element : <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes> ,
         errorElement : <ErrorPage></ErrorPage>,
         children : [
-            {path :'/dashboard' , Component:Overview}
+            {path :'/dashboard' , Component:Overview},
+            {path:'deliveries',Component:Deliveries}
         ]
     }
 ])
