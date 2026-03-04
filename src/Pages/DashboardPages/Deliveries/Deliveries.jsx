@@ -5,12 +5,15 @@ import useAxios from '../../../Hooks/Axios/useAxios';
 import { FaShippingFast } from "react-icons/fa";
 import { TbPaywall } from "react-icons/tb";
 import { GiCash } from "react-icons/gi";
+import { useNavigate } from 'react-router';
 
 const Deliveries = () => {
 
     const { user } = use(AuthContext);
     const axiosInstance = useAxios();
+    const navigate = useNavigate() ;
 
+    // ********** Fetch All Parcel Data using TanStack Query and Axios *************** 
     const { data: allParcel = [] } = useQuery({
         queryKey: ['parcel', `${user?.email}`],
         queryFn: async () => {
@@ -20,19 +23,19 @@ const Deliveries = () => {
         }
     })
 
-    let totalUnpaid = 0 , totalPaid = 0 ;
 
-    // Count Total Unpaid Parcels
+    // ----------------- Count Total Unpaid Parcels --------------------------
+    let totalUnpaid = 0 , totalPaid = 0 ;
     allParcel.map((parcel)=>{
         parcel.paymentStatus ==="unpaid" ? totalUnpaid++ : totalPaid++ ;
     }) 
 
     return (
-        <div className='p-2 md:p-8 '>
+        <div className='p-2 md:p-8 max-w-full lg:max-w-7xl mx-auto '>
             <div className='min-w-full lg:max-w-[95%] mx-auto bg-white p-5 py-10 lg:p-20 rounded-2xl'>
                 <h1 className='text-secondary text-4xl font-extrabold text-center mb-2'>All Deliveries</h1>
                 <p className='max-w-xl mx-auto text-center mb-4'>Everything you need to handle your orders in one place. Easily view, update, or settle your deliveries to keep your logistics moving.</p>
-                {/*-----------------Parent Div of Statistics-----------------*/}
+                {/* -----------------Parent Div of Statistics----------------- */}
                 <div className='flex flex-wrap justify-center items-center gap-5'>
                     {/* ================= Total Parcel Div ====================*/}
                     <div className='w-full lg:w-auto px-10 py-5 rounded-xl flex justify-center gap-2 items-center bg-[#F5F5F5]'>
@@ -72,7 +75,7 @@ const Deliveries = () => {
                 <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
                     <table className="table table-zebra">
                         {/* ------------- Tables head (Columns) --------------------*/}
-                        <thead> 
+                        <thead className='text-center'> 
                             <tr className='text-black'>
                                 <th >No.</th>
                                 <th>Parcel ID</th>
@@ -87,9 +90,9 @@ const Deliveries = () => {
                             {
                                 //==================== Table Information(Rows) =================== 
                                 allParcel.map((parcel, index) =>
-                                    <tr key={index} className='text-black hover:bg-gray-100'>
+                                    <tr key={index} className='text-black hover:bg-gray-100 text-center'>
                                         <th>{index + 1}</th>
-                                        <td>#SPX-{(parcel._id.slice(0, 5)).toUpperCase()}</td>
+                                        <td>#SPX-{(parcel._id.slice(-4)).toUpperCase()}</td>
                                         <td >{parcel.parcelname}</td>
                                         <td >Pending</td>
                                         <td>{parcel.amount}</td>
@@ -97,10 +100,10 @@ const Deliveries = () => {
                                             <p className='text-[#F99D25]'>Unpaid</p> :
                                             <p className='text-[#0AB010]'>Paid</p>
                                         }</td>
-                                        <td className='flex gap-2'>
-                                            {parcel.paymentStatus === "unpaid" && <button className='btn btn-primary text-black'>Pay</button>}
-                                            <button className='btn bg-[#94c6cb38] text-black'>View</button>
-                                            <button className='btn bg-[#e833301a] text-[#E83330]'>Delete</button>
+                                        <td className='flex justify-center gap-2'>
+                                            {parcel.paymentStatus === "unpaid" && <button className='btn btn-primary text-black '>Pay</button>}
+                                            <button onClick={()=>navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
+                                            <button className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
                                         </td>
                                     </tr>
                                 )

@@ -15,6 +15,7 @@ import Pricing from "../Pages/Pricing/Pricing";
 import Dashboard from "../Layouts/Dashboard";
 import Overview from "../Pages/DashboardPages/Overview/Overview";
 import Deliveries from "../Pages/DashboardPages/Deliveries/Deliveries";
+import ParcelDetails from "../Pages/DashboardPages/ParcelDetails/ParcelDetails";
 
 export const router = createBrowserRouter([
     {
@@ -61,8 +62,9 @@ export const router = createBrowserRouter([
         element : <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes> ,
         errorElement : <ErrorPage></ErrorPage>,
         children : [
-            {path :'/dashboard' , Component:Overview},
-            {path:'deliveries',Component:Deliveries}
+            {path :'dashboard' , Component:Overview},
+            {path:'deliveries',Component:Deliveries} ,
+            {path:'details/:id' , Component : ParcelDetails}
         ]
     }
 ])
