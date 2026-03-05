@@ -103,10 +103,13 @@ const Deliveries = () => {
                     amount: parcel.amount,
                     parcelname: parcel.parcelname,
                     senderEmail: parcel.senderEmail,
-                    id: parcel._id
+                    id: parcel._id ,
+                    receiverName : parcel.receiverName ,
+                    receiverAddress : parcel.receiverAddress,
+                    receiverContact : parcel.receiverContactNo
                 }
 
-                // console.log(paymentInfo) ; 
+                console.log(paymentInfo) ; 
                 const res = await axiosInstance.post(`/create-checkout-session`, paymentInfo)
                 window.location.href = res.data.url;
 
@@ -124,7 +127,7 @@ const Deliveries = () => {
 
     return (
         <div className='p-2 md:p-8 max-w-full lg:max-w-7xl mx-auto '>
-            <div className='min-w-full lg:max-w-[95%] mx-auto bg-white p-5 py-10 lg:p-20 rounded-2xl'>
+            <div className='min-w-full lg:max-w-[95%] border border-gray-300 shadow-md mx-auto bg-[#f7fafd] p-5 py-10 lg:p-20 rounded-2xl'>
                 <h1 className='text-secondary text-4xl font-extrabold text-center mb-2'>All Deliveries</h1>
                 <p className='max-w-xl mx-auto text-center mb-4'>Everything you need to handle your orders in one place. Easily view, update, or settle your deliveries to keep your logistics moving.</p>
                 {/* -----------------Parent Div of Statistics----------------- */}

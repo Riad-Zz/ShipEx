@@ -140,9 +140,9 @@ const Navbar = () => {
                     }
 
 
-                    {/* Random Icon  */}
+                    {/* Dashboard */}
                     <Link to={'/dashboard' }>
-                        <button className='bg-black cursor-pointer rounded-full p-2 hidden md:block'><MdArrowOutward className='text-3xl text-primary font-bold'></MdArrowOutward></button>
+                        <button className='bg-black cursor-pointer rounded-full p-2 ml-1 md:ml-0 '><MdArrowOutward className='text-3xl text-primary font-bold'></MdArrowOutward></button>
                     </Link>
                 </div>
             </div>

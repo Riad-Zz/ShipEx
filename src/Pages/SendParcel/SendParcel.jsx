@@ -1,7 +1,7 @@
 import { all } from 'axios';
 import React, { use } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import useAxios from '../../Hooks/Axios/useAxios';
 import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
@@ -11,35 +11,36 @@ const SendParcel = () => {
     const allRegionDup = allLocation.map(loc => loc.region);
     const allRegion = [...new Set(allRegionDup)];
     const { register, watch, handleSubmit, formState: { errors } } = useForm();
-    const axiosInstance = useAxios() ;
-    const {user} = use(AuthContext) ;
+    const axiosInstance = useAxios();
+    const { user } = use(AuthContext);
+    const navigate = useNavigate() ;
 
     // ====================== Handle parecel form =================================
-    const handleParcelForm = (data, e) => {    
-        let chargeAmount ; 
+    const handleParcelForm = (data, e) => {
+        let chargeAmount;
         console.log(data);
 
         // =========== Parcel Pricing Calculation ======================== 
-        if (data.parceltype == 'Document' && data.SenderDistrict == data.receiverDistrict){
-            chargeAmount = 60 
-        }else chargeAmount = 80 ;
+        if (data.parceltype == 'Document' && data.SenderDistrict == data.receiverDistrict) {
+            chargeAmount = 60
+        } else chargeAmount = 80;
 
-        if(data.parceltype == 'Non-Document' ){
-            if(data.parcelweight <=3){
-                data.SenderDistrict == data.receiverDistrict ? chargeAmount = 110 : chargeAmount = 150 ;
-            }else{
-                data.SenderDistrict == data.receiverDistrict ? chargeAmount =110+(data.parcelweight - 3) * 40 : chargeAmount =(150+(data.parcelweight - 3) * 40 ) + 40 ; 
+        if (data.parceltype == 'Non-Document') {
+            if (data.parcelweight <= 3) {
+                data.SenderDistrict == data.receiverDistrict ? chargeAmount = 110 : chargeAmount = 150;
+            } else {
+                data.SenderDistrict == data.receiverDistrict ? chargeAmount = 110 + (data.parcelweight - 3) * 40 : chargeAmount = (150 + (data.parcelweight - 3) * 40) + 40;
             }
         }
 
-    // ==================== Sweet Aleart for sent parcel order ===================
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: "swal-confirm-btn",
-                    cancelButton: "swal-cancel-btn"
-                },
-                buttonsStyling: false
-            });
+        // ==================== Sweet Aleart for sent parcel order ===================
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "swal-confirm-btn",
+                cancelButton: "swal-cancel-btn"
+            },
+            buttonsStyling: false
+        });
 
         swalWithBootstrapButtons.fire({
             title: "Confirm Parcel Booking?",
@@ -59,7 +60,7 @@ const SendParcel = () => {
         }).then((result) => {
 
             if (result.isConfirmed) {
-               
+
 
                 swalWithBootstrapButtons.fire({
                     title: "Parcel Confirmed 🎉",
@@ -73,17 +74,21 @@ const SendParcel = () => {
             `,
                     icon: "success",
                     confirmButtonText: "Got it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate("/deliveries");  
+                    }
                 });
-                data.amount = chargeAmount ;
-                data.paymentStatus = "unpaid" ;
+                data.amount = chargeAmount;
+                data.paymentStatus = "unpaid";
 
                 // ------------- Send parcel through post api ------------------
-                axiosInstance.post('/parcel',data) .then(res =>{
-                    console.log(res.data) ;
+                axiosInstance.post('/parcel', data).then(res => {
+                    console.log(res.data);
                 })
 
-                
-                e.target.reset() ;
+
+                e.target.reset();
 
             } else if (result.dismiss === Swal.DismissReason.cancel) {
 
@@ -183,7 +188,7 @@ const SendParcel = () => {
                                 <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Sender Name</label>
                                 <input
                                     type="text"
-                                    defaultValue={user?.displayName} 
+                                    defaultValue={user?.displayName}
                                     placeholder="Sender Name"
                                     className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('senderName', { required: true })}
