@@ -103,7 +103,7 @@ const Dashboard = () => {
                         {/* ================= List item - 03 ======================*/}
                         <li className='mt-3'>
                             <NavLink
-                                to="/payment"
+                                to="/paymenthistory"
                                 className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
                                 data-tip="Payment" >
                                 <MdOutlinePayments className='is-drawer-open:text-xl'></MdOutlinePayments>

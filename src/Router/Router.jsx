@@ -18,6 +18,7 @@ import Deliveries from "../Pages/DashboardPages/Deliveries/Deliveries";
 import ParcelDetails from "../Pages/DashboardPages/ParcelDetails/ParcelDetails";
 import PaymentSuccess from "../Pages/DashboardPages/Payment/paymentSuccess";
 import PaymentCancell from "../Pages/DashboardPages/Payment/paymentCancell";
+import PaymentHistory from "../Pages/DashboardPages/Payment/PaymentHistory";
 
 export const router = createBrowserRouter([
     {
@@ -69,6 +70,7 @@ export const router = createBrowserRouter([
             {path:'details/:id' , Component : ParcelDetails} ,
             {path :'paymentsuccess', Component : PaymentSuccess},
             {path:'paymentcancel',Component : PaymentCancell} ,
+            {path :'paymenthistory',Component : PaymentHistory} ,
         ]
     }
 ])

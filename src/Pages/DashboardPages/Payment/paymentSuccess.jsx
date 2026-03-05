@@ -9,7 +9,7 @@ import useAxios from '../../../Hooks/Axios/useAxios';
 const PaymentSuccess = () => {
     const [searchParams] = useSearchParams();
     const session_id = searchParams.get("session_id");
-    console.log(session_id);
+    // console.log(session_id);
     const axiosInstance = useAxios();
     const [transaction_id, setTransaction_id] = useState("");
     const [tracking_id, setTracking_id] = useState("");
