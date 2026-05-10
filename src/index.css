@@ -89,13 +89,10 @@
   font-weight: 700;
 }
 
-.dashlink a:hover {
+/* .dashlink a:hover {
   font-weight: 700;
   padding: 11px 15px;
-
-  /* text-decoration: underline;  */
-  /* border-bottom: 1px solid #9ac43f; */
-}
+} */
 
 .dashlink button:hover {
   font-weight: 700;

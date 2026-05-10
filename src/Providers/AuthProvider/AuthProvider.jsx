@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth,email,password) ;
     }
 
-    //------------------------Update a User Profile-------------------------
+    //------------------------Update a User Profile(Currently Disable this )-------------------------
     const updateUser = (updatedInfo) => {
         return updateProfile(auth.currentUser , updatedInfo) ;
     }

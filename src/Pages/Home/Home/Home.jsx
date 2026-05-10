@@ -7,6 +7,7 @@ import MoreUs from '../MoreUs/MoreUs';
 import Customer from '../Customer/Customer';
 import Faq from '../Faq/Faq';
 import Reviews from '../Reviews/Reviews';
+// import Reviewsss from '../Reviewsss/Reviewsss';
 
 const Home = () => {
     return (
