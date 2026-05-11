@@ -1,8 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { use } from 'react';
-import { FaShippingFast } from 'react-icons/fa';
-import { GiCash } from 'react-icons/gi';
-import { TbPaywall } from 'react-icons/tb';
+import React, { use, useRef, useState } from 'react';
 import { AuthContext } from '../../../Providers/AuthProvider/AuthProvider';
 import { VscRequestChanges } from "react-icons/vsc";
 import { VscCheck } from "react-icons/vsc";
@@ -12,23 +9,31 @@ import useAxios from '../../../Hooks/Axios/useAxios';
 const Riders = () => {
     const { user } = use(AuthContext);
     const axiosInstance = useAxios();
+    const modalRef = useRef();
+    const [curRider, setCurRider] = useState([]);
+    // console.log(curRider) ;
 
+    // Loading All Riders Data 
     const { data: allRiders = [], refetch } = useQuery({
         queryKey: [Riders, `${user.email}`],
         queryFn: async () => {
             const result = await axiosInstance.get('/riders')
-            console.log(result.data);
+            // console.log(result.data);
             return result.data
         }
 
     })
 
-    var approved = 0 , rejected = 0 ;
-    allRiders.map((rid)=> {
-        if(rid.status === 'approved') approved++ ;
-        if(rid.status === 'rejected') rejected++ ;
+    // Get a rider by id 
+
+    // Counting Approved or Rejected Riders 
+    var approved = 0, rejected = 0;
+    allRiders.map((rid) => {
+        if (rid.status === 'approved') approved++;
+        if (rid.status === 'rejected') rejected++;
     })
 
+    // Date Formatter 
     const formatDate = (date) => {
         return new Date(date).toLocaleString("en-US", {
             year: "numeric",
@@ -38,6 +43,17 @@ const Riders = () => {
             minute: "2-digit",
         });
     };
+
+    // Show Rider info in an modal 
+    const handleDetails = (rider_id) => {
+        // console.log(rider_id);
+        modalRef.current.showModal();
+        axiosInstance.get(`/riders/${rider_id}`).then((res) => {
+            const riderInfo = res.data;
+            // console.log("Rider Info : ", riderInfo)
+            setCurRider(riderInfo)
+        })
+    }
 
     return (
         <div className='p-2 md:p-8 max-w-full lg:max-w-7xl mx-auto'>
@@ -113,7 +129,7 @@ const Riders = () => {
                                         <td className='flex justify-center gap-2'>
                                             <button className='btn bg-primary text-black '>Approve</button>
                                             <button className='btn bg-[#e833301a] text-[#E83330] '>Reject</button>
-                                            <button className='btn bg-gray text-black '>Details</button>
+                                            <button onClick={() => handleDetails(rider._id)} className='btn bg-gray text-black '>Details</button>
                                         </td>
                                     </tr>
                                 )
@@ -122,6 +138,28 @@ const Riders = () => {
                         </tbody>
                     </table>
                 </div>
+
+                {/* Modal to Show Rider Details  */}
+                <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+                    <div className="modal-box">
+                        <div className='bg-[#F5F5F5] p-5 rounded-xl space-y-1 flex-1 font-bold'>
+                            <p className='text-3xl font-bold mb-3 text-center text-secondary'>Rider Information</p>
+                            <p >Name : <span className='text-[#374151] font-semibold'>{curRider.name}</span></p>
+                            <p >Age : <span className='text-[#374151] font-semibold'>{curRider.age}</span></p>
+                            <p >Contact : <span className='text-[#374151] font-semibold'>{curRider.contact}</span></p>
+                            <p >Email : <span className='text-[#374151] font-semibold'>{curRider.email}</span></p>
+                            <p >NID : <span className='text-[#374151] font-semibold'>{curRider.nid}</span></p>
+                            <p >Address : <span className='text-[#374151] font-semibold'>{curRider.wirehouse} , {curRider.district} , {curRider.region}</span></p>
+
+                            <p>Applied At : <span className='text-[#374151] font-semibold'>{formatDate(curRider.createdAt)}</span></p>
+                        </div>
+                        <div className="modal-action">
+                            <form method="dialog">
+                                <button className="btn">Close</button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
             </div>
         </div>
     );
