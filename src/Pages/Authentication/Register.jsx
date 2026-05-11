@@ -71,8 +71,6 @@ const Register = () => {
             photoURL: finalImageURL
         }
 
-
-
         EmailRegister(data.email, data.password)
             .then(async (result) => {
                 const currentUser = result.user

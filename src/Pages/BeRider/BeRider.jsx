@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import riderModel from '../../assets/Others/agent-pending.png';
 import { useLoaderData } from 'react-router';
+import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
+import useAxios from '../../Hooks/Axios/useAxios';
+import Swal from 'sweetalert2';
 
 const BeRider = () => {
-    const { register,control ,watch ,handleSubmit, formState: { errors } } = useForm();
+    const { register, control, watch, handleSubmit, formState: { errors } } = useForm();
     const [ageError, setAgeError] = useState(false);
-
     const allLocation = useLoaderData();
-    // console.log(allRegion) ; 
     const allRegionDup = allLocation.map(reg => reg.region);
     const allRegion = [...new Set(allRegionDup)];
+    const { user } = use(AuthContext);
+    const axiosInstance = useAxios();
     // console.log(allRegion);
 
     // Handle Rider Registration 
-    const handleRiderRegistration = (data, e) => {
+    const handleRiderRegistration = async(data, e) => {
         console.log(data);
-        // if (data.age != 'undefined' && data.age < 18) errors.age = true;
+        await axiosInstance.post('/riders', data).then((res) => {
+            if (res.data.insertedId) {
+                Swal.fire({
+                    title: "Submitted",
+                    text: "You response has beeen recorded and will be notified under 48 hour",
+                    icon: "success"
+                });
+            }
+        })
         e.target.reset();
     };
 
@@ -35,8 +46,8 @@ const BeRider = () => {
         return wireHosue;
     };
 
-    const selectedRegion = useWatch({control, name:'region'});
-    const selectedDistrict = useWatch({control,name:'district'});
+    const selectedRegion = useWatch({ control, name: 'region' });
+    const selectedDistrict = useWatch({ control, name: 'district' });
 
     return (
         <div className="max-w-[95%] xl:max-w-7xl mx-auto bg-white mt-8 p-8 py-14 lg:p-20 rounded-2xl mb-20">
@@ -62,6 +73,7 @@ const BeRider = () => {
                                 <input
                                     type="text"
                                     placeholder="Your Name"
+                                    defaultValue={user.displayName}
                                     className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('name', { required: true })}
                                 />
@@ -98,6 +110,8 @@ const BeRider = () => {
                                 <input
                                     type="email"
                                     placeholder="Your Email"
+                                    value={user.email}
+                                    readOnly
                                     className="input w-full py-4 px-4 rounded-lg border border-[#94A3B8] outline-none"
                                     {...register('email', { required: true })}
                                 />

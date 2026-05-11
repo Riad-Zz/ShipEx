@@ -113,11 +113,11 @@ const Dashboard = () => {
                         {/* =================== List item - 04 =========================*/}
                         <li className='mt-3'>
                             <NavLink
-                                to="/client"
+                                to="/riders"
                                 className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
                                 data-tip="Client" >
                                 <GoPeople className='is-drawer-open:text-xl'></GoPeople>
-                                <span className="is-drawer-close:hidden text-black block">Client</span>
+                                <span className="is-drawer-close:hidden text-black block">Riders</span>
                             </NavLink>
                         </li>
                         {/* ==================== List item - 05 ============================*/}
