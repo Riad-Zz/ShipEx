@@ -6,6 +6,7 @@ import { FaShippingFast } from "react-icons/fa";
 import { TbPaywall } from "react-icons/tb";
 import { GiCash } from "react-icons/gi";
 import { useNavigate } from 'react-router';
+import { SyncLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 
 const Deliveries = () => {
@@ -15,7 +16,7 @@ const Deliveries = () => {
     const navigate = useNavigate();
 
     // ********** Fetch All Parcel Data using TanStack Query and Axios *************** 
-    const { data: allParcel = [], refetch } = useQuery({
+    const { data: allParcel = [], refetch, isLoading } = useQuery({
         queryKey: ['parcel', `${user?.email}`],
         queryFn: async () => {
             const result = await axiosInstance.get(`/parcel?email=${user.email}`)
@@ -103,13 +104,13 @@ const Deliveries = () => {
                     amount: parcel.amount,
                     parcelname: parcel.parcelname,
                     senderEmail: parcel.senderEmail,
-                    id: parcel._id ,
-                    receiverName : parcel.receiverName ,
-                    receiverAddress : parcel.receiverAddress,
-                    receiverContact : parcel.receiverContactNo
+                    id: parcel._id,
+                    receiverName: parcel.receiverName,
+                    receiverAddress: parcel.receiverAddress,
+                    receiverContact: parcel.receiverContactNo
                 }
 
-                console.log(paymentInfo) ; 
+                console.log(paymentInfo);
                 const res = await axiosInstance.post(`/create-checkout-session`, paymentInfo)
                 window.location.href = res.data.url;
 
@@ -166,47 +167,56 @@ const Deliveries = () => {
                     </div>
 
                 </div>
-                {/*------------------- All Deleveries Table to Show Info -----------------------------*/}
-                <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
-                    <table className="table table-zebra">
-                        {/* ------------- Tables head (Columns) --------------------*/}
-                        <thead className='text-center'>
-                            <tr className='text-black'>
-                                <th >No.</th>
-                                <th>Parcel ID</th>
-                                <th>Parcel Name</th>
-                                <th>Delivery Status</th>
-                                <th>Amount</th>
-                                <th>Payment</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                //==================== Table Information(Rows) =================== 
-                                allParcel.map((parcel, index) =>
-                                    <tr key={index} className='text-black hover:bg-gray-100 text-center'>
-                                        <th>{index + 1}</th>
-                                        <td>#SPX-{(parcel._id.slice(-4)).toUpperCase()}</td>
-                                        <td >{parcel.parcelname}</td>
-                                        <td >Pending</td>
-                                        <td>{parcel.amount}</td>
-                                        <td>{parcel.paymentStatus === "unpaid" ?
-                                            <p className='text-[#F99D25] font-bold'>Unpaid</p> :
-                                            <p className='text-[#0AB010] font-bold'>Paid</p>
-                                        }</td>
-                                        <td className='flex justify-center gap-2'>
-                                            {parcel.paymentStatus === "unpaid" && <button onClick={() => handlePayment(parcel)} className='btn btn-primary text-black '>Pay</button>}
-                                            <button onClick={() => navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
-                                            <button onClick={() => handleDelete(parcel._id)} className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
-                                        </td>
-                                    </tr>
-                                )
-                            }
+                {
+                    isLoading ?
+                        <div className='min-w-full flex justify-center items-center my-10'>
+                            <SyncLoader size={10} color='#CAEB66' />
+                        </div> :
+                        /*------------------- All Deleveries Table to Show Info -----------------------------*/
+                        <div>
+                            <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
+                                <table className="table table-zebra">
+                                    {/* ------------- Tables head (Columns) --------------------*/}
+                                    <thead className='text-center'>
+                                        <tr className='text-black'>
+                                            <th >No.</th>
+                                            <th>Parcel ID</th>
+                                            <th>Parcel Name</th>
+                                            <th>Delivery Status</th>
+                                            <th>Amount</th>
+                                            <th>Payment</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            //==================== Table Information(Rows) =================== 
+                                            allParcel.map((parcel, index) =>
+                                                <tr key={index} className='text-black hover:bg-gray-100 text-center'>
+                                                    <th>{index + 1}</th>
+                                                    <td>#SPX-{(parcel._id.slice(-4)).toUpperCase()}</td>
+                                                    <td >{parcel.parcelname}</td>
+                                                    <td >Pending</td>
+                                                    <td>{parcel.amount}</td>
+                                                    <td>{parcel.paymentStatus === "unpaid" ?
+                                                        <p className='text-[#F99D25] font-bold'>Unpaid</p> :
+                                                        <p className='text-[#0AB010] font-bold'>Paid</p>
+                                                    }</td>
+                                                    <td className='flex justify-center gap-2'>
+                                                        {parcel.paymentStatus === "unpaid" && <button onClick={() => handlePayment(parcel)} className='btn btn-primary text-black '>Pay</button>}
+                                                        <button onClick={() => navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
+                                                        <button onClick={() => handleDelete(parcel._id)} className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        }
 
-                        </tbody>
-                    </table>
-                </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                }
+
             </div>
         </div>
 
