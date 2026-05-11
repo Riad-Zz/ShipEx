@@ -42,7 +42,7 @@ const Login = () => {
 
     //--------------------------Login WIth Google--------------------------
     const handleGoogleLogin = () => {
-        googleLogin().then((result) => {
+        googleLogin().then(async(result) => {
             const currentUser = result.user
             setUser(currentUser);
             const newUser = {
@@ -50,11 +50,8 @@ const Login = () => {
                 email: currentUser.email,
                 photoURL: currentUser.photoURL
             }
-            axiosInstance.post("/users", newUser).then((res) => {
-                if (res.data.insertedId) {
-                    navigate(location.state || '/');
-                }
-            })
+            await axiosInstance.post("/users", newUser).then((res) => {})
+            navigate(location.state || '/');
         })
             .catch((error) => {
                 const errorMessage = error.message;

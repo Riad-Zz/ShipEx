@@ -19,8 +19,6 @@ const Register = () => {
     const imageInputRef = useRef(null);  //HIU 01
     const axiosInstance = useAxios();
 
-
-
     //----------Hidden Image upload field Activate Control (HIU) -------------
 
     //HIU ------> 02  
@@ -75,11 +73,9 @@ const Register = () => {
             .then(async (result) => {
                 const currentUser = result.user
                 setUser(currentUser);
-                axiosInstance.post("/users", newUser).then((res) => {
-                    if(res.data.insertedId){
-                        navigate(location.state || '/');
-                    }
+                await axiosInstance.post("/users", newUser).then((res) => {
                 })
+                navigate(location.state || '/');
                 if (currentUser) {
                     await updateUser({ displayName: data.name, photoURL: finalImageURL })
                         .then(() => {
@@ -90,13 +86,14 @@ const Register = () => {
                             console.log(errorMessage);
                         })
                 }
+                
             })
     }
 
 
     //-----------------Handle Google Login --------------------------------
     const handleGoogleLogin = () => {
-        googleLogin().then((result) => {
+        googleLogin().then(async(result) => {
             const currentUser = result.user
             setUser(currentUser);
 
@@ -105,17 +102,13 @@ const Register = () => {
                 email: currentUser.email,
                 photoURL: currentUser.photoURL
             }
-
-            axiosInstance.post("/users", newUser).then((res) => {
-                if (res.data.insertedId) {
-                    navigate(location.state || '/');
-                }
-            })
-        })
-            .catch((error) => {
+            await axiosInstance.post("/users", newUser).then((res) => {})
+            navigate(location.state || '/');
+        }).catch((error) => {
                 const errorMessage = error.message;
                 console.log(errorMessage);
             });
+        
     }
 
     return (
