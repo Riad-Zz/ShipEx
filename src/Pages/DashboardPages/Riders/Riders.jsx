@@ -5,6 +5,7 @@ import { VscRequestChanges } from "react-icons/vsc";
 import { VscCheck } from "react-icons/vsc";
 import { VscChromeClose } from "react-icons/vsc";
 import useAxios from '../../../Hooks/Axios/useAxios';
+import Swal from 'sweetalert2';
 
 const Riders = () => {
     const { user } = use(AuthContext);
@@ -24,8 +25,6 @@ const Riders = () => {
 
     })
 
-    // Get a rider by id 
-
     // Counting Approved or Rejected Riders 
     var approved = 0, rejected = 0;
     allRiders.map((rid) => {
@@ -44,7 +43,7 @@ const Riders = () => {
         });
     };
 
-    // Show Rider info in an modal 
+    //------------------ Show Rider info in an modal ----------------------
     const handleDetails = (rider_id) => {
         // console.log(rider_id);
         modalRef.current.showModal();
@@ -53,6 +52,37 @@ const Riders = () => {
             // console.log("Rider Info : ", riderInfo)
             setCurRider(riderInfo)
         })
+    }
+
+    // ----------------- Handle Approve/Reject Functionality -----------------
+    const handleAction = (rider, status) => {
+        // console.log(rider , status) ;
+        const updateFields = { email: rider.email, status: status }
+        console.log(updateFields);
+        console.log(rider._id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm !"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosInstance.post(`/riders/${rider._id}`, updateFields).then((res) => {
+                    const result = res.data;
+                    if (result.modifiedCount) {
+                        refetch();
+                        Swal.fire({
+                            title: `${status.toUpperCase()}!`,
+                            text: `The Rider has been ${status}`,
+                            icon: "success"
+                        })
+                    }
+                })
+            };
+        });
     }
 
     return (
@@ -121,14 +151,23 @@ const Riders = () => {
                                         <td>{rider.name}</td>
                                         <td >{rider.email}</td>
                                         <td >{formatDate(rider.createdAt)}</td>
-                                        <td>{rider.status === "pending" ?
-                                            <p className='text-[#F99D25] font-bold'>Pending</p> :
-                                            <p className='text-[#0AB010] font-bold'>Approved</p>
-                                        }</td>
+                                        <td>
+                                            {rider.status === "pending" ? (
+                                                <p className='text-[#F99D25] font-bold'>Pending</p>
+                                            ) : rider.status === "approved" ? (
+                                                <p className='text-[#0AB010] font-bold'>Approved</p>
+                                            ) : (
+                                                <p className='text-red-600 font-bold'>Rejected</p>
+                                            )}
+                                        </td>
                                         <td>{rider.region}</td>
                                         <td className='flex justify-center gap-2'>
-                                            <button className='btn bg-primary text-black '>Approve</button>
-                                            <button className='btn bg-[#e833301a] text-[#E83330] '>Reject</button>
+                                            {
+                                                rider.status === "pending" && <>
+                                                    <button onClick={() => handleAction(rider, "approved")} className='btn bg-primary text-black '>Approve</button>
+                                                    <button onClick={() => handleAction(rider, "rejected")} className='btn bg-[#e833301a] text-[#E83330] '>Reject</button>
+                                                </>
+                                            }
                                             <button onClick={() => handleDetails(rider._id)} className='btn bg-gray text-black '>Details</button>
                                         </td>
                                     </tr>
