@@ -4,6 +4,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
+import useAxios from '../../Hooks/Axios/useAxios';
 
 
 const Login = () => {
@@ -14,6 +15,7 @@ const Login = () => {
     // const [currentEmail, setCurrentEmail] = useState("");
     const { emailLogin, user, setUser, googleLogin, PasswordReset } = use(AuthContext)
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
+    const axiosInstance = useAxios() ;
 
     const handleEyeClick = (e) => {
         e.preventDefault();
@@ -43,7 +45,16 @@ const Login = () => {
         googleLogin().then((result) => {
             const currentUser = result.user
             setUser(currentUser);
-            navigate(location.state || '/');
+            const newUser = {
+                displayName: currentUser.displayName,
+                email: currentUser.email,
+                photoURL: currentUser.photoURL
+            }
+            axiosInstance.post("/users", newUser).then((res) => {
+                if (res.data.insertedId) {
+                    navigate(location.state || '/');
+                }
+            })
         })
             .catch((error) => {
                 const errorMessage = error.message;

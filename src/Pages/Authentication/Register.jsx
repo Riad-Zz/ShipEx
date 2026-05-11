@@ -6,6 +6,7 @@ import imageUpload from '../../assets/image-upload-icon.png'
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
+import useAxios from '../../Hooks/Axios/useAxios';
 
 
 const Register = () => {
@@ -13,9 +14,10 @@ const Register = () => {
     const [eye, setEye] = useState(false);
     const [preview, setPreview] = useState(imageUpload)
     const { user, setUser, googleLogin, EmailRegister, updateUser } = use(AuthContext);
-    const location = useLocation() ;
-    const navigate = useNavigate() ;
+    const location = useLocation();
+    const navigate = useNavigate();
     const imageInputRef = useRef(null);  //HIU 01
+    const axiosInstance = useAxios();
 
 
 
@@ -63,16 +65,27 @@ const Register = () => {
         const finalImageURL = res.data.data.url;
         console.log(finalImageURL);
 
+        const newUser = {
+            displayName: data.name,
+            email: data.email,
+            photoURL: finalImageURL
+        }
+
+
 
         EmailRegister(data.email, data.password)
             .then(async (result) => {
                 const currentUser = result.user
                 setUser(currentUser);
-                navigate(location.state || '/');
+                axiosInstance.post("/users", newUser).then((res) => {
+                    if(res.data.insertedId){
+                        navigate(location.state || '/');
+                    }
+                })
                 if (currentUser) {
                     await updateUser({ displayName: data.name, photoURL: finalImageURL })
                         .then(() => {
-                            setUser({ ...currentUser,displayName: data.name, photoURL: finalImageURL })
+                            setUser({ ...currentUser, displayName: data.name, photoURL: finalImageURL })
                         })
                         .catch(error => {
                             const errorMessage = error.message;
@@ -88,7 +101,18 @@ const Register = () => {
         googleLogin().then((result) => {
             const currentUser = result.user
             setUser(currentUser);
-            navigate(location.state || '/');
+
+            const newUser = {
+                displayName: currentUser.displayName,
+                email: currentUser.email,
+                photoURL: currentUser.photoURL
+            }
+
+            axiosInstance.post("/users", newUser).then((res) => {
+                if (res.data.insertedId) {
+                    navigate(location.state || '/');
+                }
+            })
         })
             .catch((error) => {
                 const errorMessage = error.message;
@@ -115,7 +139,7 @@ const Register = () => {
 
                 {/*------------------ Hidden Input field to Upload image ---------------- */}
 
-                
+
                 {/* HIU ------> 05  */}
                 <input
                     type="file"

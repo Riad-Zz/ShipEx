@@ -13,7 +13,7 @@ const useAxios = () => {
     const { user,logOut } = use(AuthContext)
     const navigate = useNavigate() ;
     useEffect(() => {
-        if (!user.accessToken) return;
+        if (!user?.accessToken) return;
         // Request Intercepetor 
         const reqInterceptor = axiosInstance.interceptors.request.use((config) => {
             config.headers.Authorization = `Bearer ${user.accessToken}`
