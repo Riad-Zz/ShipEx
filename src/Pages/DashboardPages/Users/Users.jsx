@@ -36,7 +36,7 @@ const Users = () => {
     // ----------------- Handle Approve/Reject Functionality -----------------
     const handleAction = (user, status) => {
         // console.log(rider , status) ;
-        // const updateFields = { email: rider.email, status: status }
+        const updateField = {status: status }
         // console.log(updateFields);
         // console.log(user._id);
         Swal.fire({
@@ -50,17 +50,17 @@ const Users = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 console.log('approved', user._id , status);
-                // axiosInstance.post(`/riders/${rider._id}`, updateFields).then((res) => {
-                //     const result = res.data;
-                //     if (result.modifiedCount) {
-                //         refetch();
-                //         Swal.fire({
-                //             title: `${status.toUpperCase()}!`,
-                //             text: `The Rider has been ${status}`,
-                //             icon: "success"
-                //         })
-                //     }
-                // })
+                axiosInstance.post(`/users/${user._id}`, updateField).then((res) => {
+                    const result = res.data;
+                    if (result.modifiedCount) {
+                        refetch();
+                        Swal.fire({
+                            title: `${status.toUpperCase()}!`,
+                            text: `${status === 'user' ? `${user.name || user.displayName} has been revoked to user` : `${user.name || user.displayName} have been promoted to Admin`}`,
+                            icon: "success"
+                        })
+                    }
+                })
             };
         });
     }

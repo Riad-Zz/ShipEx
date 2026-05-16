@@ -15,16 +15,23 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { GrContact } from "react-icons/gr";
 import { CiLogout } from "react-icons/ci";
 import { BsLayoutSidebar } from "react-icons/bs";
+import useRole from '../Hooks/Role/useRole';
+import Loader from '../Pages/Shared/Loader/Loader';
 
 const Dashboard = () => {
     const { user } = use(AuthContext)
     const [isOpen, setIsOpen] = useState(false);
+    const {role,isLoading} = useRole();
+    // console.log(role) ;
+    const userRole = role.role ;
 
     useEffect(() => {
-        if (window.innerWidth >= 768) { 
+        if (window.innerWidth >= 768) {
             setIsOpen(true);
         }
     }, []);
+
+    isLoading && <Loader></Loader>
 
     return (
         <div className="drawer md:drawer-open">
@@ -110,26 +117,31 @@ const Dashboard = () => {
                                 <span className="is-drawer-close:hidden text-black block">Payment</span>
                             </NavLink>
                         </li>
-                        {/* =================== List item - 04 =========================*/}
-                        <li className='mt-3'>
-                            <NavLink
-                                to="/riders"
-                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
-                                data-tip="Client" >
-                                <GoPeople className='is-drawer-open:text-xl'></GoPeople>
-                                <span className="is-drawer-close:hidden text-black block">Riders</span>
-                            </NavLink>
-                        </li>
-                        {/* ==================== List item - 05 ============================*/}
-                        <li className='mt-3'>
-                            <NavLink
-                                to="/users"
-                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
-                                data-tip="Analytics" >
-                                <TbReportAnalytics className='is-drawer-open:text-xl'></TbReportAnalytics>
-                                <span className="is-drawer-close:hidden text-black block">Users</span>
-                            </NavLink>
-                        </li>
+                        {
+                            userRole === 'admin' && <>
+                                {/* =================== List item - 04 =========================*/}
+                                <li className='mt-3'>
+                                    <NavLink
+                                        to="/riders"
+                                        className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                        data-tip="Client" >
+                                        <GoPeople className='is-drawer-open:text-xl'></GoPeople>
+                                        <span className="is-drawer-close:hidden text-black block">Riders</span>
+                                    </NavLink>
+                                </li>
+                                {/* ==================== List item - 05 ============================*/}
+                                <li className='mt-3'>
+                                    <NavLink
+                                        to="/users"
+                                        className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                        data-tip="Analytics" >
+                                        <TbReportAnalytics className='is-drawer-open:text-xl'></TbReportAnalytics>
+                                        <span className="is-drawer-close:hidden text-black block">Users</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
+
 
                         {/* ------------ List Category ------------------*/}
                         <p className='mt-5 mb-2 pl-2 font-medium is-drawer-close:hidden'>GENERAL</p>
