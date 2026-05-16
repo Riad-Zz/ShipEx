@@ -168,9 +168,9 @@ const BeRider = () => {
                         </div>
 
                         {/* INFO 04 */}
-                        <div className='flex gap-2 mt-2'>
+                        <div className='mt-2 flex flex-col md:flex-row gap-3'>
 
-                            <div className='flex-1'>
+                            <div className='w-full md:w-1/2'>
                                 <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Your District</label>
                                 <select className='select border border-[#94A3B8] outline-none' {...register('district', { required: true })} >
                                     <option disabled={true}>Select your District</option>
@@ -183,7 +183,7 @@ const BeRider = () => {
                                 )}
                             </div>
 
-                            <div className='flex-1'>
+                            <div className='w-full md:w-1/2'>
                                 <label className="label font-bold text-[14px] mb-1 text-[#0F172A]">Which wire-house you want to work?</label>
                                 <select className='select border border-[#94A3B8] outline-none' {...register('wirehouse', { required: true })} >
                                     <option disabled={true}>Select your Wirehouse</option>

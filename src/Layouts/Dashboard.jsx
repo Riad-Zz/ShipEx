@@ -123,11 +123,11 @@ const Dashboard = () => {
                         {/* ==================== List item - 05 ============================*/}
                         <li className='mt-3'>
                             <NavLink
-                                to="/analytics"
+                                to="/users"
                                 className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
                                 data-tip="Analytics" >
                                 <TbReportAnalytics className='is-drawer-open:text-xl'></TbReportAnalytics>
-                                <span className="is-drawer-close:hidden text-black block">Analytics</span>
+                                <span className="is-drawer-close:hidden text-black block">Users</span>
                             </NavLink>
                         </li>
 
