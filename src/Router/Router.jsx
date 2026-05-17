@@ -23,6 +23,7 @@ import Riders from "../Pages/DashboardPages/Riders/Riders";
 import Users from "../Pages/DashboardPages/Users/Users";
 import AdminRoutes from "../Providers/AdminRoutes/AdminRoutes";
 import AssignRider from "../Pages/DashboardPages/AssignRider/AssignRider";
+import MyTask from "../Pages/DashboardPages/RiderTask/MyTask";
 
 export const router = createBrowserRouter([
     {
@@ -77,7 +78,8 @@ export const router = createBrowserRouter([
             {path :'paymenthistory',Component : PaymentHistory} ,
             {path : 'riders' , element : <AdminRoutes><Riders></Riders></AdminRoutes>} ,
             {path : 'users' , element : <AdminRoutes><Users></Users></AdminRoutes>},
-            {path : 'assignrider' , element : <AdminRoutes><AssignRider></AssignRider></AdminRoutes>}
+            {path : 'assignrider' , element : <AdminRoutes><AssignRider></AssignRider></AdminRoutes>},
+            {path : '/mytask' , Component : MyTask}
         ]
     }
 ])

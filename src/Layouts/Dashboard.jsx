@@ -17,6 +17,7 @@ import { GrContact } from "react-icons/gr";
 import { CiLogout } from "react-icons/ci";
 import { BsLayoutSidebar } from "react-icons/bs";
 import useRole from '../Hooks/Role/useRole';
+import { RiEBike2Line } from "react-icons/ri";
 import Loader from '../Pages/Shared/Loader/Loader';
 
 const Dashboard = () => {
@@ -118,6 +119,16 @@ const Dashboard = () => {
                                 <span className="is-drawer-close:hidden text-black block">Payment</span>
                             </NavLink>
                         </li>
+                        {/* ================= List item - 03 ======================*/}
+                        <li className='mt-3'>
+                            <NavLink
+                                to="/mytask"
+                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                data-tip="mytask" >
+                                <RiEBike2Line className='is-drawer-open:text-xl'></RiEBike2Line>
+                                <span className="is-drawer-close:hidden text-black block">My Task</span>
+                            </NavLink>
+                        </li>
                         {
                             userRole === 'admin' && <>
                                 {/* =================== List item - 04 =========================*/}
@@ -125,7 +136,7 @@ const Dashboard = () => {
                                     <NavLink
                                         to="/riders"
                                         className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
-                                        data-tip="Client" >
+                                        data-tip="Riders" >
                                         <GoPeople className='is-drawer-open:text-xl'></GoPeople>
                                         <span className="is-drawer-close:hidden text-black block">Rider Management</span>
                                     </NavLink>
@@ -135,7 +146,7 @@ const Dashboard = () => {
                                     <NavLink
                                         to="/users"
                                         className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
-                                        data-tip="Analytics" >
+                                        data-tip="Users" >
                                         <TbReportAnalytics className='is-drawer-open:text-xl'></TbReportAnalytics>
                                         <span className="is-drawer-close:hidden text-black block">Users Management</span>
                                     </NavLink>
@@ -145,7 +156,7 @@ const Dashboard = () => {
                                     <NavLink
                                         to="/assignrider"
                                         className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
-                                        data-tip="Analytics" >
+                                        data-tip="Assign Rider" >
                                         <MdAssignmentAdd className='is-drawer-open:text-xl'></MdAssignmentAdd>
                                         <span className="is-drawer-close:hidden text-black block">Assign Rider</span>
                                     </NavLink>

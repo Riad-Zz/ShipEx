@@ -29,7 +29,6 @@ const useAxios = () => {
             const status = error?.response?.status;
             if (status === 401 || status === 403) {
                 console.warn("Unauthorized or Forbidden — Logging out...");
-
                 logOut().then(() => {
                     navigate('/');
                 });

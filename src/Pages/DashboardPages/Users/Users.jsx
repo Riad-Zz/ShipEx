@@ -156,12 +156,12 @@ const Users = () => {
                         :
                         /*------------------- All Deleveries Table to Show Info -----------------------------*/
                         <div>
-                            <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
+                            <div className="overflow-x-auto border border-gray-300 rounded-2xl my-7 ">
                                 <table className="table table-zebra">
                                     {/* ------------- Tables head (Columns) --------------------*/}
-                                    <thead className='text-center'>
-                                        <tr className='text-black'>
-                                            <th>No.</th>
+                                    <thead className='text-center bg-secondary text-white'>
+                                        <tr className='text-white'>
+                                            <th className='py-4 rounded-tl-xl'>No.</th>
                                             <th>Image</th>
                                             <th>Name</th>
                                             <th>Email</th>

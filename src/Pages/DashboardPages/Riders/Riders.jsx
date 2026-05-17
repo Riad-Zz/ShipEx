@@ -18,7 +18,7 @@ const Riders = () => {
 
     // Loading All Riders Data 
     const { data: allRiders = [], refetch, isLoading } = useQuery({
-        queryKey: [Riders, `${user.email}`],
+        queryKey: ['Riders', `${user.email}`],
         queryFn: async () => {
             const result = await axiosInstance.get('/riders')
             // console.log(result.data);
@@ -138,18 +138,18 @@ const Riders = () => {
                         :
                         /*------------------- All Deleveries Table to Show Info -----------------------------*/
                         <div>
-                            <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
+                            <div className="overflow-x-auto border border-gray-300  rounded-2xl my-7 ">
                                 <table className="table table-zebra">
                                     {/* ------------- Tables head (Columns) --------------------*/}
-                                    <thead className='text-center'>
-                                        <tr className='text-black'>
-                                            <th >No.</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Apply Date</th>
-                                            <th>Status</th>
-                                            <th>Region</th>
-                                            <th>Actions</th>
+                                    <thead className='text-center bg-secondary text-white'>
+                                        <tr>
+                                            <th className="py-4 rounded-tl-xl">No.</th>
+                                            <th className="py-4">Name</th>
+                                            <th className="py-4">Email</th>
+                                            <th className="py-4">Apply Date</th>
+                                            <th className="py-4">Status</th>
+                                            <th className="py-4">Region</th>
+                                            <th className="py-4 rounded-tr-xl">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

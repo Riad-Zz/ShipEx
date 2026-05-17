@@ -174,12 +174,12 @@ const Deliveries = () => {
                         </div> :
                         /*------------------- All Deleveries Table to Show Info -----------------------------*/
                         <div>
-                            <div className="overflow-x-auto border border-gray-300 py-2  rounded-2xl my-7 ">
+                            <div className="overflow-x-auto border border-gray-300 rounded-2xl my-7 ">
                                 <table className="table table-zebra">
                                     {/* ------------- Tables head (Columns) --------------------*/}
-                                    <thead className='text-center'>
-                                        <tr className='text-black'>
-                                            <th >No.</th>
+                                    <thead className='text-center bg-secondary text-white'>
+                                        <tr>
+                                            <th className='py-4 rounded-tl-xl'>No.</th>
                                             <th>Parcel ID</th>
                                             <th>Parcel Name</th>
                                             <th>Delivery Status</th>
