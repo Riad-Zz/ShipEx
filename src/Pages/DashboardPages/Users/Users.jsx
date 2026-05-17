@@ -1,26 +1,29 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import { AuthContext } from '../../../Providers/AuthProvider/AuthProvider';
 import useAxios from '../../../Hooks/Axios/useAxios';
 import Swal from 'sweetalert2';
 import { VscCheck, VscChromeClose, VscRequestChanges } from 'react-icons/vsc';
 import { SyncLoader } from 'react-spinners';
 import defaultProfile from '../../../assets/Others/defaultUser.jpeg'
+import { IoSearchOutline } from 'react-icons/io5';
 
 const Users = () => {
     const { user } = use(AuthContext);
     const axiosInstance = useAxios();
+    const [searched,setSearched] = useState("") ;
+    // console.log(searched);
 
     // Loading All Users Data 
     const { data: allUsers = [], refetch, isLoading } = useQuery({
-        queryKey: [Users, `${user.email}`],
+        queryKey: [Users, searched],
         queryFn: async () => {
-            const result = await axiosInstance.get('/users')
+            const result = await axiosInstance.get(`/users?searched=${searched}`)
             // console.log(result.data);
             return result.data
         }
     })
-    console.log(allUsers);
+    // console.log(allUsers);
 
     // Date Formatter 
     const formatDate = (date) => {
@@ -34,9 +37,16 @@ const Users = () => {
     };
 
     // ----------------- Handle Approve/Reject Functionality -----------------
+    const handleSearch = (e) =>{
+        e.preventDefault() ;
+        setSearched(e.target.username.value) ;
+    }
+
+
+    // ----------------- Handle Approve/Reject Functionality -----------------
     const handleAction = (user, status) => {
         // console.log(rider , status) ;
-        const updateField = {status: status }
+        const updateField = { status: status }
         // console.log(updateFields);
         // console.log(user._id);
         Swal.fire({
@@ -49,7 +59,7 @@ const Users = () => {
             confirmButtonText: "Confirm !"
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log('approved', user._id , status);
+                console.log('approved', user._id, status);
                 axiosInstance.post(`/users/${user._id}`, updateField).then((res) => {
                     const result = res.data;
                     if (result.modifiedCount) {
@@ -74,7 +84,7 @@ const Users = () => {
                 {/* -----------------Parent Div of Statistics----------------- */}
                 <div className='flex flex-wrap justify-center items-center gap-5'>
 
-                    {/* ================= Total USer Div ====================*/}
+                    {/* ================= Total User Div ====================*/}
                     <div className='w-full lg:w-auto px-10 py-5 rounded-xl flex justify-center gap-2 items-center bg-[#F5F5F5]'>
                         <div className='rounded-full p-2 border'>
                             <VscRequestChanges className='text-xl'></VscRequestChanges>
@@ -106,6 +116,36 @@ const Users = () => {
                             <p className='font-extrabold text-2xl text-black text-center'>20</p>
                         </div>
                     </div>
+
+
+                    {/* For medium and large device  */}
+                    <form className=' relative hidden md:block' onSubmit={(e)=>handleSearch(e)}>
+                        <input type="text" name='username' className=' lg:w-md bg-[#cbd5e14d] text-lg  py-3 px-5 pl-10 rounded-l-4xl outline-none' placeholder='Search here' />
+                        <IoSearchOutline className='absolute top-9 left-4 text-xl'></IoSearchOutline>
+                        <button  type='submit' className='bg-primary text-lg my-5 py-3 px-8  text-black font-bold rounded-r-4xl cursor-pointer'>Search</button>
+                    </form>
+                    {/* for small screen  */}
+                    <form className="md:hidden flex flex-col justify-center items-center my-10" onSubmit={(e)=>handleSearch(e)}>
+                        <div className="relative w-full">
+                            <input
+                                type="text"
+                                name='username'
+                                placeholder="Search here"
+                                className="w-full bg-[#cbd5e14d] text-lg py-3 px-5 pl-10 rounded-4xl outline-none"
+                            />
+                            <IoSearchOutline className="absolute top-1/2 left-4 -translate-y-1/2 text-xl" />
+                        </div>
+
+                        <div className="mt-4">
+                            <button
+                                type="submit"
+                                className="bg-primary text-lg py-3 px-8 text-black font-bold rounded-4xl cursor-pointer"
+                            >
+                                Search
+                            </button>
+                        </div>
+                    </form>
+
 
                 </div>
                 {
@@ -158,11 +198,11 @@ const Users = () => {
                                                     <td className='flex justify-center gap-2'>
                                                         {
                                                             user.role === 'admin' ?
-                                                                <button onClick={()=>handleAction(user,'user')} className='btn bg-red-700 font-bold text-white'>Revoke Access</button> :
-                                                                <button onClick={()=>handleAction(user,"admin")} className='btn bg-primary font-bold text-black'>Promote Admin</button>
+                                                                <button onClick={() => handleAction(user, 'user')} className='btn bg-red-700 font-bold text-white'>Revoke Access</button> :
+                                                                <button onClick={() => handleAction(user, "admin")} className='btn bg-primary font-bold text-black'>Promote Admin</button>
 
                                                         }
-                                                        
+
                                                     </td>
                                                 </tr>
                                             )
