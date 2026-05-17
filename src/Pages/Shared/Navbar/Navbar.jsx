@@ -14,8 +14,6 @@ const Navbar = () => {
     const curRole = role.role
     // console.log(curRole) ;
 
-
-
     const alllinks = <>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/'}>Home</NavLink></li>
         {/* <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/services'}>Services</NavLink></li> */}
@@ -29,7 +27,6 @@ const Navbar = () => {
         }
     </>
 
-
     const handleLogOut = () => {
         logOut().then(() => {
             // Sign-out successful.
@@ -42,18 +39,31 @@ const Navbar = () => {
         <div className='max-w-11/12 xl:max-w-7xl mx-auto pt-7 '>
             <div className="navbar bg-white shadow-sm rounded-2xl py-4 md:px-4">
                 <div className="navbar-start">
-                    <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost xl:hidden">
-                            <RiMenuFill className='text-2xl'></RiMenuFill>
+                    
+                    {/* --- REPLACED DROPDOWN WITH DRAWER HERE --- */}
+                    <div className="drawer w-auto xl:hidden z-50">
+                        <input id="nav-drawer" type="checkbox" className="drawer-toggle" />
+                        <div className="drawer-content">
+                            {/* Hamburger Button */}
+                            <label htmlFor="nav-drawer" role="button" className="btn btn-ghost">
+                                <RiMenuFill className='text-2xl'></RiMenuFill>
+                            </label>
                         </div>
-                        <ul
-                            tabIndex="-1"
-                            className="menu menu-sm dropdown-content bg-gray-50 rounded-box z-10 mt-4 w-60 p-3 shadow-sm hamburger">
-                            {alllinks}
-                        </ul>
+                        <div className="drawer-side">
+                            {/* Overlay that closes the drawer when clicked outside */}
+                            <label htmlFor="nav-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+                            {/* Sidebar Content */}
+                            <ul 
+                                onClick={() => document.getElementById('nav-drawer').checked = false}
+                                className="menu bg-gray-50 min-h-full w-64 p-4 pt-10 shadow-xl hamburger"
+                            >
+                                {alllinks}
+                            </ul>
+                        </div>
                     </div>
+                    {/* --- END DRAWER --- */}
                     <Link to={'/'} className='hidden md:block relative bottom-1' ><Logo textClassName='text-black'></Logo></Link>
-                    <Link to={'/'} className=' md:hidden relative -left-2' ><img src={Smalllogo}></img></Link>
+                    <Link to={'/'} className=' md:hidden relative -left-2' ><img src={Smalllogo} alt="Logo" /></Link>
                 </div>
                 <div className="navbar-center hidden xl:flex">
                     <ul className="flex gap-6 px-1 midLinks">
