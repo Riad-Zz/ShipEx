@@ -12,6 +12,7 @@ import { MdOutlinePayments } from "react-icons/md";
 import { GoPeople } from "react-icons/go";
 import { TbReportAnalytics } from "react-icons/tb";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { MdAssignmentAdd } from "react-icons/md";
 import { GrContact } from "react-icons/gr";
 import { CiLogout } from "react-icons/ci";
 import { BsLayoutSidebar } from "react-icons/bs";
@@ -126,7 +127,7 @@ const Dashboard = () => {
                                         className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
                                         data-tip="Client" >
                                         <GoPeople className='is-drawer-open:text-xl'></GoPeople>
-                                        <span className="is-drawer-close:hidden text-black block">Riders</span>
+                                        <span className="is-drawer-close:hidden text-black block">Rider Management</span>
                                     </NavLink>
                                 </li>
                                 {/* ==================== List item - 05 ============================*/}
@@ -136,7 +137,17 @@ const Dashboard = () => {
                                         className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
                                         data-tip="Analytics" >
                                         <TbReportAnalytics className='is-drawer-open:text-xl'></TbReportAnalytics>
-                                        <span className="is-drawer-close:hidden text-black block">Users</span>
+                                        <span className="is-drawer-close:hidden text-black block">Users Management</span>
+                                    </NavLink>
+                                </li>
+                                {/* ==================== List item - 07 ============================*/}
+                                <li className='mt-3'>
+                                    <NavLink
+                                        to="/assignrider"
+                                        className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                        data-tip="Analytics" >
+                                        <MdAssignmentAdd className='is-drawer-open:text-xl'></MdAssignmentAdd>
+                                        <span className="is-drawer-close:hidden text-black block">Assign Rider</span>
                                     </NavLink>
                                 </li>
                             </>

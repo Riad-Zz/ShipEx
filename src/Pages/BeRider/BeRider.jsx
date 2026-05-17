@@ -19,6 +19,7 @@ const BeRider = () => {
     // Handle Rider Registration 
     const handleRiderRegistration = async(data, e) => {
         console.log(data);
+        data.photoURL = user.photoURL ;
         await axiosInstance.post('/riders', data).then((res) => {
             if (res.data.insertedId) {
                 Swal.fire({

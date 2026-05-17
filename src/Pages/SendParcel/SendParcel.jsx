@@ -79,6 +79,7 @@ const SendParcel = () => {
                         navigate("/deliveries");  
                     }
                 });
+                data.deliveryStatus = "pending"
                 data.amount = chargeAmount;
                 data.paymentStatus = "unpaid";
 

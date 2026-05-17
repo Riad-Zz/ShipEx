@@ -196,7 +196,7 @@ const Deliveries = () => {
                                                     <th>{index + 1}</th>
                                                     <td>#SPX-{(parcel._id.slice(-4)).toUpperCase()}</td>
                                                     <td >{parcel.parcelname}</td>
-                                                    <td >Pending</td>
+                                                    <td >{parcel.deliveryStatus ? parcel.deliveryStatus : "Processing"}</td>
                                                     <td>{parcel.amount}</td>
                                                     <td>{parcel.paymentStatus === "unpaid" ?
                                                         <p className='text-[#F99D25] font-bold'>Unpaid</p> :

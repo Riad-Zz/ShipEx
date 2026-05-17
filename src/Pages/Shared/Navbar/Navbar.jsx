@@ -5,10 +5,14 @@ import { RiMenuFill } from "react-icons/ri";
 import Smalllogo from '../../../assets/logo.png'
 import { MdArrowOutward } from "react-icons/md";
 import { AuthContext } from '../../../Providers/AuthProvider/AuthProvider';
+import useRole from '../../../Hooks/Role/useRole';
 
 const Navbar = () => {
 
     const { user, logOut } = use(AuthContext);
+    const { role } = useRole();
+    const curRole = role.role
+    // console.log(curRole) ;
 
 
 
@@ -19,7 +23,10 @@ const Navbar = () => {
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/aboutus'}>About Us</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/pricing'}>Pricing</NavLink></li>
         <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/sendparcel'}>Send a Parcel</NavLink></li>
-        <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/berider'}>Be a Rider</NavLink></li>
+        {
+            curRole !== 'rider' &&
+            <li className='text-base-content text-[16px] font-medium mb-1'><NavLink to={'/berider'}>Be a Rider</NavLink></li>
+        }
     </>
 
 
@@ -117,7 +124,7 @@ const Navbar = () => {
                                         {/* Logout Button */}
                                         <li>
                                             <button
-                                            onClick={handleLogOut}
+                                                onClick={handleLogOut}
                                                 className="w-full bg-primary py-2 text-black  flex justify-center font-bold"
                                             >
                                                 Log out
@@ -141,7 +148,7 @@ const Navbar = () => {
 
 
                     {/* Dashboard */}
-                    <Link to={'/dashboard' }>
+                    <Link to={'/dashboard'}>
                         <button className='bg-black cursor-pointer rounded-full p-2 ml-1 md:ml-0 '><MdArrowOutward className='text-3xl text-primary font-bold'></MdArrowOutward></button>
                     </Link>
                 </div>
