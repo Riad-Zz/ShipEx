@@ -84,7 +84,7 @@ ShipEx is a complete parcel delivery platform with three distinct roles — **Cu
 | Layer | Platform |
 |---|---|
 | Frontend | Vercel |
-| Backend | Render |
+| Backend | Vercel |
 | Database | MongoDB Atlas |
 
 ---
