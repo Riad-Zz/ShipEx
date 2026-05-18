@@ -4,6 +4,8 @@ import { AuthContext } from '../../../Providers/AuthProvider/AuthProvider';
 import useAxios from '../../../Hooks/Axios/useAxios';
 import { SyncLoader } from 'react-spinners';
 import AdminDashboard from './AdminDashboard';
+import RiderDashboard from './RiderDashboard';
+import UserDashboard from './UserDashboard';
 const Overview = () => {
     const { user } = use(AuthContext);
     const axiosInstance = useAxios();

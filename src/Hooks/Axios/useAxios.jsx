@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 
 const axiosInstance = axios.create({
     // baseURL: `http://localhost:3000`
-    baseURL: `https://shipex-server.vercel.app/`
+    baseURL: `https://shipex-server.vercel.app/` 
 })
 
 const useAxios = () => {
