@@ -8,6 +8,7 @@ import deliveyMan1 from '../../../assets/banner/DeliveryMan1.png';
 import deliveyMan2 from '../../../assets/banner/DeliveryMan2.png';
 import deliveyMan3 from '../../../assets/banner/DeliveryMan3.png';
 import { MdArrowOutward } from "react-icons/md";
+import { Link, useNavigate } from 'react-router';
 
 const Banner = () => {
 
@@ -55,11 +56,12 @@ const Banner = () => {
                                 <div className="flex my-3 flex-wrap gap-3 sm:gap-4 justify-center xl:justify-start">
                                     {/*--------------------------Track Parcel + Arrow-----------------------*/}
                                     <div className="flex justify-center gap-px">
-                                        <button className="btn-base py-2.5 sm:py-3 px-5 sm:px-6 bg-primary text-black! border-none">Track Your Parcel</button>
+                                        <Link to="/berider">
+                                        <button className="btn-base py-2.5 sm:py-3 px-5 sm:px-6 bg-primary text-black! border-none">Apply for Rider</button>
+                                        </Link>
                                         <button className="bg-black rounded-full p-2 sm:p-3"><MdArrowOutward className="text-2xl sm:text-3xl text-primary font-bold" /></button>
                                     </div>
-                                    {/*----------------------Rider Button----------------------------*/}
-                                    <button className="btn-base py-2.5 hover:bg-primary transition-all sm:py-3 px-5 sm:px-6 border border-[#DADADA] text-black!">Be a Rider</button>
+                                    
                                 </div>
                             </div>
 

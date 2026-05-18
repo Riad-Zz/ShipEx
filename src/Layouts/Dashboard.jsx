@@ -19,6 +19,7 @@ import { BsLayoutSidebar } from "react-icons/bs";
 import useRole from '../Hooks/Role/useRole';
 import { RiEBike2Line } from "react-icons/ri";
 import Loader from '../Pages/Shared/Loader/Loader';
+import { GrMoney } from "react-icons/gr";
 
 const Dashboard = () => {
     const { user } = use(AuthContext)
@@ -173,17 +174,17 @@ const Dashboard = () => {
                         {/* ==================== List item - 06 ============================*/}
                         <li className='mt-3'>
                             <NavLink
-                                to="/changepassword"
+                                to="/pricing"
                                 className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
                                 data-tip="Change Password" >
-                                <RiLockPasswordLine className='is-drawer-open:text-xl'></RiLockPasswordLine>
-                                <span className="is-drawer-close:hidden text-black block">Change Password</span>
+                                <GrMoney className='is-drawer-open:text-xl'></GrMoney>
+                                <span className="is-drawer-close:hidden text-black block">Pricing Calculation</span>
                             </NavLink>
                         </li>
                         {/* ==================== List item - 07 ============================*/}
                         <li className='mt-3'>
                             <NavLink
-                                to="/help"
+                                to="/aboutus"
                                 className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
                                 data-tip="Help" >
                                 <GrContact className='is-drawer-open:text-xl'></GrContact>
@@ -192,12 +193,12 @@ const Dashboard = () => {
                         </li>
                         {/* ==================== List item - 08 ============================*/}
                         <li className='mt-3'>
-                            <button
-                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
-                                data-tip="Logout" >
+                            <NavLink to={'/'} className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                data-tip="home" >
                                 <CiLogout className='is-drawer-open:text-xl' ></CiLogout>
-                                <span className="is-drawer-close:hidden text-black block">Logout</span>
-                            </button>
+                                <span className="is-drawer-close:hidden text-black block">Home</span>
+                            
+                            </NavLink>
                         </li>
                     </ul>
                 </div>

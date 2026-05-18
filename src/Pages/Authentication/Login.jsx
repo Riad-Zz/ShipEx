@@ -1,119 +1,139 @@
 import React, { use, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaEyeSlash } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
 import useAxios from '../../Hooks/Axios/useAxios';
-
+import { toast } from 'react-toastify';
+import { SyncLoader } from 'react-spinners';
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [eye, setEye] = useState(false);
     const [forget, setforget] = useState(false);
-    // const [currentEmail, setCurrentEmail] = useState("");
-    const { emailLogin, user, setUser, googleLogin, PasswordReset } = use(AuthContext)
-    const { register, handleSubmit, watch, formState: { errors } } = useForm()
-    const axiosInstance = useAxios() ;
+    const [resetEmail, setResetEmail] = useState(""); // State for forget password email
+    const [loadingAction, setLoadingAction] = useState(false); // Global Loading State
+
+    const { emailLogin, user, setUser, googleLogin, PasswordReset } = use(AuthContext);
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const axiosInstance = useAxios();
 
     const handleEyeClick = (e) => {
         e.preventDefault();
         setEye(!eye);
     }
 
-
     //------------------Login With Email and PAssword------------------
     const handleEmailLogin = (data, e) => {
-        console.log(data);
-        e.target.reset();
-
-        emailLogin(data.email, data.password).then((result) => {
-            const currentUser = result.user;
-            setUser(currentUser);
-            // toast.success(`Welcome ${currentUser.displayName}`, { theme: 'colored' })
-            navigate(location.state || '/');
-        })
-            .catch(error => {
-                const errorMessage = error.message;
-                // toast.error(errorMessage, { theme: 'colored' });
+        setLoadingAction(true);
+        emailLogin(data.email, data.password)
+            .then((result) => {
+                const currentUser = result.user;
+                setUser(currentUser);
+                toast.success(`Welcome back, ${currentUser.displayName || 'User'}!`);
+                e.target.reset();
+                navigate(location.state || '/');
             })
+            .catch(error => {
+                toast.error(error.message.replace("Firebase:", "").trim());
+            })
+            .finally(() => {
+                setLoadingAction(false);
+            });
     }
 
     //--------------------------Login WIth Google--------------------------
     const handleGoogleLogin = () => {
-        googleLogin().then(async(result) => {
-            const currentUser = result.user
-            setUser(currentUser);
-            const newUser = {
-                displayName: currentUser.displayName,
-                email: currentUser.email,
-                photoURL: currentUser.photoURL
-            }
-            await axiosInstance.post("/users", newUser).then((res) => {})
-            navigate(location.state || '/');
-        })
+        setLoadingAction(true);
+        googleLogin()
+            .then(async (result) => {
+                const currentUser = result.user;
+                setUser(currentUser);
+                const newUser = {
+                    displayName: currentUser.displayName,
+                    email: currentUser.email,
+                    photoURL: currentUser.photoURL,
+                    role: "user" // Default role
+                }
+                await axiosInstance.post("/users", newUser);
+                toast.success("Successfully logged in with Google!");
+                navigate(location.state || '/');
+            })
             .catch((error) => {
-                const errorMessage = error.message;
-                console.log(errorMessage);
+                toast.error(error.message.replace("Firebase:", "").trim());
+            })
+            .finally(() => {
+                setLoadingAction(false);
             });
     }
 
     // ------------------Handle Forget Password -------------------
     const handleForgetPassword = () => {
-        setforget(!forget); 
+        setforget(!forget);
     }
 
-    const paswordResetEmail = ()=> {
-        PasswordReset().then(() => {
+    const paswordResetEmail = () => {
+        if (!resetEmail) {
+            toast.error("Please enter your email address first.");
+            return;
+        }
 
-        })
+        setLoadingAction(true);
+        PasswordReset(resetEmail)
+            .then(() => {
+                toast.success("Password reset link sent! Check your email.");
+                setforget(false);
+            })
             .catch((error) => {
-                // const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorMessage);
+                toast.error(error.message.replace("Firebase:", "").trim());
+            })
+            .finally(() => {
+                setLoadingAction(false);
             });
     }
 
     return (
-        <div className='flex mt-12 items-center justify-center p-2'>
-
+        <div className='flex mt-12 items-center justify-center p-2 relative'>
+            
+            {/* FULL SCREEN LOADING OVERLAY */}
+            {loadingAction && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
+                    <SyncLoader size={15} color='#CAEB66' />
+                </div>
+            )}
 
             {   //--------------Forget Password Page ---------------------
                 forget ?
-
-                    <div className='py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
+                    <div className='py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0 w-full max-w-md'>
                         <p className='font-bold text-2xl lg:text-4xl text-black text-center lg:text-left'>Forgot Password</p>
                         <p className='text-black py-4 text-center lg:text-left'>Enter your email address and we’ll send you a reset link.</p>
                         <label className="label font-bold text-[#403F3F] text-[16px] mb-2">Email</label>
                         <input
-                            type="text"
+                            type="email"
+                            value={resetEmail}
+                            onChange={(e) => setResetEmail(e.target.value)}
                             className="input mb-3 w-full bg-white border-[#94A3B8] py-4 px-4 rounded-lg outline-none"
-                            placeholder="Email"
-                            name='name'
+                            placeholder="Enter your email"
                         />
-                        <button onClick={paswordResetEmail} type="submit" className="btn mt-2 mb-3 bg-primary transition font-bold border-none text-black w-full py-3 rounded-lg">
-                            Send
+                        <button onClick={paswordResetEmail} type="button" className="btn mt-2 mb-3 bg-primary transition font-bold border-none text-black w-full py-3 rounded-lg">
+                            Send Reset Link
                         </button>
-                        <p className='text-[#706F6F] mt-1'>
+                        <p className='text-[#706F6F] mt-1 text-center lg:text-left'>
                             Remember your password?{' '}
                             <span onClick={handleForgetPassword} className='font-bold cursor-pointer text-[#8FA748]'>
                                 Login
                             </span>
                         </p>
-
-                    </div> 
-                     :
-
+                    </div>
+                    :
                     <form onSubmit={handleSubmit(handleEmailLogin)} className='w-full max-w-md py-10 px-5 border border-[#94A3B8] lg:border-none rounded-2xl lg:p-0'>
                         <p className='text-black text-center text-3xl md:text-4xl 2xl:text-left font-bold'>
                             Welcome Back
                         </p>
                         <p className='text-black mb-5 text-center  2xl:text-left'>Login with ShipEx</p>
 
-
                         {/* Email  */}
-
                         <label className="label font-bold text-[#403F3F] text-[16px] mb-2">Email</label>
                         <input
                             type="email"
@@ -123,6 +143,7 @@ const Login = () => {
                             {...register('email', { required: true })}
                         />
                         {errors.email && <p className='text-red-600 text-sm mb-2'>Please Enter your Email</p>}
+                        
                         {/* Password  */}
                         <label className="label font-bold text-[#403F3F] text-[16px] mb-2 ">Password</label>
                         <div className='relative'>
@@ -139,10 +160,7 @@ const Login = () => {
                                     }
                                 })}
                             />
-                            {
-                                eye ? <FaEyeSlash onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800'></FaEyeSlash> : <FaEye onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800'></FaEye>
-                            }
-
+                            {eye ? <FaEyeSlash onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800 cursor-pointer'></FaEyeSlash> : <FaEye onClick={handleEyeClick} className='z-10 absolute right-4 bottom-5 text-xl text-gray-800 cursor-pointer'></FaEye>}
                         </div>
                         {errors.password && (
                             <p className="text-red-600 mb-2 text-sm">{errors.password.message}</p>
@@ -152,7 +170,7 @@ const Login = () => {
                                 <input type="checkbox" className="checkbox " />
                                 <p className='font-bold text-sm'>Remember me</p>
                             </div>
-                            <p onClick={handleForgetPassword} className='text-gray-600 font-bold cursor-pointer hover:text-[#8FA748] text-sm'>Forget Password</p>
+                            <p onClick={handleForgetPassword} className='text-gray-600 font-bold cursor-pointer hover:text-[#8FA748] text-sm'>Forget Password?</p>
                         </div>
 
                         <button type="submit" className="btn mt-7 mb-3 bg-primary transition font-bold border-none text-black w-full py-3 rounded-lg">
@@ -179,8 +197,6 @@ const Login = () => {
                         </p>
                     </form>
             }
-
-
         </div>
     );
 };

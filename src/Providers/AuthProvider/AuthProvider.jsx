@@ -2,10 +2,9 @@ import React, { createContext, useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from '../../Firebase/Firebase.config';
 
-
 export const AuthContext = createContext();
-const auth = getAuth(app)
-const googleProvider = new GoogleAuthProvider() ;
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
 
@@ -13,66 +12,64 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     //---------------------Register / Login With Google---------------------- 
-    const googleLogin = ()=>{
-        return signInWithPopup(auth,googleProvider) ;
-    } 
+    const googleLogin = () => {
+        return signInWithPopup(auth, googleProvider);
+    }
 
     //----------------------Register With Email and password---------------------
-    const EmailRegister = (email,password)=>{
-        return createUserWithEmailAndPassword(auth,email,password)
+    const EmailRegister = (email, password) => {
+        return createUserWithEmailAndPassword(auth, email, password);
     }
 
     //--------------------------------Email Login--------------------------- 
-    const emailLogin = (email,password) =>{
-        return signInWithEmailAndPassword(auth,email,password) ;
+    const emailLogin = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password);
     }
 
-    //------------------------Update a User Profile(Currently Disable this )-------------------------
+    //------------------------Update a User Profile-------------------------
     const updateUser = (updatedInfo) => {
-        return updateProfile(auth.currentUser , updatedInfo) ;
+        return updateProfile(auth.currentUser, updatedInfo);
     }
-    
 
     //------------------------Observer------------------------------ 
-    useEffect(()=>{
-        const tracking = onAuthStateChanged(auth,(currentUser)=>{
-            setUser(currentUser) ;
-            setLoading(false)
+    useEffect(() => {
+        const tracking = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+            setLoading(false);
         })
-        return ()=>{
-            tracking() ;
+        return () => {
+            tracking();
         }
-    },[])
+    }, [])
 
-    const PasswordReset = (auth,email) =>{
-        return sendPasswordResetEmail(auth, email) ;
+    // FIXED: Removed the 'auth' parameter requirement here
+    const PasswordReset = (email) => {
+        return sendPasswordResetEmail(auth, email);
     }
 
     //----------------------------LogOut------------------------------
-    const logOut = ()=>{
-        return signOut(auth) 
+    const logOut = () => {
+        return signOut(auth);
     }
 
     const AuthData = {
         user,
         setUser,
         loading,
-        setLoading ,
-        googleLogin ,
-        logOut ,
-        EmailRegister ,
-        updateUser ,
-        emailLogin ,
+        setLoading,
+        googleLogin,
+        logOut,
+        EmailRegister,
+        updateUser,
+        emailLogin,
         PasswordReset
     }
 
     return (
         <div>
-            <AuthContext value={AuthData}>{children}</AuthContext>
+            <AuthContext.Provider value={AuthData}>{children}</AuthContext.Provider>
         </div>
     );
-
-
 };
 
 export default AuthProvider;
