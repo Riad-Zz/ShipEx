@@ -59,7 +59,7 @@ const Dashboard = () => {
                                 <img src={user.photoURL} alt="User Avatar" className='w-11 h-11 rounded-full' />
                                 <div className='flex flex-col justify-center items-center'>
                                     <p className='font-bold text-black'>{user.displayName}</p>
-                                    <p className=''>{userRole === "user" ?" " :userRole.toUpperCase()}</p>
+                                    <p className=''>{userRole === "user" ?" " :userRole}</p>
                                 </div>
                                
                             </div>

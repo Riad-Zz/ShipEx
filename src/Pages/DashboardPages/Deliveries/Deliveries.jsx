@@ -228,7 +228,7 @@ const Deliveries = () => {
                                                         <button onClick={() => navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
                                                         <button onClick={() => handleDelete(parcel._id)} className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
                                                         {
-                                                            parcel.paymentStatus == "paid" && <button className='btn btn-primary text-secondary font-bold'>Track</button>
+                                                            parcel.paymentStatus == "paid" && <button onClick={() => navigate(`/track/${parcel.tracking_id}`)} className='btn btn-primary text-secondary font-bold'>Track</button>
                                                         }
                                                     </td>
                                                 </tr>

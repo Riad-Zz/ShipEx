@@ -8,13 +8,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form'; 
 import { AuthContext } from '../../../Providers/AuthProvider/AuthProvider';
 import useAxios from '../../../Hooks/Axios/useAxios';
+import { SyncLoader } from 'react-spinners'; 
 
 const MyTask = () => {
     const { user } = use(AuthContext);
     const axiosInstance = useAxios();
     const { register, getValues } = useForm();
 
-    const { data: tasks = [], refetch } = useQuery({
+    const { data: tasks = [], refetch, isLoading } = useQuery({
         queryKey: ['task', `${user?.email}`],
         queryFn: async () => {
             const res = await axiosInstance.get(`/parcel?riderEmail=${user.email}`)
@@ -110,7 +111,7 @@ const MyTask = () => {
             if (result.isConfirmed) {
                 axiosInstance.patch(`/parcel/rider-update/${task._id}`, { action: 'cashout' })
                 .then(() => {
-                    refetch(); // Refetching will disable the button automatically
+                    refetch(); 
                     Swal.fire({
                         title: "Cashout Successful!",
                         text: `৳${task.rider_earning} has been processed.`,
@@ -130,158 +131,165 @@ const MyTask = () => {
                     Manage your assigned parcels. Accept incoming rides, update their transit status, and cash out your successfully delivered orders.
                 </p>
 
-                <div className='flex flex-col gap-12'>
+               
+                {isLoading ? (
+                    <div className='flex justify-center items-center py-20'>
+                        <SyncLoader size={12} color='#CAEB66' />
+                    </div>
+                ) : (
+                    <div className='flex flex-col gap-12'>
 
-                    {/* ==================== TABLE 1: ASSIGNED & ACTIVE TASKS ==================== */}
-                    <div className='w-full'>
-                        <div className='flex items-center gap-2 mb-4 text-xl font-bold text-gray-800 ml-2'>
-                            <MdPendingActions className='text-secondary text-2xl' /> Active Assigned Rides ({assignedTasks.length})
-                        </div>
+                        {/* ==================== TABLE 1: ASSIGNED & ACTIVE TASKS ==================== */}
+                        <div className='w-full'>
+                            <div className='flex items-center gap-2 mb-4 text-xl font-bold text-gray-800 ml-2'>
+                                <MdPendingActions className='text-secondary text-2xl' /> Active Assigned Rides ({assignedTasks.length})
+                            </div>
 
-                        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-                            <table className="table w-full text-sm">
-                                <thead className='text-center bg-[#1E293B] text-white'>
-                                    <tr>
-                                        <th className="py-4 rounded-tl-xl text-base">Tracking ID</th>
-                                        <th className="py-4 text-base">Parcel Info</th>
-                                        <th className="py-4 text-base">Destination</th>
-                                        <th className="py-4 rounded-tr-xl text-base">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {assignedTasks.length === 0 ? (
+                            <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+                                <table className="table w-full text-sm">
+                                    <thead className='text-center bg-[#1E293B] text-white'>
                                         <tr>
-                                            <td colSpan="4" className="p-0 border-none">
-                                                <div className="flex flex-col items-center justify-center py-16 bg-gray-50/50">
-                                                    <VscInbox className="text-6xl text-gray-300 mb-4" />
-                                                    <p className="text-xl font-bold text-gray-700">No Active Parcels</p>
-                                                    <p className="text-gray-500 mt-1">You currently have no rides assigned or in transit.</p>
-                                                </div>
-                                            </td>
+                                            <th className="py-4 rounded-tl-xl text-base">Tracking ID</th>
+                                            <th className="py-4 text-base">Parcel Info</th>
+                                            <th className="py-4 text-base">Destination</th>
+                                            <th className="py-4 rounded-tr-xl text-base">Actions</th>
                                         </tr>
-                                    ) : (
-                                        assignedTasks.map((task) => (
-                                            <tr key={task._id} className='text-black hover:bg-blue-50 text-center border-b border-gray-100 transition-colors'>
-                                                <td className="font-semibold text-base">{task.tracking_id}</td>
-                                                <td>
-                                                    <p className="font-bold text-gray-800 text-base">{task.parcelname}</p>
-                                                    <p className="text-sm text-gray-500 mt-1">Total Fee: <span className="font-bold text-gray-800">৳{task.amount}</span></p>
-                                                </td>
-                                                <td className="text-sm">
-                                                    <p className="font-bold text-gray-800 text-base">{task.receiverName}</p>
-                                                    <p className="truncate w-40 mx-auto text-gray-500 mt-1" title={task.receiverAddress}>
-                                                        {task.receiverAddress}
-                                                    </p>
-                                                </td>
-                                                <td className="py-4">
-                                                    {task.deliveryStatus === 'rider_assigned' ? (
-                                                        <div className='flex flex-col sm:flex-row justify-center gap-3'>
-                                                            <button onClick={() => handleAccept(task)} className='btn btn-sm h-10 px-6 bg-primary text-black hover:bg-[#b5d35b] border-none text-sm shadow-sm'>
-                                                                <VscCheck className="text-lg" /> Accept
-                                                            </button>
-                                                            <button onClick={() => handleReject(task)} className='btn btn-sm h-10 px-6 bg-red-500 text-white hover:bg-red-600 border-none text-sm shadow-sm'>
-                                                                <VscChromeClose className="text-lg" /> Reject
-                                                            </button>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="flex flex-col items-center gap-3">
-                                                            <select
-                                                                {...register(task._id)}
-                                                                defaultValue={task.deliveryStatus}
-                                                                className="select select-bordered select-sm h-10 w-full max-w-[150px] bg-gray-50 font-medium text-sm"
-                                                            >
-                                                                <option value="picked_up">Picked Up</option>
-                                                                <option value="on-transit">On-Transit</option>
-                                                                <option value="delivered">Delivered</option>
-                                                            </select>
-                                                            <button
-                                                                onClick={() => handleStatusUpdate(task)}
-                                                                className="btn btn-sm h-10 bg-primary text-black hover:bg-[#b5d35b] border-none w-full max-w-[150px] text-sm shadow-sm font-bold"
-                                                            >
-                                                                Update Status
-                                                            </button>
-                                                        </div>
-                                                    )}
+                                    </thead>
+                                    <tbody>
+                                        {assignedTasks.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="4" className="p-0 border-none">
+                                                    <div className="flex flex-col items-center justify-center py-16 bg-gray-50/50">
+                                                        <VscInbox className="text-6xl text-gray-300 mb-4" />
+                                                        <p className="text-xl font-bold text-gray-700">No Active Parcels</p>
+                                                        <p className="text-gray-500 mt-1">You currently have no rides assigned or in transit.</p>
+                                                    </div>
                                                 </td>
                                             </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    {/* ==================== TABLE 2: DELIVERED TASKS & CASHOUT ==================== */}
-                    <div className='w-full'>
-                        <div className='flex items-center gap-2 mb-4 text-xl font-bold text-gray-800 ml-2'>
-                            <IoCheckmarkDoneCircleOutline className='text-green-600 text-3xl' /> Delivered Parcels ({deliveredTasks.length})
-                        </div>
-
-                        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-                            <table className="table w-full text-sm">
-                                <thead className='text-center bg-secondary text-white'>
-                                    <tr>
-                                        <th className="py-4 rounded-tl-xl text-base">Tracking ID</th>
-                                        <th className="py-4 text-base">Parcel</th>
-                                        <th className="py-4 text-base">Your Earning</th>
-                                        <th className="py-4 rounded-tr-xl text-base">Cashout Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {deliveredTasks.length === 0 ? (
-                                        <tr>
-                                            <td colSpan="4" className="p-0 border-none">
-                                                <div className="flex flex-col items-center justify-center py-16 bg-gray-50/50">
-                                                    <VscInbox className="text-6xl text-gray-300 mb-4" />
-                                                    <p className="text-xl font-bold text-gray-700">No Delivered Parcels</p>
-                                                    <p className="text-gray-500 mt-1">Deliver some parcels to see them here and collect your cashout!</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        deliveredTasks.map((task) => {
-                                            // Real source of truth from Database
-                                            const isCashedOut = task.cashout_status === 'yes';
-
-                                            return (
-                                                <tr key={task._id} className='text-black hover:bg-green-50 text-center border-b border-gray-100 transition-colors'>
-                                                    <td className="font-mono text-gray-600 text-sm">{task.tracking_id}</td>
-                                                    <td className="font-medium text-gray-800 text-base">{task.parcelname}</td>
-                                                    
-                                                    {/* Displaying Rider Earning instead of Parcel Amount */}
-                                                    <td className="font-bold text-green-600 text-lg">৳{task.rider_earning || 0}</td>
-                                                    
+                                        ) : (
+                                            assignedTasks.map((task) => (
+                                                <tr key={task._id} className='text-black hover:bg-blue-50 text-center border-b border-gray-100 transition-colors'>
+                                                    <td className="font-semibold text-base">{task.tracking_id}</td>
+                                                    <td>
+                                                        <p className="font-bold text-gray-800 text-base">{task.parcelname}</p>
+                                                        <p className="text-sm text-gray-500 mt-1">Total Fee: <span className="font-bold text-gray-800">৳{task.amount}</span></p>
+                                                    </td>
+                                                    <td className="text-sm">
+                                                        <p className="font-bold text-gray-800 text-base">{task.receiverName}</p>
+                                                        <p className="truncate w-40 mx-auto text-gray-500 mt-1" title={task.receiverAddress}>
+                                                            {task.receiverAddress}
+                                                        </p>
+                                                    </td>
                                                     <td className="py-4">
-                                                        <button
-                                                            onClick={() => handleCashout(task)}
-                                                            disabled={isCashedOut}
-                                                            className={`btn btn-sm h-10 px-8 flex items-center gap-2 mx-auto text-sm rounded-lg shadow-md font-bold ${
-                                                                isCashedOut 
-                                                                ? 'bg-gray-200 text-gray-500 border-none cursor-not-allowed shadow-none' 
-                                                                : 'bg-black text-white hover:bg-gray-800 border-none'
-                                                            }`}>
-                                                            
-                                                            {isCashedOut ? (
-                                                                <>
-                                                                    <VscCheck className="text-lg" /> Cashed Out
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <FaMoneyBillWave className="text-primary text-lg" /> Cashout
-                                                                </>
-                                                            )}
-                                                        </button>
+                                                        {task.deliveryStatus === 'rider_assigned' ? (
+                                                            <div className='flex flex-col sm:flex-row justify-center gap-3'>
+                                                                <button onClick={() => handleAccept(task)} className='btn btn-sm h-10 px-6 bg-primary text-black hover:bg-[#b5d35b] border-none text-sm shadow-sm'>
+                                                                    <VscCheck className="text-lg" /> Accept
+                                                                </button>
+                                                                <button onClick={() => handleReject(task)} className='btn btn-sm h-10 px-6 bg-red-500 text-white hover:bg-red-600 border-none text-sm shadow-sm'>
+                                                                    <VscChromeClose className="text-lg" /> Reject
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex flex-col items-center gap-3">
+                                                                <select
+                                                                    {...register(task._id)}
+                                                                    defaultValue={task.deliveryStatus}
+                                                                    className="select select-bordered select-sm h-10 w-full max-w-[150px] bg-gray-50 font-medium text-sm"
+                                                                >
+                                                                    <option value="picked_up">Picked Up</option>
+                                                                    <option value="on-transit">On-Transit</option>
+                                                                    <option value="delivered">Delivered</option>
+                                                                </select>
+                                                                <button
+                                                                    onClick={() => handleStatusUpdate(task)}
+                                                                    className="btn btn-sm h-10 bg-primary text-black hover:bg-[#b5d35b] border-none w-full max-w-[150px] text-sm shadow-sm font-bold"
+                                                                >
+                                                                    Update Status
+                                                                </button>
+                                                            </div>
+                                                        )}
                                                     </td>
                                                 </tr>
-                                            );
-                                        })
-                                    )}
-                                </tbody>
-                            </table>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                </div>
+                        {/* ==================== TABLE 2: DELIVERED TASKS & CASHOUT ==================== */}
+                        <div className='w-full'>
+                            <div className='flex items-center gap-2 mb-4 text-xl font-bold text-gray-800 ml-2'>
+                                <IoCheckmarkDoneCircleOutline className='text-green-600 text-3xl' /> Delivered Parcels ({deliveredTasks.length})
+                            </div>
+
+                            <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+                                <table className="table w-full text-sm">
+                                    <thead className='text-center bg-secondary text-white'>
+                                        <tr>
+                                            <th className="py-4 rounded-tl-xl text-base">Tracking ID</th>
+                                            <th className="py-4 text-base">Parcel</th>
+                                            <th className="py-4 text-base">Your Earning</th>
+                                            <th className="py-4 rounded-tr-xl text-base">Cashout Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {deliveredTasks.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="4" className="p-0 border-none">
+                                                    <div className="flex flex-col items-center justify-center py-16 bg-gray-50/50">
+                                                        <VscInbox className="text-6xl text-gray-300 mb-4" />
+                                                        <p className="text-xl font-bold text-gray-700">No Delivered Parcels</p>
+                                                        <p className="text-gray-500 mt-1">Deliver some parcels to see them here and collect your cashout!</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            deliveredTasks.map((task) => {
+                                                
+                                                const isCashedOut = task.cashout_status === 'yes';
+
+                                                return (
+                                                    <tr key={task._id} className='text-black hover:bg-green-50 text-center border-b border-gray-100 transition-colors'>
+                                                        <td className="font-mono text-gray-600 text-sm">{task.tracking_id}</td>
+                                                        <td className="font-medium text-gray-800 text-base">{task.parcelname}</td>
+                                                        
+                                                        {/* Displaying Rider Earning instead of Parcel Amount */}
+                                                        <td className="font-bold text-green-600 text-lg">৳{task.rider_earning || 0}</td>
+                                                        
+                                                        <td className="py-4">
+                                                            <button
+                                                                onClick={() => handleCashout(task)}
+                                                                disabled={isCashedOut}
+                                                                className={`btn btn-sm h-10 px-8 flex items-center gap-2 mx-auto text-sm rounded-lg shadow-md font-bold ${
+                                                                    isCashedOut 
+                                                                    ? 'bg-gray-200 text-gray-500 border-none cursor-not-allowed shadow-none' 
+                                                                    : 'bg-black text-white hover:bg-gray-800 border-none'
+                                                                }`}>
+                                                                
+                                                                {isCashedOut ? (
+                                                                    <>
+                                                                        <VscCheck className="text-lg" /> Cashed Out
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <FaMoneyBillWave className="text-primary text-lg" /> Cashout
+                                                                    </>
+                                                                )}
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                )}
             </div>
         </div>
     );

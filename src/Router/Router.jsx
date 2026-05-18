@@ -25,6 +25,7 @@ import AdminRoutes from "../Providers/AdminRoutes/AdminRoutes";
 import AssignRider from "../Pages/DashboardPages/AssignRider/AssignRider";
 import MyTask from "../Pages/DashboardPages/RiderTask/MyTask";
 import RiderRoutes from "../Providers/RiderRoutes/RiderRoutes";
+import TrackParcel from "../Pages/DashboardPages/TrackParcel/TrackParcel";
 
 export const router = createBrowserRouter([
     {
@@ -80,7 +81,8 @@ export const router = createBrowserRouter([
             {path : 'riders' , element : <AdminRoutes><Riders></Riders></AdminRoutes>} ,
             {path : 'users' , element : <AdminRoutes><Users></Users></AdminRoutes>},
             {path : 'assignrider' , element : <AdminRoutes><AssignRider></AssignRider></AdminRoutes>},
-            {path : '/mytask' , element : <RiderRoutes><MyTask></MyTask></RiderRoutes>}
+            {path : '/mytask' , element : <RiderRoutes><MyTask></MyTask></RiderRoutes>} ,
+            {path : '/track/:tracking_id' , Component : TrackParcel}
         ]
     }
 ])
