@@ -126,6 +126,16 @@ const Deliveries = () => {
         });
     }
 
+    // Helper function to format status strings beautifully
+    const formatStatus = (status) => {
+        if (!status) return "Processing";
+        return status
+            .replace(/[_-]/g, ' ')
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
     return (
         <div className='p-2 md:p-8 max-w-full lg:max-w-7xl mx-auto '>
             <div className='min-w-full lg:max-w-[95%] border border-gray-300 shadow-md mx-auto bg-[#f7fafd] p-5 py-10 lg:p-20 rounded-2xl'>
@@ -168,10 +178,18 @@ const Deliveries = () => {
 
                 </div>
                 {
-                    isLoading ?
+                    isLoading ? (
                         <div className='min-w-full flex justify-center items-center my-10'>
                             <SyncLoader size={10} color='#CAEB66' />
-                        </div> :
+                        </div>
+                    ) : allParcel.length === 0 ? (
+                        /*------------------- Empty State When No Parcels Exist -----------------------------*/
+                        <div className="flex flex-col items-center justify-center py-20 bg-white border border-gray-300 rounded-2xl my-7 shadow-sm">
+                            <FaShippingFast className="text-6xl text-gray-300 mb-4" />
+                            <p className="text-2xl font-bold text-gray-700">No Parcels Found</p>
+                            <p className="text-gray-500 mt-2 text-center max-w-md">You haven't created any parcel deliveries yet. Once you do, they will appear here.</p>
+                        </div>
+                    ) : (
                         /*------------------- All Deleveries Table to Show Info -----------------------------*/
                         <div>
                             <div className="overflow-x-auto border border-gray-300 rounded-2xl my-7 ">
@@ -196,7 +214,10 @@ const Deliveries = () => {
                                                     <th>{index + 1}</th>
                                                     <td>#SPX-{(parcel._id.slice(-4)).toUpperCase()}</td>
                                                     <td >{parcel.parcelname}</td>
-                                                    <td >{parcel.deliveryStatus ? parcel.deliveryStatus : "Processing"}</td>
+                                                    {/* Applying the format function here! */}
+                                                    <td className="font-semibold text-gray-700">
+                                                        {formatStatus(parcel.deliveryStatus)}
+                                                    </td>
                                                     <td>{parcel.amount}</td>
                                                     <td>{parcel.paymentStatus === "unpaid" ?
                                                         <p className='text-[#F99D25] font-bold'>Unpaid</p> :
@@ -206,6 +227,9 @@ const Deliveries = () => {
                                                         {parcel.paymentStatus === "unpaid" && <button onClick={() => handlePayment(parcel)} className='btn btn-primary text-black '>Pay</button>}
                                                         <button onClick={() => navigate(`/details/${parcel._id}`)} className='btn bg-[#94c6cb38] text-black '>View</button>
                                                         <button onClick={() => handleDelete(parcel._id)} className='btn bg-[#e833301a] text-[#E83330] '>Delete</button>
+                                                        {
+                                                            parcel.paymentStatus == "paid" && <button className='btn btn-primary text-secondary font-bold'>Track</button>
+                                                        }
                                                     </td>
                                                 </tr>
                                             )
@@ -215,6 +239,7 @@ const Deliveries = () => {
                                 </table>
                             </div>
                         </div>
+                    )
                 }
 
             </div>

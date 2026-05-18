@@ -7,23 +7,31 @@ import { VscCheck, VscChromeClose, VscRequestChanges } from 'react-icons/vsc';
 import { SyncLoader } from 'react-spinners';
 import defaultProfile from '../../../assets/Others/defaultUser.jpeg'
 import { IoSearchOutline } from 'react-icons/io5';
+import { FiUsers } from "react-icons/fi"; 
+import { RiAdminLine } from "react-icons/ri";
+import { MdOutlineBikeScooter } from "react-icons/md";
 
 const Users = () => {
     const { user } = use(AuthContext);
     const axiosInstance = useAxios();
-    const [searched,setSearched] = useState("") ;
-    // console.log(searched);
+    const [searched, setSearched] = useState("");
 
     // Loading All Users Data 
     const { data: allUsers = [], refetch, isLoading } = useQuery({
-        queryKey: [Users, searched],
+        queryKey: ['Users', searched],
         queryFn: async () => {
             const result = await axiosInstance.get(`/users?searched=${searched}`)
-            // console.log(result.data);
             return result.data
         }
     })
-    // console.log(allUsers);
+
+    // ----------------- Count User Roles Dynamically --------------------------
+    let totalAdmins = 0, totalRiders = 0, totalStandardUsers = 0;
+    allUsers.forEach((u) => {
+        if (u.role === 'admin') totalAdmins++;
+        else if (u.role === 'rider') totalRiders++;
+        else totalStandardUsers++;
+    });
 
     // Date Formatter 
     const formatDate = (date) => {
@@ -36,19 +44,16 @@ const Users = () => {
         });
     };
 
-    // ----------------- Handle Approve/Reject Functionality -----------------
-    const handleSearch = (e) =>{
-        e.preventDefault() ;
-        setSearched(e.target.username.value) ;
+    // ----------------- Handle Search -----------------
+    const handleSearch = (e) => {
+        e.preventDefault();
+        // Updated to target 'address' based on your provided form snippet
+        setSearched(e.target.address.value);
     }
-
 
     // ----------------- Handle Approve/Reject Functionality -----------------
     const handleAction = (user, status) => {
-        // console.log(rider , status) ;
         const updateField = { status: status }
-        // console.log(updateFields);
-        // console.log(user._id);
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -59,7 +64,6 @@ const Users = () => {
             confirmButtonText: "Confirm !"
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log('approved', user._id, status);
                 axiosInstance.post(`/users/${user._id}`, updateField).then((res) => {
                     const result = res.data;
                     if (result.modifiedCount) {
@@ -81,111 +85,130 @@ const Users = () => {
             <div className='min-w-full lg:max-w-[95%] border border-gray-300 shadow-md mx-auto bg-[#f7fafd] p-5 py-10 lg:p-20 rounded-2xl'>
                 <h1 className='text-secondary text-4xl font-extrabold text-center mb-2'>User Management</h1>
                 <p className='max-w-xl mx-auto text-center mb-4'>Manage all platform users from one dashboard. View user roles, monitor account activity, and control access by organizing users as admins, riders, or regular users efficiently.</p>
+                
                 {/* -----------------Parent Div of Statistics----------------- */}
                 <div className='flex flex-wrap justify-center items-center gap-5'>
 
                     {/* ================= Total User Div ====================*/}
                     <div className='w-full lg:w-auto px-10 py-5 rounded-xl flex justify-center gap-2 items-center bg-[#F5F5F5]'>
                         <div className='rounded-full p-2 border'>
-                            <VscRequestChanges className='text-xl'></VscRequestChanges>
+                            <FiUsers className='text-xl '></FiUsers>
                         </div>
                         <div>
-                            <p className='font-bold text-center'>Total Applications</p>
+                            <p className='font-bold text-center'>Total Users</p>
                             <p className='font-extrabold text-2xl text-black text-center'>{allUsers.length}</p>
                         </div>
                     </div>
 
-                    {/* ==================== Total Rejected ==================== */}
+                    {/* ==================== Total Riders ==================== */}
                     <div className='w-full lg:w-auto px-10 py-5 rounded-xl flex justify-center  gap-2 items-center bg-[#F5F5F5]'>
                         <div className='rounded-full p-2 border'>
-                            <VscCheck className='text-xl'></VscCheck >
+                            <MdOutlineBikeScooter className='text-xl'></MdOutlineBikeScooter>
                         </div>
                         <div>
-                            <p className='font-bold text-center'>Approved Rider</p>
-                            <p className='font-extrabold text-2xl text-black text-center'>10</p>
+                            <p className='font-bold text-center'>Total Riders</p>
+                            <p className='font-extrabold text-2xl text-black text-center'>{totalRiders}</p>
                         </div>
                     </div>
 
-                    {/* ==================== TOtal  Approved ==================== */}
+                    {/* ==================== Total Admins ==================== */}
                     <div className='w-full lg:w-auto px-10 py-5 rounded-xl flex justify-center  gap-2 items-center bg-[#F5F5F5]'>
                         <div className='rounded-full p-2 border'>
-                            < VscChromeClose className='text-xl'></ VscChromeClose>
+                            < RiAdminLine className='text-xl'></ RiAdminLine>
                         </div>
                         <div>
-                            <p className='font-bold text-center'>Rejected</p>
-                            <p className='font-extrabold text-2xl text-black text-center'>20</p>
+                            <p className='font-bold text-center'>Total Admins</p>
+                            <p className='font-extrabold text-2xl text-black text-center'>{totalAdmins}</p>
                         </div>
                     </div>
-
-
-                    {/* For medium and large device  */}
-                    <form className=' relative hidden md:block' onSubmit={(e)=>handleSearch(e)}>
-                        <input type="text" name='username' className=' lg:w-md bg-[#cbd5e14d] text-lg  py-3 px-5 pl-10 rounded-l-4xl outline-none' placeholder='Search here' />
-                        <IoSearchOutline className='absolute top-9 left-4 text-xl'></IoSearchOutline>
-                        <button  type='submit' className='bg-primary text-lg my-5 py-3 px-8  text-black font-bold rounded-r-4xl cursor-pointer'>Search</button>
-                    </form>
-                    {/* for small screen  */}
-                    <form className="md:hidden flex flex-col justify-center items-center my-10" onSubmit={(e)=>handleSearch(e)}>
-                        <div className="relative w-full">
-                            <input
-                                type="text"
-                                name='username'
-                                placeholder="Search here"
-                                className="w-full bg-[#cbd5e14d] text-lg py-3 px-5 pl-10 rounded-4xl outline-none"
-                            />
-                            <IoSearchOutline className="absolute top-1/2 left-4 -translate-y-1/2 text-xl" />
-                        </div>
-
-                        <div className="mt-4">
-                            <button
-                                type="submit"
-                                className="bg-primary text-lg py-3 px-8 text-black font-bold rounded-4xl cursor-pointer"
-                            >
-                                Search
-                            </button>
-                        </div>
-                    </form>
-
 
                 </div>
+
+                {/* search box  */}
+                {/* For medium and large device  */}
+                <form className='relative hidden md:block text-center' onSubmit={handleSearch}>
+                    <input type="text" name='address' className=' lg:w-md bg-[#cbd5e14d] text-lg  py-3 px-5 pl-10 rounded-l-4xl outline-none' placeholder='Search here' />
+                    <IoSearchOutline className='absolute top-14 left:30 lg:left-26 xl:left-65 text-xl'></IoSearchOutline>
+                    <button type='submit' className='bg-primary text-lg my-10 py-3 px-8  text-black font-bold rounded-r-4xl cursor-pointer'>Search</button>
+                </form>
+                {/* for small screen  */}
+                <form className="md:hidden flex flex-col justify-center items-center my-10" onSubmit={handleSearch}>
+                    <div className="relative w-full">
+                        <input
+                            type="text"
+                            name="address"
+                            placeholder="Search here"
+                            className="w-full bg-[#cbd5e14d] text-lg py-3 px-5 pl-10 rounded-4xl outline-none"
+                        />
+                        <IoSearchOutline className="absolute top-1/2 left-4 -translate-y-1/2 text-xl" />
+                    </div>
+
+                    <div className="mt-4">
+                        <button
+                            type="submit"
+                            className="bg-primary text-lg py-3 px-8 text-black font-bold rounded-4xl cursor-pointer"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </form>
+
                 {
-                    isLoading ?
+                    isLoading ? (
                         <div className='min-w-full flex justify-center items-center my-10'>
                             <SyncLoader size={10} color='#CAEB66' />
                         </div>
-                        :
-                        /*------------------- All Deleveries Table to Show Info -----------------------------*/
+                    ) : allUsers.length === 0 ? (
+                        /*------------------- Empty State When No Users Found -----------------------------*/
+                        <div className="flex flex-col items-center justify-center py-20 bg-white border border-gray-300 rounded-2xl my-7 shadow-sm">
+                            <IoSearchOutline className="text-6xl text-gray-300 mb-4" />
+                            <p className="text-2xl font-bold text-gray-700">No Users Found</p>
+                            <p className="text-gray-500 mt-2 text-center max-w-md">
+                                {searched 
+                                    ? `We couldn't find any users matching "${searched}". Try a different name or email.` 
+                                    : "There are currently no users registered in the system."}
+                            </p>
+                            {searched && (
+                                <button onClick={() => {
+                                    setSearched("");
+                                    // Resetting the form input targeted by 'address'
+                                    document.getElementsByName('address').forEach(el => el.value = '');
+                                }} className="mt-4 btn btn-sm bg-gray-200 border-none text-gray-700 hover:bg-gray-300">
+                                    Clear Search
+                                </button>
+                            )}
+                        </div>
+                    ) : (
+                        /*------------------- All Users Table -----------------------------*/
                         <div>
                             <div className="overflow-x-auto border border-gray-300 rounded-2xl my-7 ">
-                                <table className="table table-zebra">
-                                    {/* ------------- Tables head (Columns) --------------------*/}
-                                    <thead className='text-center bg-secondary text-white'>
-                                        <tr className='text-white'>
-                                            <th className='py-4 rounded-tl-xl'>No.</th>
-                                            <th>Image</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>User Since</th>
-                                            <th>Role</th>
-                                            <th>Actions</th>
+                                <table className="table table-zebra w-full text-sm">
+                                    <thead className='text-center bg-[#1E293B] text-white'>
+                                        <tr>
+                                            <th className='py-4 rounded-tl-xl text-base'>No.</th>
+                                            <th className='text-base'>Image</th>
+                                            <th className='text-base'>Name</th>
+                                            <th className='text-base'>Email</th>
+                                            <th className='text-base'>User Since</th>
+                                            <th className='text-base'>Role</th>
+                                            <th className='rounded-tr-xl text-base'>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
-                                            //==================== Table Information(Rows) =================== 
                                             allUsers.map((user, index) =>
-                                                <tr key={index} className='text-black hover:bg-gray-100 text-center'>
-                                                    <th>{index + 1}</th>
-                                                    <th>
-                                                        {
-                                                            user.photoURL ? <img src={user.photoURL} alt="" className='h-10 w-10 rounded-lg' /> :
-                                                                <img src={defaultProfile} alt="" className='h-10 w-10 rounded-lg' />
-                                                        }
-
-                                                    </th>
-                                                    <td>{user.name || user.displayName}</td>
-                                                    <td >{user.email}</td>
-                                                    <td >{formatDate(user.createdAt)}</td>
+                                                <tr key={user._id} className='text-black hover:bg-gray-100 text-center border-b border-gray-100'>
+                                                    <th className="font-semibold">{index + 1}</th>
+                                                    <td className="flex justify-center">
+                                                        <div className="avatar">
+                                                            <div className="w-10 h-10 rounded-full">
+                                                                <img src={user.photoURL || defaultProfile} alt={user.name || user.displayName} className='object-cover' />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="font-medium text-gray-800">{user.name || user.displayName}</td>
+                                                    <td className="text-gray-600">{user.email}</td>
+                                                    <td className="text-gray-500">{formatDate(user.createdAt)}</td>
                                                     <td>
                                                         {user.role === "user" ? (
                                                             <p className='text-blue-600 font-bold'>User</p>
@@ -195,23 +218,21 @@ const Users = () => {
                                                             <p className='text-[#0AB010] font-bold'>Admin</p>
                                                         )}
                                                     </td>
-                                                    <td className='flex justify-center gap-2'>
+                                                    <td className='flex justify-center gap-2 py-3'>
                                                         {
                                                             user.role === 'admin' ?
                                                                 <button onClick={() => handleAction(user, 'user')} className='btn bg-red-700 font-bold text-white'>Revoke Access</button> :
                                                                 <button onClick={() => handleAction(user, "admin")} className='btn bg-primary font-bold text-black'>Promote Admin</button>
-
                                                         }
-
                                                     </td>
                                                 </tr>
                                             )
                                         }
-
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                    )
                 }
 
             </div>
