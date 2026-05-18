@@ -12,7 +12,7 @@
 
 ---
 
-## 📌 Overview
+##  Overview
 
 ShipEx is a complete parcel delivery platform with three distinct roles — **Customer**, **Rider**, and **Admin** — each with their own dashboard and workflow.
 
@@ -91,7 +91,7 @@ ShipEx is a complete parcel delivery platform with three distinct roles — **Cu
 
 ## ✨ Features
 
-### 🧑‍💼 Customer
+### Customer
 - Register / login via Firebase (Email or Google OAuth)
 - Book a parcel with sender & receiver details — price auto-calculated by weight and delivery type
 - Pay securely via **Stripe Checkout** (real BDT payments)
@@ -101,7 +101,7 @@ ShipEx is a complete parcel delivery platform with three distinct roles — **Cu
 - View full payment history with transaction IDs and receiver info
 - Personal dashboard with shipment stats and a 7-day expense trend chart
 
-### 🛵 Rider
+### Rider
 - Apply via `/berider` — submits region, district, NID, and contact info
 - Account stays **Pending** until an Admin approves it
 - After approval, view parcels filtered to their registered district only
@@ -110,7 +110,7 @@ ShipEx is a complete parcel delivery platform with three distinct roles — **Cu
 - **Cashout** 25% of parcel fee per delivery after marking it delivered *(simulated payout)*
 - Dashboard with total earnings, delivered count, active task count, and earnings chart
 
-### 🔑 Admin
+### Admin
 - Master dashboard: total revenue, parcels, riders, users + 7-day revenue chart via MongoDB aggregation
 - **Action alerts** — flags paid parcels stuck at `Awaiting Pickup` needing rider assignment
 - **Assign Rider** — filters available riders by the parcel's destination district
@@ -120,7 +120,7 @@ ShipEx is a complete parcel delivery platform with three distinct roles — **Cu
 
 ---
 
-## 🏗️ How It Works (Under the Hood)
+## How It Works (Under the Hood)
 
 **Role-Based Access Control**
 Three custom React Router guards — `PrivateRoute`, `RiderRoute`, `AdminRoute` — protect routes based on the user's role stored in MongoDB. Unauthorized roles are redirected automatically.
@@ -193,7 +193,7 @@ server/                          # github.com/Riad-Zz/ShipEx_Server
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js v18+
