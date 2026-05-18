@@ -23,9 +23,9 @@ import Loader from '../Pages/Shared/Loader/Loader';
 const Dashboard = () => {
     const { user } = use(AuthContext)
     const [isOpen, setIsOpen] = useState(false);
-    const {role,isLoading} = useRole();
+    const { role, isLoading } = useRole();
     // console.log(role) ;
-    const userRole = role.role ;
+    const userRole = role.role;
 
     useEffect(() => {
         if (window.innerWidth >= 768) {
@@ -59,9 +59,9 @@ const Dashboard = () => {
                                 <img src={user.photoURL} alt="User Avatar" className='w-11 h-11 rounded-full' />
                                 <div className='flex flex-col justify-center items-center'>
                                     <p className='font-bold text-black'>{user.displayName}</p>
-                                    <p className=''>Admin</p>
+                                    <p className=''>{userRole === "user" ?" " :userRole.toUpperCase()}</p>
                                 </div>
-                                <MdKeyboardArrowDown className='text-4xl font-bold text-black'></MdKeyboardArrowDown>
+                               
                             </div>
 
                         </div>
@@ -120,15 +120,18 @@ const Dashboard = () => {
                             </NavLink>
                         </li>
                         {/* ================= List item - 03 ======================*/}
-                        <li className='mt-3'>
-                            <NavLink
-                                to="/mytask"
-                                className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
-                                data-tip="mytask" >
-                                <RiEBike2Line className='is-drawer-open:text-xl'></RiEBike2Line>
-                                <span className="is-drawer-close:hidden text-black block">My Task</span>
-                            </NavLink>
-                        </li>
+                        {
+                            (userRole === 'rider' || userRole === 'admin') &&
+                            <li className='mt-3'>
+                                <NavLink
+                                    to="/mytask"
+                                    className="flex items-center is-drawer-close:tooltip is-drawer-close:tooltip-right "
+                                    data-tip="mytask" >
+                                    <RiEBike2Line className='is-drawer-open:text-xl'></RiEBike2Line>
+                                    <span className="is-drawer-close:hidden text-black block">My Task</span>
+                                </NavLink>
+                            </li>
+                        }
                         {
                             userRole === 'admin' && <>
                                 {/* =================== List item - 04 =========================*/}
